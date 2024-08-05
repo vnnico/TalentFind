@@ -1,0 +1,12 @@
+# Direktori Node.js
+node_modules/
+
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# File environment
+.env
