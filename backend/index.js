@@ -4,7 +4,6 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Model Setup
-//const Talent = require("./models/talent");
 
 const app = express();
 
@@ -20,6 +19,8 @@ mongoose
 
 // Ini biar bisa ngirim API
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Talent Find");

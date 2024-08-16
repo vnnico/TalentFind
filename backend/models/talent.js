@@ -36,6 +36,7 @@ const talentSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["Talent", "Recruiter"],
+    default: "Talent",
   },
 });
 
