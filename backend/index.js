@@ -4,7 +4,6 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Model Setup
-const Achievement = require("./models/achievement");
 const app = express();
 
 // Connect to Database
