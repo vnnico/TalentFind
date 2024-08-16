@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+// Model Setup
+//const Talent = require("./models/talent");
+
 const app = express();
 
 // Connect to Database
