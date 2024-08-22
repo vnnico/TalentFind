@@ -139,8 +139,19 @@ const register = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  const id = req.user;
+  const user = await Talent.findById(id);
+  if (user) {
+    // masukkin list data yang mau ditampilin
+    return res.status(200).json({ user });
+  }
+  return res.status(400).json({ msg: "User doesn't exist" });
+};
+
 module.exports = {
   login,
   register,
   validateRegister,
+  getProfile,
 };
