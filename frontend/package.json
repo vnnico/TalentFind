@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.4.0",
     "@nextui-org/react": "^2.4.6",
+    "antd": "^5.20.2",
     "autoprefixer": "^10.4.20",
     "framer-motion": "^11.3.29",
     "postcss": "^8.4.41",
