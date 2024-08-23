@@ -11,6 +11,7 @@ import Skills from "../sections/Skills";
 
 const Talent = () => {
   const [index, setIndex] = useState(0);
+  const [talentInput, setTalentInput] = useState("");
 
   const cvDetails = [
     "Talent",
@@ -61,7 +62,12 @@ const Talent = () => {
               </Link>{" "}
               or you can proceed by clicking next button.
             </p>
-            <TalentInfo clickNext={clickNext} clickPrev={clickPrev} />
+            <TalentInfo
+              clickNext={clickNext}
+              clickPrev={clickPrev}
+              talentInput={talentInput}
+              setTalentInput={setTalentInput}
+            />
           </>
         )}
         {cvDetails[index] === "Description" && (
