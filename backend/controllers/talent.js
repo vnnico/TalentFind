@@ -75,12 +75,6 @@ const validateRegister = [
     .withMessage("Phone number is required")
     .isMobilePhone()
     .withMessage("Phone number is not valid"),
-
-  body("role")
-    .notEmpty()
-    .withMessage("Role is required")
-    .isIn(["Talent", "Recruiter"])
-    .withMessage("Role must be either Talent or Recruiter"),
 ];
 
 const login = async (req, res) => {
@@ -104,8 +98,7 @@ const register = async (req, res) => {
     return res.status(400).json({ errors: checkError.array() });
   }
 
-  const { name, email, password, dob, gender, address, phoneNumber, role } =
-    req.body;
+  const { name, email, password, dob, gender, address, phoneNumber } = req.body;
 
   const exist = await Talent.findOne({ email });
   if (exist) {
@@ -125,7 +118,6 @@ const register = async (req, res) => {
     gender,
     address,
     phoneNumber,
-    role,
   });
 
   const token = createToken(user._id);
@@ -133,7 +125,7 @@ const register = async (req, res) => {
     // kalo mau tes dipostman, ganti aja object jsonnya
     res
       .status(200)
-      .json({ name, email, token, dob, gender, address, phoneNumber, role });
+      .json({ name, email, token, dob, gender, address, phoneNumber });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }

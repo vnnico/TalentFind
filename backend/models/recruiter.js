@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const talentSchema = new mongoose.Schema({
+const recruiterSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -34,9 +34,9 @@ const talentSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: "Talent",
+    default: "Recruiter",
   },
 });
 
-const Talent = mongoose.model("Talent", talentSchema);
-module.exports = Talent;
+const Recruiter = mongoose.model("Recruiter", recruiterSchema);
+module.exports = Recruiter;

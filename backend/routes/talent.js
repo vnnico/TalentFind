@@ -9,6 +9,8 @@ const {
 } = require("../controllers/talent");
 
 const isAuth = require("../middleware/isAuth");
+const checkRole = require("../middleware/checkRole");
+
 const router = express.Router();
 
 router.post("/login", login);
