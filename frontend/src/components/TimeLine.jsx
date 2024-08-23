@@ -62,6 +62,15 @@ const TimeLine = ({ index, setIndex }) => {
     },
   ]);
 
+  useEffect(() => {
+    const newTimeline = timelineItems.map((item, idx) => {
+      return idx <= index
+        ? { ...item, color: "green" }
+        : { ...item, color: "gray" };
+    });
+    setTimelineItems(newTimeline);
+  }, [index]);
+
   return (
     <Timeline
       className="lg:text-3xl md:text-xl font-medium "
