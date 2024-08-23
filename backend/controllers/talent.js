@@ -140,13 +140,81 @@ const register = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const id = req.user;
-  const user = await Talent.findById(id);
-  if (user) {
-    // masukkin list data yang mau ditampilin
-    return res.status(200).json({ user });
+  try {
+    const id = req.user;
+    const user = await Talent.findById(id);
+    if (user) {
+      // all logics here
+      return res.status(200).json({ user });
+    } else if (!user) {
+      return res.status(404).json({ msg: "User doesn't exist" });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
   }
-  return res.status(400).json({ msg: "User doesn't exist" });
+};
+
+const validateUpdateProfile = [
+  body("name")
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ min: 2 })
+    .withMessage("Name must be atleast 2 character long"),
+
+  body("dob")
+    .notEmpty()
+    .withMessage("Date of Birth is required")
+    .trim()
+    .isDate()
+    .withMessage(
+      "Date of Birth must be valid and must be in YYYY-MM-DD format"
+    ),
+
+  body("gender")
+    .notEmpty()
+    .withMessage("Gender is required")
+    .isIn(["Male", "Female"])
+    .withMessage("Gender must be either Male or Female"),
+
+  body("address")
+    .notEmpty()
+    .withMessage("Address is required")
+    .isLength({ min: 3 })
+    .withMessage("Address must be at least 3 characters long"),
+
+  body("phoneNumber")
+    .notEmpty()
+    .withMessage("Phone number is required")
+    .isMobilePhone()
+    .withMessage("Phone number is not valid"),
+];
+
+const updateProfile = async (req, res) => {
+  const _id = req.user;
+  const user = await Talent.findById(_id);
+  try {
+    if (user) {
+      const checkError = validationResult(req);
+      if (!checkError.isEmpty()) {
+        return res.status(404).json({ errors: checkError.array() });
+      }
+      // passed validate
+      const updatedUser = await Talent.findOneAndUpdate(
+        { _id },
+        { ...req.body },
+        { returnDocument: "after" }
+      );
+
+      if (updatedUser) {
+        return res.status(200).json({ updatedUser });
+      }
+      return res.status(404).json({ msg: "User doesn't exist" });
+    } else if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
 };
 
 module.exports = {
@@ -154,4 +222,6 @@ module.exports = {
   register,
   validateRegister,
   getProfile,
+  validateUpdateProfile,
+  updateProfile,
 };
