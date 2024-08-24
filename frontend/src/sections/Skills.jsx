@@ -7,8 +7,8 @@ import { BsTrash } from "react-icons/bs";
 import BackButton from "../components/BackButton";
 import SubmitButton from "../components/SubmitButton";
 
-const Skills = ({ clickNext, clickPrev, skills, setSkills }) => {
-  const { handleSubmit, control } = useForm({
+const Skills = ({ control, clickNext, skills, clickPrev }) => {
+  const { handleSubmit } = useForm({
     defaultValues: { skills },
     mode: "all",
   });
@@ -18,14 +18,14 @@ const Skills = ({ clickNext, clickPrev, skills, setSkills }) => {
     name: "skills",
   });
 
-  const saveAndNext = (data) => {
-    setSkills(data.skills);
-  };
+  // const saveAndNext = (data) => {
+  //   setSkills(data.skills);
+  // };
 
-  const saveAndBack = (data) => {
-    setSkills(data.skills);
-    clickPrev();
-  };
+  // const saveAndBack = (data) => {
+  //   setSkills(data.skills);
+  //   clickPrev();
+  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -62,7 +62,7 @@ const Skills = ({ clickNext, clickPrev, skills, setSkills }) => {
       ))}
 
       <AddButton onClick={() => append()}></AddButton>
-      <SubmitButton save={handleSubmit(saveAndNext)}></SubmitButton>
+      <SubmitButton clickNext={clickNext}></SubmitButton>
     </>
   );
 };

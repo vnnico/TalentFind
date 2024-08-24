@@ -9,28 +9,35 @@ import Achievement from "../sections/Achievement";
 import Project from "../sections/Project";
 import Skills from "../sections/Skills";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Talent = () => {
   const [index, setIndex] = useState(0);
 
-  const [talentInput, setTalentInput] = useState("");
-  const [description, setDescription] = useState();
-  const [education, setEducation] = useState([
-    { institution: "", major: "", gpa: "", yearRange: "" },
-  ]);
-  const [experience, setExperience] = useState([
-    { company: "", position: "", description: "", yearRange: "" },
-  ]);
-  const [achievement, setAchievement] = useState([
-    { name: "", issuingBy: "", date: "" },
-  ]);
-  const [project, setProject] = useState([{ name: "", description: "" }]);
-  const [skills, setSkills] = useState([{ skill: "" }]);
+  const { control, handleSubmit, setValue, getValues } = useForm({
+    defaultValues: {
+      talentInput: {
+        fullname: "",
+        email: "",
+        dob: "",
+        phoneNumber: "",
+        address: "",
+      },
 
-  const { handleSubmit } = useForm();
+      description: "",
+      education: [{ institution: "", major: "", gpa: "", yearRange: "" }],
+      experience: [
+        { company: "", position: "", description: "", yearRange: "" },
+      ],
+      achievement: [{ name: "", issuingBy: "", date: "" }],
+      project: [{ name: "", description: "" }],
+      skills: [{ skill: "" }],
+    },
+    mode: "onBlur",
+  });
 
   const cvDetails = [
-    "Talent",
+    "TalentInput",
     "Description",
     "Education",
     "Experience",
@@ -39,24 +46,22 @@ const Talent = () => {
     "Skills",
   ];
 
-  const clickNext = () => {
-    if (index !== cvDetails.length - 1) setIndex(index + 1);
+  const clickNext = (data) => {
+    setValue(cvDetails[index].toLowerCase(), data);
+    if (index !== cvDetails.length - 1) {
+      setIndex(index + 1);
+    }
   };
 
-  const clickPrev = () => {
-    if (index !== 0) setIndex(index - 1);
+  const clickPrev = (data) => {
+    setValue(cvDetails[index].toLowerCase(), data);
+    if (index !== 0) {
+      setIndex(index - 1);
+    }
   };
 
   const postData = (data) => {
-    console.log([
-      talentInput,
-      description,
-      education,
-      experience,
-      achievement,
-      project,
-      skills,
-    ]);
+    console.log(data);
   };
 
   return (
@@ -79,7 +84,7 @@ const Talent = () => {
           className="flex flex-col gap-4 mt-4"
           onSubmit={handleSubmit(postData)}
         >
-          {cvDetails[index] === "Talent" && (
+          {cvDetails[index] === "TalentInput" && (
             <>
               <h1 className="lg:text-xl md:text-xl font-bold">
                 Personal Information
@@ -96,10 +101,11 @@ const Talent = () => {
                 or you can proceed by clicking next button.
               </p>
               <TalentInfo
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                talentInput={talentInput}
-                setTalentInput={setTalentInput}
+                clickNext={handleSubmit((data) => clickNext(data.talentInput))}
+                control={control}
+                talentInput={getValues("talentInput")}
+                // talentInput={talentInput}
+                // setTalentInput={setTalentInput}
               />
             </>
           )}
@@ -114,10 +120,12 @@ const Talent = () => {
                 personal traits that define you.
               </p>
               <Description
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                description={description}
-                setDescription={setDescription}
+                control={control}
+                clickNext={handleSubmit((data) => clickNext(data.description))}
+                clickPrev={handleSubmit((data) => clickPrev(data.description))}
+
+                // description={description}
+                // setDescription={setDescription}
               />
             </>
           )}
@@ -126,10 +134,12 @@ const Talent = () => {
               <h1 className="lg:text-xl md:text-xl font-bold">Education</h1>
 
               <Education
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                education={education}
-                setEducation={setEducation}
+                control={control}
+                clickNext={handleSubmit((data) => clickNext(data.education))}
+                clickPrev={handleSubmit((data) => clickPrev(data.education))}
+                education={getValues("education")}
+                // education={education}
+                // setEducation={setEducation}
               />
             </>
           )}
@@ -137,10 +147,12 @@ const Talent = () => {
             <>
               <h1 className="lg:text-xl md:text-xl font-bold">Experience</h1>
               <Experience
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                experience={experience}
-                setExperience={setExperience}
+                control={control}
+                clickNext={handleSubmit((data) => clickNext(data.experience))}
+                clickPrev={handleSubmit((data) => clickPrev(data.experience))}
+                experience={getValues("experience")}
+                // experience={experience}
+                // setExperience={setExperience}
               />
             </>
           )}
@@ -148,10 +160,12 @@ const Talent = () => {
             <>
               <h1 className="lg:text-xl md:text-xl font-bold">Achievement</h1>
               <Achievement
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                achievement={achievement}
-                setAchievement={setAchievement}
+                control={control}
+                clickNext={handleSubmit((data) => clickNext(data.achievement))}
+                clickPrev={handleSubmit((data) => clickPrev(data.achievement))}
+                achievement={getValues("achievement")}
+                // achievement={achievement}
+                // setAchievement={setAchievement}
               />
             </>
           )}
@@ -159,10 +173,12 @@ const Talent = () => {
             <>
               <h1 className="lg:text-xl md:text-xl font-bold">Project</h1>
               <Project
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                project={project}
-                setProject={setProject}
+                control={control}
+                clickNext={handleSubmit((data) => clickNext(data.project))}
+                clickPrev={handleSubmit((data) => clickPrev(data.project))}
+                project={getValues("project")}
+                // project={project}
+                // setProject={setProject}
               />
             </>
           )}
@@ -170,10 +186,12 @@ const Talent = () => {
             <>
               <h1 className="lg:text-xl md:text-xl font-bold">Skills</h1>
               <Skills
-                clickNext={clickNext}
-                clickPrev={clickPrev}
-                skills={skills}
-                setSkills={setSkills}
+                control={control}
+                clickNext={handleSubmit((data) => clickNext(data.skills))}
+                clickPrev={handleSubmit((data) => clickPrev(data.skills))}
+                skills={getValues("skills")}
+                // skills={skills}
+                // setSkills={setSkills}
               />
             </>
           )}

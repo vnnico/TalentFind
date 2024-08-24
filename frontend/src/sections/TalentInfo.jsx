@@ -5,23 +5,23 @@ import NextButton from "../components/NextButton";
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
-const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
-  const { handleSubmit, control } = useForm({
-    defaultValues: talentInput,
-    mode: "all",
-  });
+const TalentInfo = ({ talentInput, control, clickNext }) => {
+  // const { handleSubmit } = useForm({
+  //   defaultValues: talentInput,
+  //   mode: "all",
+  // });
 
   // do not stack action one after another. Utilize useEffect to seperate these actions. (dependency [index])
-  const saveAndNext = (data) => {
-    setTalentInput(data);
-    clickNext();
-  };
+  // const saveAndNext = (data) => {
+  //   setTalentInput(data);
+  //   clickNext();
+  // };
 
   return (
     <>
       <Controller
         control={control}
-        name="fullname"
+        name="talentInput.fullname"
         render={({ field: { onChange, onBlur, value, ref } }) => {
           return (
             <InputForm
@@ -37,7 +37,7 @@ const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
       />
       <Controller
         control={control}
-        name="email"
+        name="talentInput.email"
         render={({ field: { onChange, onBlur, value, ref } }) => {
           return (
             <InputForm
@@ -53,7 +53,7 @@ const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
       />
       <Controller
         control={control}
-        name="dob"
+        name="talentInput.dob"
         render={({ field: { onChange, onBlur, value, ref } }) => {
           return (
             <DateInput
@@ -67,7 +67,7 @@ const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
       />
       <Controller
         control={control}
-        name="phoneNumber"
+        name="talentInput.phoneNumber"
         render={({ field: { onChange, onBlur, value, ref } }) => {
           return (
             <InputForm
@@ -84,7 +84,7 @@ const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
       />
       <Controller
         control={control}
-        name="address"
+        name="talentInput.address"
         render={({ field: { onChange, onBlur, value, ref } }) => {
           return (
             <InputForm
@@ -99,7 +99,7 @@ const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
           );
         }}
       />
-      <NextButton clickNext={handleSubmit(saveAndNext)}></NextButton>
+      <NextButton clickNext={clickNext}></NextButton>
     </>
   );
 };

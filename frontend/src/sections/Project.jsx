@@ -7,8 +7,8 @@ import { Controller } from "react-hook-form";
 import { useForm, useFieldArray } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 
-const Project = ({ clickNext, clickPrev, project, setProject }) => {
-  const { handleSubmit, control } = useForm({
+const Project = ({ control, clickNext, clickPrev, project }) => {
+  const { handleSubmit } = useForm({
     defaultValues: { project },
     mode: "all",
   });
@@ -18,15 +18,15 @@ const Project = ({ clickNext, clickPrev, project, setProject }) => {
     name: "project",
   });
 
-  const saveAndNext = (data) => {
-    setProject(data.project);
-    clickNext();
-  };
+  // const saveAndNext = (data) => {
+  //   setProject(data.project);
+  //   clickNext();
+  // };
 
-  const saveAndBack = (data) => {
-    setProject(data.project);
-    clickPrev();
-  };
+  // const saveAndBack = (data) => {
+  //   setProject(data.project);
+  //   clickPrev();
+  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -83,8 +83,8 @@ const Project = ({ clickNext, clickPrev, project, setProject }) => {
 
       <AddButton onClick={() => append()}></AddButton>
       <NavigationButton
-        clickNext={handleSubmit(saveAndNext)}
-        clickPrev={handleSubmit(saveAndBack)}
+        clickNext={clickNext}
+        clickPrev={clickPrev}
       ></NavigationButton>
     </>
   );

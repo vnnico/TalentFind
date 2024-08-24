@@ -8,8 +8,8 @@ import { BsTrash } from "react-icons/bs";
 import { DatePicker } from "antd";
 const { RangePicker } = DatePicker;
 
-const Experience = ({ clickNext, clickPrev, experience, setExperience }) => {
-  const { handleSubmit, control } = useForm({
+const Experience = ({ control, clickNext, clickPrev, experience }) => {
+  const { handleSubmit } = useForm({
     defaultValues: { experience },
     mode: "all",
   });
@@ -19,15 +19,15 @@ const Experience = ({ clickNext, clickPrev, experience, setExperience }) => {
     name: "experience",
   });
 
-  const saveAndNext = (data) => {
-    setExperience(data.experience);
-    clickNext();
-  };
+  // const saveAndNext = (data) => {
+  //   setExperience(data.experience);
+  //   clickNext();
+  // };
 
-  const saveAndBack = (data) => {
-    setExperience(data.experience);
-    clickPrev();
-  };
+  // const saveAndBack = (data) => {
+  //   setExperience(data.experience);
+  //   clickPrev();
+  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -124,8 +124,8 @@ const Experience = ({ clickNext, clickPrev, experience, setExperience }) => {
 
       <AddButton onClick={() => append()}></AddButton>
       <NavigationButton
-        clickNext={handleSubmit(saveAndNext)}
-        clickPrev={handleSubmit(saveAndBack)}
+        clickNext={clickNext}
+        clickPrev={clickPrev}
       ></NavigationButton>
     </>
   );

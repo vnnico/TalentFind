@@ -7,8 +7,8 @@ import { BsTrash } from "react-icons/bs";
 import { DatePicker } from "antd";
 import { Controller } from "react-hook-form";
 
-const Achievement = ({ clickNext, clickPrev, achievement, setAchievement }) => {
-  const { handleSubmit, control } = useForm({
+const Achievement = ({ control, achievement, clickNext, clickPrev }) => {
+  const { handleSubmit } = useForm({
     defaultValues: { achievement },
     mode: "all",
   });
@@ -18,15 +18,15 @@ const Achievement = ({ clickNext, clickPrev, achievement, setAchievement }) => {
     name: "achievement",
   });
 
-  const saveAndNext = (data) => {
-    setAchievement(data.achievement);
-    clickNext();
-  };
+  // const saveAndNext = (data) => {
+  //   setAchievement(data.achievement);
+  //   clickNext();
+  // };
 
-  const saveAndBack = (data) => {
-    setAchievement(data.achievement);
-    clickPrev();
-  };
+  // const saveAndBack = (data) => {
+  //   setAchievement(data.achievement);
+  //   clickPrev();
+  // };
 
   return (
     <>
@@ -96,8 +96,8 @@ const Achievement = ({ clickNext, clickPrev, achievement, setAchievement }) => {
 
       <AddButton onClick={() => append()}></AddButton>
       <NavigationButton
-        clickNext={handleSubmit(saveAndNext)}
-        clickPrev={handleSubmit(saveAndBack)}
+        clickNext={clickNext}
+        clickPrev={clickPrev}
       ></NavigationButton>
     </>
   );

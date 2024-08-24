@@ -4,21 +4,21 @@ import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-const Description = ({ clickNext, clickPrev, description, setDescription }) => {
-  const { handleSubmit, control } = useForm({
-    defaultValues: description,
-    mode: "all",
-  });
+const Description = ({ control, clickNext, clickPrev }) => {
+  // const { handleSubmit, control } = useForm({
+  //   defaultValues: description,
+  //   mode: "all",
+  // });
 
-  const saveAndNext = (data) => {
-    setDescription(data);
-    clickNext();
-  };
+  // const saveAndNext = (data) => {
+  //   setDescription(data);
+  //   clickNext();
+  // };
 
-  const saveAndBack = (data) => {
-    setDescription(data);
-    clickPrev();
-  };
+  // const saveAndBack = (data) => {
+  //   setDescription(data);
+  //   clickPrev();
+  // };
 
   return (
     <>
@@ -42,8 +42,8 @@ const Description = ({ clickNext, clickPrev, description, setDescription }) => {
         }}
       />
       <NavigationButton
-        clickNext={handleSubmit(saveAndNext)}
-        clickPrev={handleSubmit(saveAndBack)}
+        clickNext={clickNext}
+        clickPrev={clickPrev}
       ></NavigationButton>
     </>
   );

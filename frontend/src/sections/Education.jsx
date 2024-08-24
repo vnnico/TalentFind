@@ -7,8 +7,8 @@ import { BsTrash } from "react-icons/bs";
 import { DatePicker, Space } from "antd";
 const { RangePicker } = DatePicker;
 
-const Education = ({ clickNext, education, setEducation, clickPrev }) => {
-  const { handleSubmit, control } = useForm({
+const Education = ({ education, control, clickNext, clickPrev }) => {
+  const { handleSubmit } = useForm({
     defaultValues: { education },
     // populate education like ...education
     mode: "all",
@@ -19,17 +19,17 @@ const Education = ({ clickNext, education, setEducation, clickPrev }) => {
     name: "education",
   });
 
-  const saveAndNext = (data) => {
-    console.log(data.education);
-    setEducation(data.education);
-    clickNext();
-  };
+  // const saveAndNext = (data) => {
+  //   console.log(data.education);
+  //   setEducation(data.education);
+  //   clickNext();
+  // };
 
-  const saveAndBack = (data) => {
-    console.log(data.education);
-    setEducation(data.education);
-    clickPrev();
-  };
+  // const saveAndBack = (data) => {
+  //   console.log(data.education);
+  //   setEducation(data.education);
+  //   clickPrev();
+  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -122,8 +122,8 @@ const Education = ({ clickNext, education, setEducation, clickPrev }) => {
 
       <AddButton onClick={() => append()}></AddButton>
       <NavigationButton
-        clickNext={handleSubmit(saveAndNext)}
-        clickPrev={handleSubmit(saveAndBack)}
+        clickNext={clickNext}
+        clickPrev={clickPrev}
       ></NavigationButton>
     </>
   );
