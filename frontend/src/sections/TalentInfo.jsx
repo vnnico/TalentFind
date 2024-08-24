@@ -1,26 +1,24 @@
+import { useEffect } from "react";
 import DateInput from "../components/DateInput";
 import InputForm from "../components/InputForm";
 import NextButton from "../components/NextButton";
-import { useForm, useController, Controller } from "react-hook-form";
-import { input, Input } from "@nextui-org/react";
+import { Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-const TalentInfo = ({ clickNext, talentInput, setTalentInput }) => {
+const TalentInfo = ({ index, clickNext, talentInput, setTalentInput }) => {
   const { handleSubmit, control } = useForm({
     defaultValues: talentInput,
     mode: "all",
   });
 
-  const onSubmit = (data) => {
+  // do not stack action one after another. Utilize useEffect to seperate these actions. (dependency [index])
+  const saveAndNext = (data) => {
     setTalentInput(data);
     clickNext();
   };
 
   return (
-    <form
-      action=""
-      className="flex flex-col gap-4 mt-4"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <>
       <Controller
         control={control}
         name="fullname"
@@ -101,8 +99,8 @@ const TalentInfo = ({ clickNext, talentInput, setTalentInput }) => {
           );
         }}
       />
-      <NextButton></NextButton>
-    </form>
+      <NextButton clickNext={handleSubmit(saveAndNext)}></NextButton>
+    </>
   );
 };
 

@@ -8,10 +8,26 @@ import Description from "../sections/Description";
 import Achievement from "../sections/Achievement";
 import Project from "../sections/Project";
 import Skills from "../sections/Skills";
+import { useForm } from "react-hook-form";
 
 const Talent = () => {
   const [index, setIndex] = useState(0);
+
   const [talentInput, setTalentInput] = useState("");
+  const [description, setDescription] = useState();
+  const [education, setEducation] = useState([
+    { institution: "", major: "", gpa: "", yearRange: "" },
+  ]);
+  const [experience, setExperience] = useState([
+    { company: "", position: "", description: "", yearRange: "" },
+  ]);
+  const [achievement, setAchievement] = useState([
+    { name: "", issuingBy: "", date: "" },
+  ]);
+  const [project, setProject] = useState([{ name: "", description: "" }]);
+  const [skills, setSkills] = useState([{ skill: "" }]);
+
+  const { handleSubmit } = useForm();
 
   const cvDetails = [
     "Talent",
@@ -31,6 +47,18 @@ const Talent = () => {
     if (index !== 0) setIndex(index - 1);
   };
 
+  const postData = (data) => {
+    console.log([
+      talentInput,
+      description,
+      education,
+      experience,
+      achievement,
+      project,
+      skills,
+    ]);
+  };
+
   return (
     <div className="justify-content mx-auto my-5 flex max-md:flex-col w-[90%] p-11 rounded-lg md:gap-10 bg-white gap-4 h-full">
       <div className="flex flex-col basis-1/2 text-black gap-4 h-full">
@@ -46,74 +74,110 @@ const Talent = () => {
         </div>
       </div>
       <div className="flex flex-col basis-1/2 p-10 gap-2 overflow-y-auto shadow-xl overflow-y-auto">
-        {cvDetails[index] === "Talent" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">
-              Personal Information
-            </h1>
-            <p className="text-xs md:text-left">
-              The information below will be included in your CV. You can update
-              your personal details{" "}
-              <Link
-                href="#"
-                className="text-blue-700 font-semibold hover:text-blue-500"
-              >
-                here
-              </Link>{" "}
-              or you can proceed by clicking next button.
-            </p>
-            <TalentInfo
-              clickNext={clickNext}
-              clickPrev={clickPrev}
-              talentInput={talentInput}
-              setTalentInput={setTalentInput}
-            />
-          </>
-        )}
-        {cvDetails[index] === "Description" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">
-              Description<span className="text-red-600">*</span>
-            </h1>
-            <p className="text-xs md:text-left">
-              This section is for you to craft a compelling overview of
-              yourself. Share brief of professional background, interests, and
-              personal traits that define you.
-            </p>
-            <Description clickNext={clickNext} clickPrev={clickPrev} />
-          </>
-        )}
-        {cvDetails[index] === "Education" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">Education</h1>
+        <form
+          action=""
+          className="flex flex-col gap-4 mt-4"
+          onSubmit={handleSubmit(postData)}
+        >
+          {cvDetails[index] === "Talent" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">
+                Personal Information
+              </h1>
+              <p className="text-xs md:text-left">
+                The information below will be included in your CV. You can
+                update your personal details{" "}
+                <Link
+                  href="#"
+                  className="text-blue-700 font-semibold hover:text-blue-500"
+                >
+                  here
+                </Link>{" "}
+                or you can proceed by clicking next button.
+              </p>
+              <TalentInfo
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                talentInput={talentInput}
+                setTalentInput={setTalentInput}
+              />
+            </>
+          )}
+          {cvDetails[index] === "Description" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">
+                Description<span className="text-red-600">*</span>
+              </h1>
+              <p className="text-xs md:text-left">
+                This section is for you to craft a compelling overview of
+                yourself. Share brief of professional background, interests, and
+                personal traits that define you.
+              </p>
+              <Description
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                description={description}
+                setDescription={setDescription}
+              />
+            </>
+          )}
+          {cvDetails[index] === "Education" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">Education</h1>
 
-            <Education clickNext={clickNext} clickPrev={clickPrev} />
-          </>
-        )}
-        {cvDetails[index] === "Experience" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">Experience</h1>
-            <Experience clickNext={clickNext} clickPrev={clickPrev} />
-          </>
-        )}
-        {cvDetails[index] === "Achievement" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">Achievement</h1>
-            <Achievement clickNext={clickNext} clickPrev={clickPrev} />
-          </>
-        )}
-        {cvDetails[index] === "Project" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">Project</h1>
-            <Project clickNext={clickNext} clickPrev={clickPrev} />
-          </>
-        )}
-        {cvDetails[index] === "Skills" && (
-          <>
-            <h1 className="lg:text-xl md:text-xl font-bold">Skills</h1>
-            <Skills clickNext={clickNext} clickPrev={clickPrev} />
-          </>
-        )}
+              <Education
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                education={education}
+                setEducation={setEducation}
+              />
+            </>
+          )}
+          {cvDetails[index] === "Experience" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">Experience</h1>
+              <Experience
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                experience={experience}
+                setExperience={setExperience}
+              />
+            </>
+          )}
+          {cvDetails[index] === "Achievement" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">Achievement</h1>
+              <Achievement
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                achievement={achievement}
+                setAchievement={setAchievement}
+              />
+            </>
+          )}
+          {cvDetails[index] === "Project" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">Project</h1>
+              <Project
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                project={project}
+                setProject={setProject}
+              />
+            </>
+          )}
+          {cvDetails[index] === "Skills" && (
+            <>
+              <h1 className="lg:text-xl md:text-xl font-bold">Skills</h1>
+              <Skills
+                clickNext={clickNext}
+                clickPrev={clickPrev}
+                skills={skills}
+                setSkills={setSkills}
+              />
+            </>
+          )}
+        </form>
       </div>
     </div>
   );

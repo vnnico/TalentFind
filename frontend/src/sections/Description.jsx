@@ -1,16 +1,51 @@
 import { Textarea } from "@nextui-org/input";
 import NavigationButton from "../components/NavigationButton";
+import { Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
-const Description = ({ clickNext, clickPrev }) => {
+const Description = ({ clickNext, clickPrev, description, setDescription }) => {
+  const { handleSubmit, control } = useForm({
+    defaultValues: description,
+    mode: "all",
+  });
+
+  const saveAndNext = (data) => {
+    setDescription(data);
+    clickNext();
+  };
+
+  const saveAndBack = (data) => {
+    setDescription(data);
+    clickPrev();
+  };
+
   return (
-    <form action="" className="flex flex-col gap-4 mt-4">
-      <Textarea variant="flat" radius="sm" minRows={7} isRequired></Textarea>
-
+    <>
+      <Controller
+        control={control}
+        name="description"
+        render={({ field: { onChange, onBlur, value, ref } }) => {
+          return (
+            <Textarea
+              onChange={onChange}
+              value={value}
+              onBlur={onBlur}
+              ref={ref}
+              variant="flat"
+              radius="sm"
+              minRows={7}
+              defaultValue={value}
+              isRequired
+            ></Textarea>
+          );
+        }}
+      />
       <NavigationButton
-        clickNext={clickNext}
-        clickPrev={clickPrev}
+        clickNext={handleSubmit(saveAndNext)}
+        clickPrev={handleSubmit(saveAndBack)}
       ></NavigationButton>
-    </form>
+    </>
   );
 };
 
