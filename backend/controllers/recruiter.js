@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const validator = require("validator");
 const { body, validationResult } = require("express-validator");
 const Recruiter = require("../models/recruiter");
-const Company = require("../models/company");
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.HASH, { expiresIn: "2d" });
@@ -210,50 +208,6 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const getCompany = async (req, res) => {
-  try {
-  } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-
-const validateCompany = [
-  body("name").notEmpty().withMessage("Company name is required"),
-
-  body("email")
-    .notEmpty()
-    .withMessage("Email is required")
-    .isEmail()
-    .withMessage("Email is not valid"),
-
-  body("location").notEmpty().withMessage("Location is required"),
-  body("description").notEmpty().withMessage("Company description is required"),
-  body("industry").notEmpty().withMessage("Company industry type is required"),
-];
-
-const registCompany = async (req, res) => {
-  const checkError = validationResult(req);
-  if (!checkError.isEmpty()) {
-    return res.status(404).json({ errors: checkError.array() });
-  }
-  const data = req.body;
-  // check if company exists
-  const exist = await Company.findOne({ email: data.email });
-  if (exist) {
-    // kalau exist (email ada), kasi error
-    return res.status(400).json({ errors: "Email already existed" });
-  }
-  const recruiterID = req.user._id;
-  try {
-    const newCompany = await Company.create({ ...data, recruiterID });
-    return res.status(200).json(newCompany);
-  } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-
-const updateCompany = async (req, res) => {};
-
 module.exports = {
   login,
   register,
@@ -261,8 +215,4 @@ module.exports = {
   getProfile,
   validateUpdateProfile,
   updateProfile,
-  getCompany,
-  validateCompany,
-  registCompany,
-  updateCompany,
 };
