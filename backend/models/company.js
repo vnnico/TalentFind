@@ -6,29 +6,29 @@ const companySchema = new mongoose.Schema({
     ref: "Recruiter",
   },
   name: {
-    type: string,
+    type: String,
     require: true,
   },
   email: {
-    type: string,
+    type: String,
     require: true,
   },
   description: {
-    type: string,
+    type: String,
     require: true,
   },
 
   industry: {
-    type: string,
+    type: String,
     require: true,
     // add industry type
   },
   location: {
-    type: string,
+    type: String,
     require: true,
   },
   website: {
-    type: string,
+    type: String,
   },
 });
 

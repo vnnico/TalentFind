@@ -27,7 +27,7 @@ app.use(express.json());
 
 // routes
 app.use("/talent/", talentRoutes);
-app.use("/recruiter/", recruiterRoutes);
+app.use("/company", recruiterRoutes);
 
 app.get("/", (req, res) => {
   res.send("Talent Find");

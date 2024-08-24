@@ -6,6 +6,10 @@ const {
   getProfile,
   validateUpdateProfile,
   updateProfile,
+  getCompany,
+  validateCompany,
+  registCompany,
+  updateCompany,
 } = require("../controllers/recruiter");
 
 const isAuth = require("../middleware/isAuth");
@@ -18,5 +22,16 @@ router.post("/register", validateRegister, register);
 
 router.get("/profile", isAuth, getProfile);
 router.put("/profile", isAuth, validateUpdateProfile, updateProfile);
+
+// company
+router.get("/", isAuth, getCompany);
+router.post(
+  "/",
+  isAuth,
+  checkRole("Recruiter"),
+  validateCompany,
+  registCompany
+);
+router.put("/", isAuth, updateCompany);
 
 module.exports = router;
