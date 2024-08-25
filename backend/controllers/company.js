@@ -2,7 +2,16 @@ const Company = require("../models/company");
 const { body, validationResult } = require("express-validator");
 
 const getCompany = async (req, res) => {
+  const recruiterID = req.user._id;
+
+  const company = await Company.findOne({ recruiterID });
+  if (!company) {
+    // bisa lanjut buat redirect ke regist company
+    return res.status(404).json({ msg: "Company doesn't exists" });
+  }
+
   try {
+    return res.status(200).json(company);
   } catch (error) {
     return res.status(500).json({ msg: "Something went wrong" });
   }

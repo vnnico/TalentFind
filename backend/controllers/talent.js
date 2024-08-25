@@ -1,7 +1,6 @@
 const Talent = require("../models/talent");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const validator = require("validator");
 const { body, validationResult } = require("express-validator");
 
 const createToken = (_id) => {

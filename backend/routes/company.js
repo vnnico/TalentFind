@@ -11,7 +11,7 @@ const checkRole = require("../middleware/checkRole");
 
 const router = express.Router();
 // company
-router.get("/", isAuth, getCompany);
+router.get("/", isAuth, checkRole("Recruiter"), getCompany);
 router.post(
   "/",
   isAuth,
