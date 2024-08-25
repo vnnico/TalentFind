@@ -4,6 +4,7 @@ const {
   getCompany,
   validateCompany,
   registCompany,
+  validateUpdateCompany,
   updateCompany,
 } = require("../controllers/company");
 const isAuth = require("../middleware/isAuth");
@@ -19,6 +20,12 @@ router.post(
   validateCompany,
   registCompany
 );
-router.put("/", isAuth, updateCompany);
+router.put(
+  "/",
+  isAuth,
+  checkRole("Recruiter"),
+  validateUpdateCompany,
+  updateCompany
+);
 
 module.exports = router;

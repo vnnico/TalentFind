@@ -52,11 +52,46 @@ const registCompany = async (req, res) => {
   }
 };
 
-const updateCompany = async (req, res) => {};
+const validateUpdateCompany = [
+  body("name").notEmpty().withMessage("Company name is required"),
+  body("location").notEmpty().withMessage("Location is required"),
+  body("description").notEmpty().withMessage("Company description is required"),
+  body("industry").notEmpty().withMessage("Company industry type is required"),
+];
+
+const updateCompany = async (req, res) => {
+  const recruiterID = req.user_id;
+
+  const company = await Company.findOne(recruiterID);
+  try {
+    if (company) {
+      const checkError = validationResult(req);
+      if (!checkError.isEmpty()) {
+        return res.status(404).json({ errors: checkError.array() });
+      }
+
+      const updatedCompany = await Company.findOneAndUpdate(
+        recruiterID,
+        { ...req.body },
+        { returnDocument: "after" }
+      );
+      console.log("CUPDA: ", updatedCompany);
+      if (updatedCompany) {
+        return res.status(200).json({ updatedCompany });
+      }
+      return res.status(404).json({ msg: "Company doesn't exist" });
+    } else if (!company) {
+      return res.status(404).json({ msg: "Company not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
 
 module.exports = {
   getCompany,
   validateCompany,
   registCompany,
+  validateUpdateCompany,
   updateCompany,
 };
