@@ -1,7 +1,7 @@
-const Talent = require("../models/talent");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
+const Recruiter = require("../models/recruiter");
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.HASH, { expiresIn: "2d" });
@@ -12,7 +12,7 @@ const validateLogin = async function (email, password) {
     throw Error("All fields must be filled.");
   }
 
-  const user = await Talent.findOne({ email });
+  const user = await Recruiter.findOne({ email });
 
   // kalo email user ngga ada, kasi error
   if (!user) {
@@ -99,7 +99,7 @@ const register = async (req, res) => {
 
   const { name, email, password, dob, gender, address, phoneNumber } = req.body;
 
-  const exist = await Talent.findOne({ email });
+  const exist = await Recruiter.findOne({ email });
   if (exist) {
     // kalau exist (email ada), kasi error
     return res.status(400).json({ errors: "Email already existed" });
@@ -109,7 +109,7 @@ const register = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
-  const user = await Talent.create({
+  const user = await Recruiter.create({
     name,
     email,
     password: hash,
@@ -133,7 +133,7 @@ const register = async (req, res) => {
 const getProfile = async (req, res) => {
   try {
     const id = req.user;
-    const user = await Talent.findById(id);
+    const user = await Recruiter.findById(id);
     if (user) {
       // all logics here
       return res.status(200).json({ user });
@@ -182,7 +182,7 @@ const validateUpdateProfile = [
 
 const updateProfile = async (req, res) => {
   const _id = req.user;
-  const user = await Talent.findById(_id);
+  const user = await Recruiter.findById(_id);
   try {
     if (user) {
       const checkError = validationResult(req);
@@ -190,7 +190,7 @@ const updateProfile = async (req, res) => {
         return res.status(404).json({ errors: checkError.array() });
       }
       // passed validate
-      const updatedUser = await Talent.findOneAndUpdate(
+      const updatedUser = await Recruiter.findOneAndUpdate(
         { _id },
         { ...req.body },
         { returnDocument: "after" }
