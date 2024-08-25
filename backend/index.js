@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+// routes
+const talentRoutes = require("./routes/talent");
+
 // Model Setup
 const app = express();
 
@@ -20,6 +23,9 @@ mongoose
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// routes
+app.use("/talent/", talentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Talent Find");
