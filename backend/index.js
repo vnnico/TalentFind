@@ -7,6 +7,7 @@ require("dotenv").config();
 const talentRoutes = require("./routes/talent");
 const recruiterRoutes = require("./routes/recruiter");
 const companyRoutes = require("./routes/company");
+const cvRoutes = require("./routes/cv");
 
 // Model Setup
 const app = express();
@@ -27,9 +28,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // routes
-app.use("/talent/", talentRoutes);
+app.use("/talent", talentRoutes);
 app.use("/recruiter", recruiterRoutes);
-app.use("/company/", companyRoutes);
+app.use("/company", companyRoutes);
+app.use("/cv", cvRoutes);
 
 app.get("/", (req, res) => {
   res.send("Talent Find");
