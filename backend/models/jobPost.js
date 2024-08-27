@@ -5,16 +5,20 @@ const jobPostSchemaa = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Company",
   },
+  recruiterID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Recruiter",
+  },
+  name: {
+    type: String,
+    require: true,
+  },
   jobDescription: {
     type: String,
     require: true,
   },
   salary: {
-    type: Int32Array,
-    require: true,
-  },
-  description: {
-    type: String,
+    type: Number,
     require: true,
   },
 });
