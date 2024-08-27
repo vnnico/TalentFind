@@ -33,6 +33,7 @@ app.use("/talent", talentRoutes);
 app.use("/recruiter", recruiterRoutes);
 app.use("/company", companyRoutes);
 app.use("/cv", cvRoutes);
+app.use("/job", jobRoutes);
 
 app.get("/", (req, res) => {
   res.send("Talent Find");
