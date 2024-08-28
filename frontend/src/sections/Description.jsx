@@ -5,21 +5,6 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
 const Description = ({ control, clickNext, clickPrev }) => {
-  // const { handleSubmit, control } = useForm({
-  //   defaultValues: description,
-  //   mode: "all",
-  // });
-
-  // const saveAndNext = (data) => {
-  //   setDescription(data);
-  //   clickNext();
-  // };
-
-  // const saveAndBack = (data) => {
-  //   setDescription(data);
-  //   clickPrev();
-  // };
-
   return (
     <>
       <Controller
@@ -36,6 +21,7 @@ const Description = ({ control, clickNext, clickPrev }) => {
               radius="sm"
               minRows={7}
               defaultValue={value}
+              errorMessage="Description is required"
               isRequired
             ></Textarea>
           );

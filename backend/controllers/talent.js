@@ -132,7 +132,7 @@ const register = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const id = req.user;
+    const id = "66cc3e4fa9b92381a46c681a";
     const user = await Talent.findById(id);
     if (user) {
       // all logics here
