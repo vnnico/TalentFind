@@ -30,7 +30,7 @@ const TalentLogin = () => {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: apiClient.login,
+    mutationFn: apiClient.talentLogin,
     onSuccess: async (data) => {
       showToast({ message: data.message, type: "success" });
       setIsLoggedIn(true);

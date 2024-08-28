@@ -18,7 +18,8 @@ const NavBar = () => {
   const logout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("token");
-    navigate("/auth/talent-login");
+    localStorage.removeItem("role");
+    navigate("/auth");
   };
 
   const menuItems = ["Profile", "Build CV", "Find the Jobs", "Applications"];
@@ -40,64 +41,127 @@ const NavBar = () => {
           </NavbarBrand>
         </NavbarContent>
 
-        {localStorage.getItem("userId") && localStorage.getItem("token") && (
-          <>
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
-              <NavbarItem isActive>
-                <Link href="#" className="text-white">
-                  Build CV
-                </Link>
-              </NavbarItem>
-              <NavbarItem>
-                <Link href="#" aria-current="page" className="text-white">
-                  Find the Jobs
-                </Link>
-              </NavbarItem>
-              <NavbarItem>
-                <Link className="text-white" href="#">
-                  Applications
-                </Link>
-              </NavbarItem>
-            </NavbarContent>
-            <NavbarContent justify="end">
-              {/* <NavbarItem className="hidden lg:flex">
+        {localStorage.getItem("userId") &&
+          localStorage.getItem("token") &&
+          localStorage.getItem("role") === "Talent" && (
+            <>
+              <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                <NavbarItem isActive>
+                  <Link href="/" className="text-white">
+                    Build CV
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link href="#" aria-current="page" className="text-white">
+                    Find the Jobs
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link className="text-white" href="#">
+                    Applications
+                  </Link>
+                </NavbarItem>
+              </NavbarContent>
+              <NavbarContent justify="end">
+                {/* <NavbarItem className="hidden lg:flex">
                 <Link href="#" className="text-white">
                   Login
                 </Link>
               </NavbarItem> */}
-              <NavbarItem>
-                <Button
-                  as={Link}
-                  className="text-white"
-                  variant="flat"
-                  onPress={logout}
-                >
-                  Logout
-                </Button>
-              </NavbarItem>
-            </NavbarContent>
-            <NavbarMenu>
-              {menuItems.map((item, index) => (
-                <NavbarMenuItem key={`${item}-${index}`}>
-                  <Link
-                    color={
-                      index === 2
-                        ? "primary"
-                        : index === menuItems.length - 1
-                        ? "danger"
-                        : "inherit"
-                    }
-                    className="w-full"
-                    href="#"
-                    size="lg"
+                <NavbarItem>
+                  <Button
+                    as={Link}
+                    className="text-white"
+                    variant="flat"
+                    onPress={logout}
                   >
-                    {item}
+                    Logout
+                  </Button>
+                </NavbarItem>
+              </NavbarContent>
+              <NavbarMenu>
+                {menuItems.map((item, index) => (
+                  <NavbarMenuItem key={`${item}-${index}`}>
+                    <Link
+                      color={
+                        index === 2
+                          ? "primary"
+                          : index === menuItems.length - 1
+                          ? "danger"
+                          : "inherit"
+                      }
+                      className="w-full"
+                      href="#"
+                      size="lg"
+                    >
+                      {item}
+                    </Link>
+                  </NavbarMenuItem>
+                ))}
+              </NavbarMenu>
+            </>
+          )}
+
+        {localStorage.getItem("userId") &&
+          localStorage.getItem("token") &&
+          localStorage.getItem("role") === "Recruiter" && (
+            <>
+              <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                <NavbarItem isActive>
+                  <Link href="/company" className="text-white">
+                    Company
                   </Link>
-                </NavbarMenuItem>
-              ))}
-            </NavbarMenu>
-          </>
-        )}
+                </NavbarItem>
+                <NavbarItem>
+                  <Link href="#" aria-current="page" className="text-white">
+                    Job Posts
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link className="text-white" href="#">
+                    Find the Talent
+                  </Link>
+                </NavbarItem>
+              </NavbarContent>
+              <NavbarContent justify="end">
+                {/* <NavbarItem className="hidden lg:flex">
+                <Link href="#" className="text-white">
+                  Login
+                </Link>
+              </NavbarItem> */}
+                <NavbarItem>
+                  <Button
+                    as={Link}
+                    className="text-white"
+                    variant="flat"
+                    onPress={logout}
+                  >
+                    Logout
+                  </Button>
+                </NavbarItem>
+              </NavbarContent>
+              <NavbarMenu>
+                {menuItems.map((item, index) => (
+                  <NavbarMenuItem key={`${item}-${index}`}>
+                    <Link
+                      color={
+                        index === 2
+                          ? "primary"
+                          : index === menuItems.length - 1
+                          ? "danger"
+                          : "inherit"
+                      }
+                      className="w-full"
+                      href="#"
+                      size="lg"
+                    >
+                      {item}
+                    </Link>
+                  </NavbarMenuItem>
+                ))}
+              </NavbarMenu>
+            </>
+          )}
       </Navbar>
     </>
   );

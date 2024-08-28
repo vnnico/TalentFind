@@ -6,19 +6,24 @@ import Login from "./pages/TalentLogin";
 import Auth from "./pages/Auth";
 import TalentLogin from "./pages/TalentLogin";
 import RecruiterLogin from "./pages/RecruiterLogin";
+import Company from "./pages/Company";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Talent></Talent>
-            </Layout>
-          }
-        />
+        {localStorage.getItem("userId") &&
+          localStorage.getItem("token") &&
+          localStorage.getItem("role") === "Talent" && (
+            <Route
+              path="/"
+              element={
+                <Layout>
+                  <Talent></Talent>
+                </Layout>
+              }
+            />
+          )}
         <Route path="/auth" element={<Auth></Auth>} />
         <Route
           path="/auth/talent-login"
@@ -28,6 +33,15 @@ function App() {
           path="/auth/recruiter-login"
           element={<RecruiterLogin></RecruiterLogin>}
         />
+        <Route
+          path="/company"
+          element={
+            <Layout>
+              <Company></Company>
+            </Layout>
+          }
+        />
+
         {/* <Routes path="/build-cv" element={} />  
         <Routes path="/find-jobs" element={} />  
         <Routes path="/application" element={} />   */}

@@ -85,7 +85,14 @@ const login = async (req, res) => {
     const token = createToken(user._id);
 
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res.status(200).json({ email, token });
+    res
+      .status(200)
+      .json({
+        recruiterId: user._id,
+        token,
+        role: user.role,
+        message: "Login Success",
+      });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }

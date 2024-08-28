@@ -33,7 +33,7 @@ export const getProfile = async () => {
   return body;
 };
 
-export const login = async (formData) => {
+export const talentLogin = async (formData) => {
   const response = await fetch(`${API_URL}/talent/login`, {
     method: "POST",
     headers: {
@@ -47,7 +47,29 @@ export const login = async (formData) => {
     throw new Error(body.message);
   } else {
     localStorage.setItem("token", body.token);
-    localStorage.setItem("userId", body.userId);
+    localStorage.setItem("userId", body.talentId);
+    localStorage.setItem("role", body.role);
+  }
+
+  return body;
+};
+
+export const recruiterLogin = async (formData) => {
+  const response = await fetch(`${API_URL}/recruiter/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  } else {
+    localStorage.setItem("token", body.token);
+    localStorage.setItem("userId", body.recruiterId);
+    localStorage.setItem("role", body.role);
   }
 
   return body;
