@@ -1,7 +1,20 @@
 const Company = require("../models/company");
-const jobPost = require("../models/jobPost");
 const JobPost = require("../models/jobPost");
+const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
+const JobApplication = require("../models/jobApplication");
+
+const getAllJobPost = async (req, res) => {
+  try {
+    const listJob = await JobPost.find();
+    if (!listJob) {
+      return res.status(404).json({ msg: "There is no job " });
+    }
+    return res.status(200).json({ listJob });
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
 
 const postJob = async (req, res) => {
   try {
@@ -9,7 +22,6 @@ const postJob = async (req, res) => {
     if (!checkError.isEmpty()) {
       return res.status(404).json({ errors: checkError.array() });
     }
-
     // check if company exist
     const recruiterID = req.user._id;
     const company = await Company.findOne({ recruiterID });
@@ -19,7 +31,7 @@ const postJob = async (req, res) => {
     }
 
     const data = req.body;
-    const newJobPost = await jobPost.create({
+    const newJobPost = await JobPost.create({
       recruiterID,
       companyID: company._id,
       ...data,
@@ -31,7 +43,7 @@ const postJob = async (req, res) => {
   }
 };
 
-const getAllJobPost = async (req, res) => {
+const getPostedJob = async (req, res) => {
   try {
     const recruiterID = req.user._id;
 
@@ -52,8 +64,49 @@ const validatePostJob = [
   body("salary").notEmpty().withMessage("Salary cannot be empty"),
 ];
 
+const getJobPostByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "ID isn't valid" });
+    }
+    const findJobPost = await JobPost.findById(id);
+    if (!findJobPost) {
+      return res.status(404).json({ msg: "No such job" });
+    }
+    return res.status(200).json({ findJobPost });
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
+const applyJob = async (req, res) => {
+  try {
+    const data = req.body;
+    const talentID = req.user._id;
+    const { jobPostID } = req.params;
+    const jobPost = await JobPost.findById(jobPostID);
+    if (!jobPost) {
+      return res.status(404).json({ msg: "No such job posted yet." });
+    }
+    const applyJobPost = await JobApplication.create({
+      jobPostID,
+      talentID,
+      ...data,
+    });
+    return res.status(200).json({ applyJobPost });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
 module.exports = {
+  getAllJobPost,
   validatePostJob,
   postJob,
-  getAllJobPost,
+  getPostedJob,
+  getJobPostByID,
+  applyJob,
 };

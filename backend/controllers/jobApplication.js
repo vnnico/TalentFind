@@ -5,18 +5,9 @@ const JobApplication = require("../models/jobApplication");
 
 const { body, validationResult } = require("express-validator");
 
-const validateApplyJob = [];
-
-const applyJob = async (req, res) => {
+const getAllJobApplication = async (req, res) => {
   try {
-  } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-
-const getAllJob = async (req, res) => {
-  try {
-    const listJob = await jobPost.find();
+    const listJob = await JobApplication.find();
     if (!listJob) {
       return res.status(404).json({ msg: "There is no job " });
     }
@@ -53,7 +44,6 @@ const getListApplicant = async (req, res) => {
 };
 
 module.exports = {
-  applyJob,
-  getAllJob,
+  getAllJobApplication,
   getListApplicant,
 };
