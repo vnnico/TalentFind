@@ -3,6 +3,9 @@ import Login from "../sections/Login";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppContext } from "../contexts/AppContext";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import * as apiClient from "../api-client";
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -22,9 +25,22 @@ const TalentLogin = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
+  const { showToast } = useAppContext();
+
+  const mutation = useMutation({
+    mutationFn: apiClient.login,
+    onSuccess: async (data) => {
+      console.log(data);
+      showToast({ message: data.message, type: "success" });
+    },
+    onError: async (data) => {
+      console.log(data);
+      showToast({ message: data.message, type: "error" });
+    },
+  });
 
   const postData = (data) => {
-    console.log(data);
+    mutation.mutate(data);
   };
   return (
     <div className="flex flex-col justify-content min-h-screen bg-slate-100 ">

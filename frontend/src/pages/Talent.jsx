@@ -73,7 +73,6 @@ const Talent = () => {
       showToast({ message: data.message, type: "success" });
     },
     onError: async (data) => {
-      console.log("error lagi");
       showToast({ message: data.message, type: "error" });
     },
   });
