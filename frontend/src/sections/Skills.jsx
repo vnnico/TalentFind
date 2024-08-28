@@ -1,4 +1,4 @@
-import InputForm from "../components/InputForm";
+import InputForm from "../components/inputs/InputForm";
 import NavigationButton from "../components/buttons/NavigationButton";
 import AddButton from "../components/buttons/AddButton";
 import { Controller } from "react-hook-form";

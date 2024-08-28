@@ -1,6 +1,6 @@
 import { Textarea } from "@nextui-org/input";
 import AddButton from "../components/buttons/AddButton";
-import InputForm from "../components/InputForm";
+import InputForm from "../components/inputs/InputForm";
 import NavigationButton from "../components/buttons/NavigationButton";
 import BackButton from "../components/buttons/BackButton";
 import { Controller } from "react-hook-form";

@@ -1,7 +1,7 @@
 import AddButton from "../components/buttons/AddButton";
-import InputForm from "../components/InputForm";
+import InputForm from "../components/inputs/InputForm";
 import NavigationButton from "../components/buttons/NavigationButton";
-import DateInput from "../components/DateInput";
+import DateInput from "../components/inputs/DateInput";
 import { useForm, useFieldArray } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 import { DatePicker } from "antd";

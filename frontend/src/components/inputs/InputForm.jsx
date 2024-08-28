@@ -14,6 +14,7 @@ const InputForm = React.forwardRef(
       isReadOnly,
       errorMessage,
       isInvalid,
+      description,
     },
     ref
   ) => {
@@ -35,9 +36,14 @@ const InputForm = React.forwardRef(
             isReadOnly={isReadOnly}
             ref={ref}
             isInvalid={isInvalid}
-            errorMessage={errorMessage}
+            // errorMessage={errorMessage}
           />
         </div>
+        {isInvalid && errorMessage && (
+          <p className="text-red-500 text-sm w-full text-left mt-0">
+            {errorMessage}
+          </p> // Display error message below the input
+        )}
       </div>
     );
   }

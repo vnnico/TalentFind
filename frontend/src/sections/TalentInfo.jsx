@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import DateInput from "../components/DateInput";
-import InputForm from "../components/InputForm";
+import DateInput from "../components/inputs/DateInput";
+import InputForm from "../components/inputs/InputForm";
 import NextButton from "../components/buttons/NextButton";
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
