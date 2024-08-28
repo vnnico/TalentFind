@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppContext } from "../contexts/AppContext";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 
 const schema = Yup.object().shape({
@@ -25,17 +26,18 @@ const TalentLogin = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
-  const { showToast } = useAppContext();
+  const { showToast, isLoggedIn, setIsLoggedIn } = useAppContext();
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: apiClient.login,
     onSuccess: async (data) => {
-      console.log(data);
       showToast({ message: data.message, type: "success" });
+      setIsLoggedIn(true);
+      navigate("/");
     },
     onError: async (data) => {
-      console.log(data);
-      showToast({ message: data.message, type: "error" });
+      showToast({ message: "Invalid Credentials", type: "error" });
     },
   });
 

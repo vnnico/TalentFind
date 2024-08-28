@@ -45,6 +45,9 @@ export const login = async (formData) => {
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.message);
+  } else {
+    localStorage.setItem("token", body.token);
+    localStorage.setItem("userId", body.userId);
   }
 
   return body;

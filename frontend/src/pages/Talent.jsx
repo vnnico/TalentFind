@@ -11,10 +11,18 @@ import Skills from "../sections/Skills";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 
 const Talent = () => {
-  const { showToast } = useAppContext();
+  const { showToast, isLoggedIn } = useAppContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/auth/talent-login");
+    }
+  }, [isLoggedIn]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],

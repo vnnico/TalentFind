@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useContext } from "react";
 import Toast from "../components/Toast";
 
@@ -6,6 +6,17 @@ const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    if (userId && token) {
+      setIsLoggedIn(true);
+    } else setIsLoggedIn(false);
+  });
+
+  console.log(isLoggedIn);
 
   return (
     <AppContext.Provider
@@ -13,6 +24,8 @@ export const AppContextProvider = ({ children }) => {
         showToast: (msgDescription) => {
           setToast(msgDescription);
         },
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {toast && (
