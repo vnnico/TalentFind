@@ -16,18 +16,9 @@ const Experience = ({ control, clickNext, clickPrev, experience }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experience",
+    name: "experiences",
   });
 
-  // const saveAndNext = (data) => {
-  //   setExperience(data.experience);
-  //   clickNext();
-  // };
-
-  // const saveAndBack = (data) => {
-  //   setExperience(data.experience);
-  //   clickPrev();
-  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -45,7 +36,7 @@ const Experience = ({ control, clickNext, clickPrev, experience }) => {
 
           <Controller
             control={control}
-            name={`experience.${index}.company`}
+            name={`experiences.${index}.companyName`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -63,7 +54,7 @@ const Experience = ({ control, clickNext, clickPrev, experience }) => {
           />
           <Controller
             control={control}
-            name={`experience.${index}.position`}
+            name={`experiences.${index}.position`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -81,7 +72,7 @@ const Experience = ({ control, clickNext, clickPrev, experience }) => {
           />
           <Controller
             control={control}
-            name={`experience.${index}.description`}
+            name={`experiences.${index}.description`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <Textarea
@@ -100,7 +91,7 @@ const Experience = ({ control, clickNext, clickPrev, experience }) => {
           />
           <Controller
             control={control}
-            name={`experience.${index}.yearRange`}
+            name={`experiences.${index}.yearRange`}
             render={({ field: { onChange, value } }) => {
               return (
                 <>

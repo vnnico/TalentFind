@@ -15,18 +15,9 @@ const Project = ({ control, clickNext, clickPrev, project }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "project",
+    name: "projects",
   });
 
-  // const saveAndNext = (data) => {
-  //   setProject(data.project);
-  //   clickNext();
-  // };
-
-  // const saveAndBack = (data) => {
-  //   setProject(data.project);
-  //   clickPrev();
-  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -43,7 +34,7 @@ const Project = ({ control, clickNext, clickPrev, project }) => {
           )}
           <Controller
             control={control}
-            name={`project.${index}.name`}
+            name={`projects.${index}.name`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -61,7 +52,7 @@ const Project = ({ control, clickNext, clickPrev, project }) => {
           />
           <Controller
             control={control}
-            name={`project.${index}.description`}
+            name={`projects.${index}.description`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <Textarea

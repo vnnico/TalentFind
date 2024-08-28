@@ -9,28 +9,28 @@ import Achievement from "../sections/Achievement";
 import Project from "../sections/Project";
 import Skills from "../sections/Skills";
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAppContext } from "../contexts/AppContext";
+import * as apiClient from "../api-client";
 
 const Talent = () => {
+  const { showToast } = useAppContext();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: apiClient.getProfile,
+  });
+
   const [index, setIndex] = useState(0);
-
-  const { control, handleSubmit, setValue, getValues } = useForm({
+  const { control, handleSubmit, setValue, getValues, reset } = useForm({
     defaultValues: {
-      talentInput: {
-        fullname: "",
-        email: "",
-        dob: "",
-        phoneNumber: "",
-        address: "",
-      },
-
       description: "",
-      education: [{ institution: "", major: "", gpa: "", yearRange: "" }],
-      experience: [
-        { company: "", position: "", description: "", yearRange: "" },
+      educations: [{ institution: "", major: "", gpa: "", yearRange: "" }],
+      experiences: [
+        { companyName: "", position: "", description: "", yearRange: "" },
       ],
-      achievement: [{ name: "", issuingBy: "", date: "" }],
-      project: [{ name: "", description: "" }],
+      achievements: [{ name: "", issuingBy: "" }],
+      projects: [{ name: "", description: "" }],
       skills: [{ skill: "" }],
     },
     mode: "onBlur",
@@ -53,6 +53,12 @@ const Talent = () => {
     }
   };
 
+  const clickNexts = () => {
+    if (index !== cvDetails.length - 1) {
+      setIndex(index + 1);
+    }
+  };
+
   const clickPrev = (data) => {
     setValue(cvDetails[index].toLowerCase(), data);
     if (index !== 0) {
@@ -60,9 +66,28 @@ const Talent = () => {
     }
   };
 
+  const mutation = useMutation({
+    mutationFn: apiClient.createCV,
+
+    onSuccess: async (data) => {
+      showToast({ message: data.message, type: "success" });
+    },
+    onError: async (data) => {
+      console.log("error lagi");
+      showToast({ message: data.message, type: "error" });
+    },
+  });
+
   const postData = (data) => {
     console.log(data);
+    const skills = data.skills.map((x) => x.skill);
+    mutation.mutate({ ...data, skills });
+    console.log({ ...data, skills });
   };
+
+  if (isLoading) {
+    return <div>Loading....</div>;
+  }
 
   return (
     <div className="justify-content mx-auto my-5 flex max-md:flex-col w-[90%] p-11 rounded-lg md:gap-10 bg-white gap-4 h-full">
@@ -79,36 +104,36 @@ const Talent = () => {
         </div>
       </div>
       <div className="flex flex-col basis-1/2 p-10 gap-2 overflow-y-auto shadow-xl overflow-y-auto">
+        {cvDetails[index] === "TalentInput" && (
+          <>
+            <h1 className="lg:text-xl md:text-xl font-bold">
+              Personal Information
+            </h1>
+            <p className="text-xs md:text-left">
+              The information below will be included in your CV. You can update
+              your personal details{" "}
+              <Link
+                href="#"
+                className="text-blue-700 font-semibold hover:text-blue-500"
+              >
+                here
+              </Link>{" "}
+              or you can proceed by clicking next button.
+            </p>
+            <TalentInfo
+              clickNext={clickNexts}
+              talent={data?.user}
+              // talentInput={talentInput}
+              // setTalentInput={setTalentInput}
+            />
+          </>
+        )}
+
         <form
           action=""
           className="flex flex-col gap-4 mt-4"
           onSubmit={handleSubmit(postData)}
         >
-          {cvDetails[index] === "TalentInput" && (
-            <>
-              <h1 className="lg:text-xl md:text-xl font-bold">
-                Personal Information
-              </h1>
-              <p className="text-xs md:text-left">
-                The information below will be included in your CV. You can
-                update your personal details{" "}
-                <Link
-                  href="#"
-                  className="text-blue-700 font-semibold hover:text-blue-500"
-                >
-                  here
-                </Link>{" "}
-                or you can proceed by clicking next button.
-              </p>
-              <TalentInfo
-                clickNext={handleSubmit((data) => clickNext(data.talentInput))}
-                control={control}
-                talentInput={getValues("talentInput")}
-                // talentInput={talentInput}
-                // setTalentInput={setTalentInput}
-              />
-            </>
-          )}
           {cvDetails[index] === "Description" && (
             <>
               <h1 className="lg:text-xl md:text-xl font-bold">
@@ -137,7 +162,7 @@ const Talent = () => {
                 control={control}
                 clickNext={handleSubmit((data) => clickNext(data.education))}
                 clickPrev={handleSubmit((data) => clickPrev(data.education))}
-                education={getValues("education")}
+                education={getValues("educations")}
                 // education={education}
                 // setEducation={setEducation}
               />
@@ -150,7 +175,7 @@ const Talent = () => {
                 control={control}
                 clickNext={handleSubmit((data) => clickNext(data.experience))}
                 clickPrev={handleSubmit((data) => clickPrev(data.experience))}
-                experience={getValues("experience")}
+                experience={getValues("experiences")}
                 // experience={experience}
                 // setExperience={setExperience}
               />
@@ -163,7 +188,7 @@ const Talent = () => {
                 control={control}
                 clickNext={handleSubmit((data) => clickNext(data.achievement))}
                 clickPrev={handleSubmit((data) => clickPrev(data.achievement))}
-                achievement={getValues("achievement")}
+                achievement={getValues("achievements")}
                 // achievement={achievement}
                 // setAchievement={setAchievement}
               />
@@ -176,7 +201,7 @@ const Talent = () => {
                 control={control}
                 clickNext={handleSubmit((data) => clickNext(data.project))}
                 clickPrev={handleSubmit((data) => clickPrev(data.project))}
-                project={getValues("project")}
+                project={getValues("projects")}
                 // project={project}
                 // setProject={setProject}
               />

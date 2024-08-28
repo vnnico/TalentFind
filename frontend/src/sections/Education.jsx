@@ -16,20 +16,9 @@ const Education = ({ education, control, clickNext, clickPrev }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "education",
+    name: "educations",
   });
 
-  // const saveAndNext = (data) => {
-  //   console.log(data.education);
-  //   setEducation(data.education);
-  //   clickNext();
-  // };
-
-  // const saveAndBack = (data) => {
-  //   console.log(data.education);
-  //   setEducation(data.education);
-  //   clickPrev();
-  // };
   return (
     <>
       {fields.map((item, index) => (
@@ -46,7 +35,7 @@ const Education = ({ education, control, clickNext, clickPrev }) => {
           )}
           <Controller
             control={control}
-            name={`education.${index}.institution`}
+            name={`educations.${index}.institution`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -64,7 +53,7 @@ const Education = ({ education, control, clickNext, clickPrev }) => {
           />
           <Controller
             control={control}
-            name={`education.${index}.major`}
+            name={`educations.${index}.major`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -81,7 +70,7 @@ const Education = ({ education, control, clickNext, clickPrev }) => {
           />
           <Controller
             control={control}
-            name={`education.${index}.gpa`}
+            name={`educations.${index}.gpa`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -89,7 +78,7 @@ const Education = ({ education, control, clickNext, clickPrev }) => {
                   value={value}
                   onBlur={onBlur}
                   ref={ref}
-                  type="text"
+                  type="number"
                   label="GPA"
                   placeholder="e.g: 3.8"
                 ></InputForm>
@@ -98,7 +87,7 @@ const Education = ({ education, control, clickNext, clickPrev }) => {
           />
           <Controller
             control={control}
-            name={`education.${index}.yearRange`}
+            name={`educations.${index}.yearRange`}
             render={({ field: { onChange, value } }) => {
               return (
                 <>

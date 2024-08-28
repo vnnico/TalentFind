@@ -15,18 +15,8 @@ const Achievement = ({ control, achievement, clickNext, clickPrev }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "achievement",
+    name: "achievements",
   });
-
-  // const saveAndNext = (data) => {
-  //   setAchievement(data.achievement);
-  //   clickNext();
-  // };
-
-  // const saveAndBack = (data) => {
-  //   setAchievement(data.achievement);
-  //   clickPrev();
-  // };
 
   return (
     <>
@@ -45,7 +35,7 @@ const Achievement = ({ control, achievement, clickNext, clickPrev }) => {
 
           <Controller
             control={control}
-            name={`achievement.${index}.name`}
+            name={`achievements.${index}.name`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -63,7 +53,7 @@ const Achievement = ({ control, achievement, clickNext, clickPrev }) => {
           />
           <Controller
             control={control}
-            name={`achievement.${index}.issuingBy`}
+            name={`achievements.${index}.issuingBy`}
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <InputForm
@@ -78,18 +68,6 @@ const Achievement = ({ control, achievement, clickNext, clickPrev }) => {
                 ></InputForm>
               );
             }}
-          />
-          <Controller
-            control={control}
-            name={`achievement.${index}.date`}
-            render={({ field: { onChange, onBlur, value, ref } }) => (
-              <DateInput
-                label="Date"
-                onChange={onChange}
-                selected={value}
-                onBlur={onBlur}
-              ></DateInput>
-            )}
           />
         </div>
       ))}
