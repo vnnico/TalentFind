@@ -1,9 +1,10 @@
 const express = require("express");
-const { applyJob } = require("../controllers/jobApplication");
+const { applyJob, getAllJob } = require("../controllers/jobApplication");
 const isAuth = require("../middleware/isAuth");
 const checkRole = require("../middleware/checkRole");
 const router = express.Router();
 
-router.post("/application", applyJob);
+router.post("/", applyJob);
+router.get("/", getAllJob);
 
 module.exports = router;
