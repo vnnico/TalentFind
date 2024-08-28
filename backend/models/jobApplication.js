@@ -15,9 +15,9 @@ const jobApplicationSchema = new mongoose.Schema({
     default: Date.now(),
   },
   applicationAttachment: {
-    type: File,
+    type: String,
   },
 });
 
 const jobApplication = mongoose.model("jobApplication", jobApplicationSchema);
-module.exports(jobApplication);
+module.exports = jobApplication;
