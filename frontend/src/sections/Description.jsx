@@ -1,5 +1,5 @@
 import { Textarea } from "@nextui-org/input";
-import NavigationButton from "../components/NavigationButton";
+import NavigationButton from "../components/buttons/NavigationButton";
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";

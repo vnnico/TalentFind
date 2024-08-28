@@ -1,11 +1,11 @@
 import InputForm from "../components/InputForm";
-import NavigationButton from "../components/NavigationButton";
-import AddButton from "../components/AddButton";
+import NavigationButton from "../components/buttons/NavigationButton";
+import AddButton from "../components/buttons/AddButton";
 import { Controller } from "react-hook-form";
 import { useForm, useFieldArray } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
-import BackButton from "../components/BackButton";
-import SubmitButton from "../components/SubmitButton";
+import BackButton from "../components/buttons/BackButton";
+import SubmitButton from "../components/buttons/SubmitButton";
 
 const Skills = ({ control, clickNext, skills, clickPrev }) => {
   const { handleSubmit } = useForm({
