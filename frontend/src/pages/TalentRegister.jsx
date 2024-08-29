@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 import Register from "../sections/Register";
-import dateConvert from "../../utils/dateConvert";
+import dateConvert from "../utils/dateConvert";
 
 const schema = Yup.object().shape({
   name: Yup.string()

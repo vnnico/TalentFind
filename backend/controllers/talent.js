@@ -98,41 +98,47 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const checkError = validationResult(req);
-  if (!checkError.isEmpty()) {
-    return res.status(400).json({ errors: checkError.array() });
-  }
-
-  const { name, email, password, dob, gender, address, phoneNumber } = req.body;
-
-  const exist = await Talent.findOne({ email });
-  if (exist) {
-    // kalau exist (email ada), kasi error
-    return res.status(400).json({ errors: "Email already existed" });
-  }
-
-  // hashing
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-
-  const user = await Talent.create({
-    name,
-    email,
-    password: hash,
-    dob,
-    gender,
-    address,
-    phoneNumber,
-  });
-
-  const token = createToken(user._id);
   try {
+    const checkError = validationResult(req);
+    if (!checkError.isEmpty()) {
+      return res.status(400).json({ errors: checkError.array() });
+    }
+
+    const { name, email, password, dob, gender, address, phoneNumber } =
+      req.body;
+
+    const exist = await Talent.findOne({ email });
+    if (exist) {
+      // kalau exist (email ada), kasi error
+      return res.status(400).json({ message: "Email already existed" });
+    }
+
+    // hashing
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await Talent.create({
+      name,
+      email,
+      password: hash,
+      dob,
+      gender,
+      address,
+      phoneNumber,
+    });
+
+    const token = createToken(user._id);
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res
-      .status(200)
-      .json({ name, email, token, dob, gender, address, phoneNumber });
+    res.status(200).json({
+      talentId: user._id,
+      token,
+      message: "Register Success",
+      role: user.role,
+    });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to register", error: error.message });
   }
 };
 

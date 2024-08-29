@@ -1,4 +1,4 @@
-export default dateConvert = (date) => {
+const dateConvert = (date) => {
   // Convert the date string to a JavaScript Date object
   const dateObject = new Date(date);
 
@@ -12,3 +12,5 @@ export default dateConvert = (date) => {
 
   return formattedDate;
 };
+
+export default dateConvert;
