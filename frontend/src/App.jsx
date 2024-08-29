@@ -7,6 +7,7 @@ import Auth from "./pages/Auth";
 import TalentLogin from "./pages/TalentLogin";
 import RecruiterLogin from "./pages/RecruiterLogin";
 import Company from "./pages/Company";
+import TalentRegister from "./pages/TalentRegister";
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
         <Route
           path="/auth/talent-login"
           element={<TalentLogin></TalentLogin>}
+        />
+        <Route
+          path="/auth/talent-register"
+          element={<TalentRegister></TalentRegister>}
         />
         <Route
           path="/auth/recruiter-login"

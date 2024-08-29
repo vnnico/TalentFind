@@ -1,27 +1,46 @@
+import React from "react";
 import { DatePicker } from "@nextui-org/react";
-import { parseAbsolute } from "@internationalized/date";
 
-const DateInput = ({ onChange, onBlur, selected, label, isReadOnly }) => {
-  // Convert ISO date string to JavaScript Date object
-  let date = 0;
-  try {
-    date = parseAbsolute(selected);
-  } catch (error) {
-    date = selected;
+const DateInput = React.forwardRef(
+  (
+    {
+      onChange,
+      onBlur,
+      value,
+      label,
+      isReadOnly,
+      isRequired,
+      isInvalid,
+      errorMessage,
+    },
+    ref
+  ) => {
+    return (
+      <div className="w-full flex flex-col gap-2">
+        <div className="flex w-full flex-wrap mb-1  gap-4 text-left">
+          <DatePicker
+            selected={value}
+            ref={ref}
+            label={label}
+            labelPlacement="outside"
+            size="md"
+            variant="flat"
+            showMonthAndYearPickers
+            onChange={onChange}
+            onBlur={onBlur}
+            isInvalid={isInvalid}
+            isReadOnly={isReadOnly}
+            isRequired={isRequired}
+          ></DatePicker>
+        </div>
+        {isInvalid && errorMessage && (
+          <p className="text-red-500 text-sm w-full text-left max-md:mt-1">
+            {errorMessage}
+          </p> // Display error message below the input
+        )}
+      </div>
+    );
   }
-  return (
-    <DatePicker
-      label={label}
-      defaultValue={date ?? selected}
-      className="max-w-[284px]"
-      labelPlacement="outside"
-      variant="flat"
-      showMonthAndYearPickers
-      onChange={onChange}
-      onBlur={onBlur}
-      isReadOnly={isReadOnly}
-    ></DatePicker>
-  );
-};
+);
 
 export default DateInput;
