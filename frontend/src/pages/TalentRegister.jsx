@@ -52,7 +52,7 @@ const TalentRegister = () => {
     onSuccess: async (data) => {
       showToast({ message: data.message, type: "success" });
       setIsLoggedIn(true);
-      //   navigate("/");
+      navigate("/");
     },
     onError: async (data) => {
       showToast({ message: data.message, type: "error" });
@@ -84,9 +84,9 @@ const TalentRegister = () => {
           ></Register>
         </form>
         <p className="text-xs mt-4">
-          Don't have an account yet?{" "}
-          <Link to="/auth/talent-register" className="text-indigo-700">
-            Sign Up
+          Already have an account?{" "}
+          <Link to="/auth/talent-login" className="text-indigo-700">
+            Login
           </Link>
         </p>
 

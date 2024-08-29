@@ -144,10 +144,12 @@ const register = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const id = "66cc3e4fa9b92381a46c681a";
+    const id = req.user;
+
     const user = await Talent.findById(id);
     if (user) {
       // all logics here
+      console.log(user);
       return res.status(200).json({ user });
     } else if (!user) {
       return res.status(404).json({ msg: "User doesn't exist" });

@@ -10,7 +10,7 @@ const createCV = async (req, res) => {
   const session = await mongoose.startSession();
 
   try {
-    const talentId = "66cc3e4fa9b92381a46c681a";
+    const talentId = req.user;
     const {
       description,
       educations,

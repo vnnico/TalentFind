@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const isAuth = async (req, res, next) => {
   const { authorization } = req.headers;
+  console.log(req.headers.authorization);
   if (authorization) {
     const token = authorization.split(" ")[1];
     jwt.verify(token, process.env.HASH, async (error, decodedToken) => {
@@ -13,7 +14,7 @@ const isAuth = async (req, res, next) => {
       }
     });
   } else {
-    return res.status(401).json({ msg: "Authorization token required" });
+    return res.status(401).json({ message: "Authorization token required" });
   }
 };
 

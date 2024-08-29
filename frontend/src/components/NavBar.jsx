@@ -11,14 +11,17 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { setIsLoggedIn } = useAppContext();
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    setIsLoggedIn(false);
     navigate("/auth");
   };
 
