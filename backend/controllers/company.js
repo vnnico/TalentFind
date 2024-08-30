@@ -41,14 +41,14 @@ const registCompany = async (req, res) => {
   const exist = await Company.findOne({ email: data.email });
   if (exist) {
     // kalau exist (email ada), kasi error
-    return res.status(400).json({ errors: "Email already existed" });
+    return res.status(400).json({ message: "Email already existed" });
   }
   const recruiterID = req.user._id;
   try {
     const newCompany = await Company.create({ ...data, recruiterID });
-    return res.status(200).json(newCompany);
+    return res.status(200).json({ message: "Register company success" });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res.status(500).json({ message: "Failed to register company" });
   }
 };
 

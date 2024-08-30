@@ -16,13 +16,13 @@ const checkRole = (roles) => {
       }
 
       if (!user || !roles.includes(user.role)) {
-        return res.status(403).json({ error: "Access is forbidden" });
+        return res.status(403).json({ message: "Access is forbidden" });
       }
 
       req.user = user;
       next();
     } catch (error) {
-      return res.status(401).json({ error: "Request is not authorized" });
+      return res.status(401).json({ message: "Request is not authorized" });
     }
   };
 };

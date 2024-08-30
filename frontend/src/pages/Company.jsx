@@ -31,11 +31,11 @@ const Company = () => {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: apiClient.talentLogin,
+    mutationFn: apiClient.registerCompany,
     onSuccess: async (data) => {
       await queryClient.refetchQueries();
       showToast({ message: data.message, type: "success" });
-      navigate("/");
+      navigate("/company");
     },
     onError: async (data) => {
       showToast({ message: data.message, type: "error" });
@@ -43,8 +43,7 @@ const Company = () => {
   });
 
   const postData = (data) => {
-    console.log(data);
-    // mutation.mutate({ ...data, dob: formattedDate });
+    mutation.mutate(data);
   };
   return (
     <div className="flex flex-col justify-content min-h-screen bg-slate-100 ">
