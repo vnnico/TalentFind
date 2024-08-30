@@ -1,19 +1,19 @@
 const jwt = require("jsonwebtoken");
 
 const isAuth = async (req, res, next) => {
-  const { authorization } = req.headers;
-  if (authorization) {
-    const token = authorization.split(" ")[1];
-    jwt.verify(token, process.env.HASH, async (error, decodedToken) => {
-      if (!error) {
-        req.user = decodedToken._id;
-        next();
-      } else {
-        return res.status(401).json({ error: "Request is not authorized" });
-      }
-    });
-  } else {
-    return res.status(401).json({ msg: "Authorization token required" });
+  const token = req.cookies["auth_token"];
+
+  if (!token) {
+    return res.status(400).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.HASH);
+    console.log(decoded);
+    req.user = decoded.userId;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 };
 

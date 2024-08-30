@@ -16,20 +16,10 @@ const Toast = ({ type, msgDescription, onClose }) => {
     <>
       <div className="fixed top-4 right-4 z-50">
         {type === "success" && (
-          <Alert
-            message="Success"
-            description={msgDescription}
-            type="success"
-            showIcon
-          />
+          <Alert message={msgDescription} type="success" showIcon />
         )}
         {type === "error" && (
-          <Alert
-            message="Error"
-            description={msgDescription}
-            type="error"
-            showIcon
-          />
+          <Alert message={msgDescription} type="error" showIcon />
         )}
       </div>
     </>

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.HASH, { expiresIn: "2d" });
+  return jwt.sign({ userId: _id }, process.env.HASH, { expiresIn: "2d" });
 };
 
 const validateLogin = async function (email, password) {
@@ -83,59 +83,81 @@ const login = async (req, res) => {
     const user = await validateLogin(email, password);
 
     const token = createToken(user._id);
+    res.cookie("auth_token", token, {
+      maxAge: 2 * 86400000,
+    });
 
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res.status(200).json({ email, token });
+    res.status(200).json({
+      talentId: user._id,
+      token,
+      message: "Login Success",
+      role: user.role,
+    });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    console.log(error.message);
+    res.status(404).json({ message: error.message });
   }
 };
 
 const register = async (req, res) => {
-  const checkError = validationResult(req);
-  if (!checkError.isEmpty()) {
-    return res.status(400).json({ errors: checkError.array() });
-  }
-
-  const { name, email, password, dob, gender, address, phoneNumber } = req.body;
-
-  const exist = await Talent.findOne({ email });
-  if (exist) {
-    // kalau exist (email ada), kasi error
-    return res.status(400).json({ errors: "Email already existed" });
-  }
-
-  // hashing
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-
-  const user = await Talent.create({
-    name,
-    email,
-    password: hash,
-    dob,
-    gender,
-    address,
-    phoneNumber,
-  });
-
-  const token = createToken(user._id);
   try {
+    const checkError = validationResult(req);
+    if (!checkError.isEmpty()) {
+      return res.status(400).json({ errors: checkError.array() });
+    }
+
+    const { name, email, password, dob, gender, address, phoneNumber } =
+      req.body;
+
+    const exist = await Talent.findOne({ email });
+    if (exist) {
+      // kalau exist (email ada), kasi error
+      return res.status(400).json({ message: "Email already existed" });
+    }
+
+    // hashing
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await Talent.create({
+      name,
+      email,
+      password: hash,
+      dob,
+      gender,
+      address,
+      phoneNumber,
+    });
+
+    const token = createToken(user._id);
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res
-      .status(200)
-      .json({ name, email, token, dob, gender, address, phoneNumber });
+
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      maxAge: 2 * 86400000,
+    });
+    res.status(200).json({
+      talentId: user._id,
+      token,
+      message: "Register Success",
+      role: user.role,
+    });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to register", error: error.message });
   }
 };
 
 const getProfile = async (req, res) => {
   try {
-    const id = "66cc3e4fa9b92381a46c681a";
+    const id = req.user;
+
     const user = await Talent.findById(id);
     if (user) {
       // all logics here
+      console.log(user);
       return res.status(200).json({ user });
     } else if (!user) {
       return res.status(404).json({ msg: "User doesn't exist" });
@@ -208,6 +230,21 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const validateToken = async (req, res) => {
+  return res.status(200).send({ user: req.user });
+};
+
+const logout = async (req, res) => {
+  try {
+    res.cookie("auth_token", "", { expires: new Date(0) });
+    return res.status(200).json({ message: "Logout Success" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -215,4 +252,6 @@ module.exports = {
   getProfile,
   validateUpdateProfile,
   updateProfile,
+  logout,
+  validateToken,
 };

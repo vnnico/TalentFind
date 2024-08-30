@@ -6,6 +6,8 @@ const {
   getProfile,
   validateUpdateProfile,
   updateProfile,
+  logout,
+  validateToken,
 } = require("../controllers/talent");
 
 const isAuth = require("../middleware/isAuth");
@@ -16,7 +18,10 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/register", validateRegister, register);
 
-router.get("/profile", getProfile);
+router.get("/profile", isAuth, getProfile);
 router.put("/profile", isAuth, validateUpdateProfile, updateProfile);
+
+router.post("/logout", logout);
+router.get("/validate-token", isAuth, validateToken);
 
 module.exports = router;

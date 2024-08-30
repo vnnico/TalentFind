@@ -1,6 +1,6 @@
-import AddButton from "../components/AddButton";
-import InputForm from "../components/InputForm";
-import NavigationButton from "../components/NavigationButton";
+import AddButton from "../components/buttons/AddButton";
+import InputForm from "../components/inputs/InputForm";
+import NavigationButton from "../components/buttons/NavigationButton";
 import { Controller } from "react-hook-form";
 import { useForm, useFieldArray } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";

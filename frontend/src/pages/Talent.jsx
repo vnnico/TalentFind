@@ -9,12 +9,22 @@ import Achievement from "../sections/Achievement";
 import Project from "../sections/Project";
 import Skills from "../sections/Skills";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 
 const Talent = () => {
-  const { showToast } = useAppContext();
+  const { showToast, isLoggedIn } = useAppContext();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      console.log(isLoggedIn);
+      navigate("/auth/talent-login");
+    }
+  }, [isLoggedIn]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
@@ -73,7 +83,6 @@ const Talent = () => {
       showToast({ message: data.message, type: "success" });
     },
     onError: async (data) => {
-      console.log("error lagi");
       showToast({ message: data.message, type: "error" });
     },
   });
