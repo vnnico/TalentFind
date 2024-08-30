@@ -15,14 +15,14 @@ import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 
 const Talent = () => {
-  const { showToast, isLoggedIn, isCheckingLogin } = useAppContext();
+  const { showToast, isLoggedIn } = useAppContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoggedIn && !isCheckingLogin) {
+    if (!isLoggedIn) {
       navigate("/auth/talent-login");
     }
-  }, [isLoggedIn, isCheckingLogin]);
+  }, [isLoggedIn]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],

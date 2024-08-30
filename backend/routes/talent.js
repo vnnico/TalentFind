@@ -6,6 +6,7 @@ const {
   getProfile,
   validateUpdateProfile,
   updateProfile,
+  logout,
 } = require("../controllers/talent");
 
 const isAuth = require("../middleware/isAuth");
@@ -18,5 +19,7 @@ router.post("/register", validateRegister, register);
 
 router.get("/profile", isAuth, getProfile);
 router.put("/profile", isAuth, validateUpdateProfile, updateProfile);
+
+router.post("/logout", logout);
 
 module.exports = router;

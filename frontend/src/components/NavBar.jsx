@@ -15,15 +15,7 @@ import { useAppContext } from "../contexts/AppContext";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setIsLoggedIn } = useAppContext();
   const navigate = useNavigate();
-  const logout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    setIsLoggedIn(false);
-    navigate("/auth");
-  };
 
   const menuItems = ["Profile", "Build CV", "Find the Jobs", "Applications"];
 
@@ -76,7 +68,7 @@ const NavBar = () => {
                     as={Link}
                     className="text-white"
                     variant="flat"
-                    onPress={logout}
+                    onPress={handleLogout}
                   >
                     Logout
                   </Button>

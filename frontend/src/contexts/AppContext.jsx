@@ -8,21 +8,13 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isCheckingLogin, setIsCheckingLogin] = useState(true);
+  // const [isCheckingLogin, setIsCheckingLogin] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-    const role = localStorage.getItem("role");
-    if (userId && token && role) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+    if (isLoggedIn === undefined) {
+      return <div>Loading...</div>;
     }
-    setIsCheckingLogin(false);
   });
-
-  console.log(isLoggedIn);
 
   return (
     <AppContext.Provider
@@ -32,7 +24,8 @@ export const AppContextProvider = ({ children }) => {
         },
         isLoggedIn,
         setIsLoggedIn,
-        isCheckingLogin,
+        authenticate,
+        logout,
       }}
     >
       {toast && (

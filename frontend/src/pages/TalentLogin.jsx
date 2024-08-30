@@ -26,14 +26,13 @@ const TalentLogin = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
-  const { showToast, isLoggedIn, setIsLoggedIn } = useAppContext();
+  const { showToast } = useAppContext();
   const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: apiClient.talentLogin,
     onSuccess: async (data) => {
       showToast({ message: data.message, type: "success" });
-      setIsLoggedIn(true);
       navigate("/");
     },
     onError: async (data) => {

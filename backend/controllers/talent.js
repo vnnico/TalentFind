@@ -83,6 +83,10 @@ const login = async (req, res) => {
     const user = await validateLogin(email, password);
 
     const token = createToken(user._id);
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      maxAge: 2 * 86400000,
+    });
 
     // kalo mau tes dipostman, ganti aja object jsonnya
     res.status(200).json({
@@ -129,6 +133,11 @@ const register = async (req, res) => {
 
     const token = createToken(user._id);
     // kalo mau tes dipostman, ganti aja object jsonnya
+
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      maxAge: 2 * 86400000,
+    });
     res.status(200).json({
       talentId: user._id,
       token,
@@ -222,6 +231,28 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// const validateToken = async (req, res) => {
+//   try {
+//     const user = req.user;
+//     return res.status(200).send();
+//   } catch (error) {
+//     return res
+//       .status(500)
+//       .json({ message: "Something went wrong", error: error.message });
+//   }
+// };
+
+const logout = async (req, res) => {
+  try {
+    res.cookie("auth_token", "", { expires: new Date(0) });
+    return res.status(200).json({ message: "Logout Success" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -229,4 +260,5 @@ module.exports = {
   getProfile,
   validateUpdateProfile,
   updateProfile,
+  logout,
 };
