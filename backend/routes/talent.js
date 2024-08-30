@@ -7,6 +7,7 @@ const {
   validateUpdateProfile,
   updateProfile,
   logout,
+  validateToken,
 } = require("../controllers/talent");
 
 const isAuth = require("../middleware/isAuth");
@@ -21,5 +22,6 @@ router.get("/profile", isAuth, getProfile);
 router.put("/profile", isAuth, validateUpdateProfile, updateProfile);
 
 router.post("/logout", logout);
+router.get("/validate-token", isAuth, validateToken);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.HASH, { expiresIn: "2d" });
+  return jwt.sign({ userId: _id }, process.env.HASH, { expiresIn: "2d" });
 };
 
 const validateLogin = async function (email, password) {
@@ -84,7 +84,6 @@ const login = async (req, res) => {
 
     const token = createToken(user._id);
     res.cookie("auth_token", token, {
-      httpOnly: true,
       maxAge: 2 * 86400000,
     });
 
@@ -231,16 +230,9 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// const validateToken = async (req, res) => {
-//   try {
-//     const user = req.user;
-//     return res.status(200).send();
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ message: "Something went wrong", error: error.message });
-//   }
-// };
+const validateToken = async (req, res) => {
+  return res.status(200).send({ user: req.user });
+};
 
 const logout = async (req, res) => {
   try {
@@ -261,4 +253,5 @@ module.exports = {
   validateUpdateProfile,
   updateProfile,
   logout,
+  validateToken,
 };

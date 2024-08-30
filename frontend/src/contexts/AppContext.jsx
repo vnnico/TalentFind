@@ -1,19 +1,25 @@
 import { createContext, useEffect, useState } from "react";
 import { useContext } from "react";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "../components/Toast";
-import { useNavigate } from "react-router-dom";
+import * as apiClient from "../api-client";
 
 const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isCheckingLogin, setIsCheckingLogin] = useState(true);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (isLoggedIn === undefined) {
-      return <div>Loading...</div>;
-    }
+  const {
+    isError,
+    data: currentUser,
+    isLoading,
+  } = useQuery({
+    queryKey: ["authenticated"],
+    queryFn: apiClient.getProfile,
+    onError: async () => {
+      await queryClient.refetchQueries();
+    },
   });
 
   return (
@@ -22,10 +28,7 @@ export const AppContextProvider = ({ children }) => {
         showToast: (msgDescription) => {
           setToast(msgDescription);
         },
-        isLoggedIn,
-        setIsLoggedIn,
-        authenticate,
-        logout,
+        isLoggedIn: !isError,
       }}
     >
       {toast && (

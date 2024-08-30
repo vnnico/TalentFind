@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppContext } from "../contexts/AppContext";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 
@@ -26,14 +26,15 @@ const RecruiterLogin = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
-  const { showToast, isLoggedIn, setIsLoggedIn } = useAppContext();
+  const { showToast } = useAppContext();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: apiClient.recruiterLogin,
     onSuccess: async (data) => {
+      await queryClient.refetchQueries();
       showToast({ message: data.message, type: "success" });
-      setIsLoggedIn(true);
       navigate("/company");
     },
     onError: async (data) => {

@@ -14,18 +14,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        {localStorage.getItem("userId") &&
-          localStorage.getItem("token") &&
-          localStorage.getItem("role") === "Talent" && (
-            <Route
-              path="/"
-              element={
-                <Layout>
-                  <Talent></Talent>
-                </Layout>
-              }
-            />
-          )}
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Talent></Talent>
+            </Layout>
+          }
+        />
+
         <Route path="/auth" element={<Auth></Auth>} />
         <Route
           path="/auth/talent-login"
