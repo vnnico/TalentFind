@@ -130,3 +130,52 @@ export const logout = async () => {
 
   return response.json();
 };
+
+export const registerCompany = async (formData) => {
+  const response = await fetch(`${API_URL}/company`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const getCompany = async () => {
+  const response = await fetch(`${API_URL}/company`, {
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const updateCompany = async (formData) => {
+  const response = await fetch(`${API_URL}/company`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};

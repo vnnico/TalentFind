@@ -10,6 +10,7 @@ const InputForm = React.forwardRef(
       label,
       placeholder,
       value,
+      defaultValue,
       isRequired,
       isReadOnly,
       errorMessage,

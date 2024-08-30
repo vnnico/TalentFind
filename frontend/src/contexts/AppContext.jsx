@@ -16,7 +16,7 @@ export const AppContextProvider = ({ children }) => {
     isLoading,
   } = useQuery({
     queryKey: ["authenticated"],
-    queryFn: apiClient.getProfile,
+    queryFn: apiClient.validateToken,
     onError: async () => {
       await queryClient.refetchQueries();
     },

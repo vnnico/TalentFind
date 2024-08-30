@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator");
 const Recruiter = require("../models/recruiter");
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.HASH, { expiresIn: "2d" });
+  return jwt.sign({ userId: _id }, process.env.HASH, { expiresIn: "2d" });
 };
 
 const validateLogin = async function (email, password) {
@@ -83,16 +83,17 @@ const login = async (req, res) => {
     const user = await validateLogin(email, password);
 
     const token = createToken(user._id);
+    res.cookie("auth_token", token, {
+      maxAge: 2 * 86400000,
+    });
 
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res
-      .status(200)
-      .json({
-        recruiterId: user._id,
-        token,
-        role: user.role,
-        message: "Login Success",
-      });
+    res.status(200).json({
+      recruiterId: user._id,
+      token,
+      role: user.role,
+      message: "Login Success",
+    });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -127,6 +128,10 @@ const register = async (req, res) => {
   });
 
   const token = createToken(user._id);
+
+  res.cookie("auth_token", token, {
+    maxAge: 2 * 86400000,
+  });
   try {
     // kalo mau tes dipostman, ganti aja object jsonnya
     res
