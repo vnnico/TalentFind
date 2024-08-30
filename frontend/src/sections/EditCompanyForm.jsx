@@ -3,12 +3,14 @@ import { Textarea } from "@nextui-org/input";
 import InputForm from "../components/inputs/InputForm";
 import SubmitButton from "../components/buttons/SubmitButton";
 
-const CompanyForm = ({
+const EditCompanyForm = ({
   control,
   handleSubmit,
   errors,
   company,
   isReadOnly,
+  isEdit,
+  setIsEdit,
 }) => {
   return (
     <div className="flex flex-col text-lg p-2 mt-4 gap-3 ">
@@ -19,17 +21,17 @@ const CompanyForm = ({
           render={({ field: { onChange, onBlur, value, ref } }) => {
             return (
               <InputForm
+                onBlur={onBlur}
                 onChange={onChange}
                 value={value}
-                onBlur={onBlur}
                 ref={ref}
                 type="text"
                 label="Name"
                 placeholder="Enter your company name"
                 errorMessage={errors.name?.message}
                 isInvalid={!!errors.name}
-                isReadOnly={isReadOnly}
                 isRequired
+                isReadOnly={isReadOnly}
               ></InputForm>
             );
           }}
@@ -99,6 +101,7 @@ const CompanyForm = ({
                 placeholder="Enter your Company's Industry"
                 errorMessage={errors.industry?.message}
                 isInvalid={!!errors.industry}
+                isReadOnly={isReadOnly}
                 isRequired
               ></InputForm>
             );
@@ -144,6 +147,7 @@ const CompanyForm = ({
                 placeholder="Enter your website"
                 errorMessage={errors.website?.message}
                 isInvalid={!!errors.website}
+                isReadOnly={isReadOnly}
                 isRequired
               ></InputForm>
             );
@@ -152,10 +156,22 @@ const CompanyForm = ({
       </div>
 
       <div className="w-full lg:w-1/2 m-auto py-1">
-        <SubmitButton onSubmit={handleSubmit}></SubmitButton>
+        {isEdit && (
+          <>
+            <SubmitButton onSubmit={handleSubmit}></SubmitButton>
+            <button className="text-xl" onClick={() => setIsEdit(false)}>
+              Cancel
+            </button>
+          </>
+        )}
+        {!isEdit && (
+          <button className="text-xl" onClick={() => setIsEdit(true)}>
+            Edit
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
-export default CompanyForm;
+export default EditCompanyForm;
