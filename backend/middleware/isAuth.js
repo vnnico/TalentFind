@@ -9,7 +9,6 @@ const isAuth = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.HASH);
-    console.log(decoded);
     req.user = decoded.userId;
     next();
   } catch (error) {

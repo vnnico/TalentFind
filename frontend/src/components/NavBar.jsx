@@ -59,7 +59,11 @@ const NavBar = () => {
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link href="#" aria-current="page" className="text-white">
+              <Link
+                href="/find-jobs"
+                aria-current="page"
+                className="text-white"
+              >
                 Find the Jobs
               </Link>
             </NavbarItem>
