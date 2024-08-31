@@ -12,7 +12,7 @@ import {
 
 export default function JobCard({ jobList }) {
   return (
-    <Card className="w-full sm:max-w-[250px] md:max-w-[300px]">
+    <Card className="w-full sm:max-w-[250px] md:max-w-[300px] shadow-md bg-white">
       <CardHeader className="flex gap-3">
         <div className="flex flex-col gap-1">
           <p className="text-sm">{jobList.name}</p>

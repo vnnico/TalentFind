@@ -10,6 +10,7 @@ import Company from "./pages/Company";
 import TalentRegister from "./pages/TalentRegister";
 import RecruiterRegister from "./pages/RecruiterRegister";
 import FindJob from "./pages/FindJob";
+import Application from "./pages/Application";
 
 function App() {
   return (
@@ -58,8 +59,14 @@ function App() {
             </Layout>
           }
         />
-        {/* <Routes path="/build-cv" element={} />  
-        <Routes path="/application" element={} />   */}
+        <Route
+          path="/applications"
+          element={
+            <Layout>
+              <Application></Application>
+            </Layout>
+          }
+        />
       </Routes>
     </Router>
   );

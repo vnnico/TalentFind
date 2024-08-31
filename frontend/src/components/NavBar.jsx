@@ -64,11 +64,11 @@ const NavBar = () => {
                 aria-current="page"
                 className="text-white"
               >
-                Find the Jobs
+                Find Job
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link className="text-white" href="#">
+              <Link className="text-white" href="/applications">
                 Applications
               </Link>
             </NavbarItem>
