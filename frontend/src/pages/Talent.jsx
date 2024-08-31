@@ -99,7 +99,7 @@ const Talent = () => {
   }
 
   return (
-    <div className="justify-content mx-auto my-5 flex max-md:flex-col w-[90%] p-11 rounded-lg md:gap-10 bg-white gap-4 h-full">
+    <div className="justify-content mx-auto my-5 flex max-md:flex-col w-[90%] md:p-11 p-4 rounded-lg md:gap-10 bg-white gap-4 h-full">
       <div className="flex flex-col basis-1/2 text-black gap-4 h-full">
         <h1 className="lg:text-3xl md:text-xl font-bold">
           Craft Your Professional Profile

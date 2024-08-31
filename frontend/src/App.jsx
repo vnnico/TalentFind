@@ -9,6 +9,7 @@ import RecruiterLogin from "./pages/RecruiterLogin";
 import Company from "./pages/Company";
 import TalentRegister from "./pages/TalentRegister";
 import RecruiterRegister from "./pages/RecruiterRegister";
+import FindJob from "./pages/FindJob";
 
 function App() {
   return (
@@ -49,8 +50,15 @@ function App() {
           }
         />
 
+        <Route
+          path="/find-jobs"
+          element={
+            <Layout>
+              <FindJob></FindJob>
+            </Layout>
+          }
+        />
         {/* <Routes path="/build-cv" element={} />  
-        <Routes path="/find-jobs" element={} />  
         <Routes path="/application" element={} />   */}
       </Routes>
     </Router>

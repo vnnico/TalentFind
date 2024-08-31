@@ -2,18 +2,18 @@ const Company = require("../models/company");
 const { body, validationResult } = require("express-validator");
 
 const getCompany = async (req, res) => {
-  const recruiterID = req.user._id;
+  const recruiterID = req.user;
 
   const company = await Company.findOne({ recruiterID });
   if (!company) {
     // bisa lanjut buat redirect ke regist company
-    return res.status(404).json({ msg: "Company doesn't exists" });
+    return res.status(404).json({ message: "Company doesn't exists" });
   }
 
   try {
     return res.status(200).json(company);
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -60,31 +60,49 @@ const validateUpdateCompany = [
 ];
 
 const updateCompany = async (req, res) => {
-  const recruiterID = req.user_id;
+  const recruiterID = req.user;
+  console.log(recruiterID);
 
-  const company = await Company.findOne(recruiterID);
+  const company = await Company.findOne({ recruiterID: recruiterID });
   try {
     if (company) {
+      console.log(company);
       const checkError = validationResult(req);
       if (!checkError.isEmpty()) {
         return res.status(404).json({ errors: checkError.array() });
       }
 
+      // const updatedCompany = await Company.findOneAndUpdate(
+      //   recruiterID,
+      //   { ...req.body },
+      //   { returnDocument: "after" }
+      // );
+
       const updatedCompany = await Company.findOneAndUpdate(
-        recruiterID,
-        { ...req.body },
-        { returnDocument: "after" }
+        { recruiterID: recruiterID },
+        {
+          name: req.body.name,
+          email: req.body.email,
+          description: req.body.description,
+          industry: req.body.industry,
+          location: req.body.location,
+          website: req.body.website,
+        },
+        { new: true }
       );
       console.log("CUPDA: ", updatedCompany);
       if (updatedCompany) {
-        return res.status(200).json({ updatedCompany });
+        return res
+          .status(200)
+          .json({ updatedCompany, message: "Update Company Success" });
       }
-      return res.status(404).json({ msg: "Company doesn't exist" });
+      return res.status(404).json({ message: "Company doesn't exist" });
     } else if (!company) {
-      return res.status(404).json({ msg: "Company not found" });
+      return res.status(404).json({ message: "Company not found" });
     }
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
