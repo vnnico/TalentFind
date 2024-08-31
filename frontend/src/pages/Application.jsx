@@ -74,9 +74,11 @@ const Application = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex w-full py-2 gap-5 flex-wrap justify-center ">
-              {jobLists.map((jobList, index) => (
-                <JobCard jobList={jobList} key={index}></JobCard>
-              ))}
+              <div className="w-full md:max-w-[300px] shadow-md">
+                {jobLists.map((jobList, index) => (
+                  <JobCard jobList={jobList} key={index}></JobCard>
+                ))}
+              </div>
             </div>
           </div>
         </>
