@@ -10,9 +10,10 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function JobCard({ jobList }) {
+export default function JobCard({ jobList, recruiter }) {
+  // sm:max-w-[250px] md:max-w-[300px] shadow-md
   return (
-    <Card className="w-full sm:max-w-[250px] md:max-w-[300px] shadow-md bg-white">
+    <Card className="w-full  bg-white">
       <CardHeader className="flex gap-3">
         <div className="flex flex-col gap-1">
           <p className="text-sm">{jobList.name}</p>
@@ -28,9 +29,20 @@ export default function JobCard({ jobList }) {
       </CardBody>
       <Divider />
       <CardFooter>
-        <Button color="success" className="text-white " size="sm">
-          Apply
-        </Button>
+        {recruiter ? (
+          <>
+            <Button color="warning" className="text-white " size="sm">
+              View
+            </Button>
+            <p className="ms-auto text-xs text-slate-500">
+              Total Applicants : {jobList.applicants}
+            </p>
+          </>
+        ) : (
+          <Button color="success" className="text-white " size="sm">
+            Apply
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

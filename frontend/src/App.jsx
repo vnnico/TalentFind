@@ -11,6 +11,7 @@ import TalentRegister from "./pages/TalentRegister";
 import RecruiterRegister from "./pages/RecruiterRegister";
 import FindJob from "./pages/FindJob";
 import Application from "./pages/Application";
+import JobPost from "./pages/JobPost";
 
 function App() {
   return (
@@ -64,6 +65,14 @@ function App() {
           element={
             <Layout>
               <Application></Application>
+            </Layout>
+          }
+        />
+        <Route
+          path="/job-posts"
+          element={
+            <Layout>
+              <JobPost></JobPost>
             </Layout>
           }
         />

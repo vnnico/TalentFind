@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import UploadFile from "../components/UploadFile";
 import JobCard from "../components/JobCard";
+import JobPostForm from "../sections/JobPostForm";
 
 const jobLists = [
   {
@@ -9,6 +10,7 @@ const jobLists = [
     salary: "Rp.7.000.000,00 - Rp.10.000.000,00",
     jobDescription: "Minimum experience 2 years",
     company: "Tokopedia",
+    applicants: 10,
   },
   {
     id: 2,
@@ -16,6 +18,7 @@ const jobLists = [
     salary: "Rp.7.000.000,00 - Rp.10.000.000,00",
     jobDescription: "Minimum experience 2 years",
     company: "Tokopedia",
+    applicants: 14,
   },
   {
     id: 3,
@@ -23,6 +26,7 @@ const jobLists = [
     salary: "Rp.18.000.000,00 - Rp.25.000.000,00",
     jobDescription: "Minimum experience 5 years",
     company: "Traveloka",
+    applicants: 4,
   },
   {
     id: 4,
@@ -30,6 +34,7 @@ const jobLists = [
     salary: "Rp.5.000.000,00 - Rp.7.000.000,00",
     jobDescription: "Minimum experience 1 years",
     company: "Traveloka",
+    applicants: 16,
   },
   {
     id: 5,
@@ -37,6 +42,7 @@ const jobLists = [
     salary: "Rp.13.000.000,00 - Rp.15.000.000,00",
     jobDescription: "Minimum experience 3 years",
     company: "CIMB Niaga",
+    applicants: 10,
   },
   {
     id: 6,
@@ -44,6 +50,7 @@ const jobLists = [
     salary: "Rp.20.000.000,00 - Rp.25.000.000,00",
     jobDescription: "Minimum experience 5 years",
     company: "Bukalapak",
+    applicants: 6,
   },
   {
     id: 7,
@@ -51,6 +58,7 @@ const jobLists = [
     salary: "Rp.35.000.000,00 - Rp.50.000.000,00",
     jobDescription: "Minimum experience 7 years",
     company: "Blibli",
+    applicants: 2,
   },
   {
     id: 8,
@@ -58,53 +66,52 @@ const jobLists = [
     salary: "Rp.4.000.000,00 - Rp.6.000.000,00",
     jobDescription: "Minimum experience 2 years",
     company: "Blibli",
+    applicants: 3,
   },
 ];
 
-const FindJob = () => {
+const JobPost = () => {
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
       <div className="flex gap-6 max-md:flex-col">
         <div className="flex flex-col basis-1/2 text-black gap-4 h-full">
           <h1 className="lg:text-3xl md:text-xl font-bold">
-            Analyze your CV here
+            Post a Job Portal
           </h1>
           <p className="text-sm md:text-left">
-            Leverage the power of AI to analyze your CV and receive personalized
-            feedback on your skills and strengths.
+            Your Company : <b>PT. NiagaHoster</b>
           </p>
-          <p className="text-xs md:text-left">
-            Don't have a CV yet? Create your own{" "}
-            <Link to="/" className="text-blue-500">
-              here
-            </Link>
-          </p>
-          <UploadFile></UploadFile>
+          <JobPostForm></JobPostForm>
         </div>
         <div className="flex flex-col basis-1/2 p-10 gap-2 overflow-y-auto shadow-xl overflow-y-auto h-[400px]">
           <h1 className="lg:text-xl md:text-xl font-bold text-center">
-            Result Analysis
+            Your Job Portals
           </h1>
-          <p className="text-xs md:text-left m-auto text-slate-500">
-            No Result yet
-          </p>
+          {jobLists ? (
+            <div className="w-full flex flex-col gap-3 py-4">
+              {jobLists.map((jobList, index) => (
+                <JobCard
+                  jobList={jobList}
+                  key={index}
+                  recruiter={true}
+                ></JobCard>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs md:text-left m-auto text-slate-500">
+              No Result yet
+            </p>
+          )}
         </div>
       </div>
       <div className="flex lg:mt-10 mt-3 flex-col gap-4">
         {/* Change it into Your Personalized Job Portal after CV Analysis */}
         <h1 className="lg:text-xl md:text-xl font-bold text-center ">
-          All job Portals
+          Total Applicants : 14
         </h1>
-        <div className="flex w-full py-4 gap-5 flex-wrap justify-center ">
-          {jobLists.map((jobList, index) => (
-            <div className="w-full md:max-w-[300px] shadow-md">
-              <JobCard jobList={jobList} key={index}></JobCard>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
 };
 
-export default FindJob;
+export default JobPost;
