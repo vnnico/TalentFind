@@ -6,13 +6,17 @@ const JobApplication = require("../models/jobApplication");
 
 const getAllJobPost = async (req, res) => {
   try {
-    const listJob = await JobPost.find();
+    const listJob = await JobPost.find().populate("companyID", "name");
     if (!listJob) {
-      return res.status(404).json({ msg: "There is no job " });
+      return res.status(404).json({ message: "There is no job " });
     }
-    return res.status(200).json({ listJob });
+
+    const jobLists = listJob;
+    return res.status(200).json({ jobLists });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 

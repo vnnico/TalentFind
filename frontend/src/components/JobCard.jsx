@@ -17,15 +17,18 @@ export default function JobCard({ jobList, recruiter }) {
       <CardHeader className="flex gap-3">
         <div className="flex flex-col gap-1">
           <p className="text-sm">{jobList.name}</p>
-          <p className="text-sm font-semibold">{jobList.company}</p>
-          <p className="text-xs text-default-500 text-right">
-            {jobList.salary}
+          <p className="text-sm font-semibold">{jobList.companyID.name}</p>
+          <p className="text-xs text-default-500 t">
+            {jobList.salary.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
           </p>
         </div>
       </CardHeader>
       <Divider />
       <CardBody>
-        <p className="md:text-md text-sm">{jobList.jobDescription}</p>
+        <p className="md:text-md text-sm">Default dulu</p>
       </CardBody>
       <Divider />
       <CardFooter>

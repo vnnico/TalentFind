@@ -179,3 +179,17 @@ export const updateCompany = async (formData) => {
 
   return body;
 };
+
+export const getAllJobPosts = async () => {
+  const response = await fetch(`${API_URL}/job`, {
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  console.log(body);
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};

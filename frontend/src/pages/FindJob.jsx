@@ -1,67 +1,20 @@
 import { Link } from "react-router-dom";
 import UploadFile from "../components/UploadFile";
 import JobCard from "../components/JobCard";
-
-const jobLists = [
-  {
-    id: 1,
-    name: "Backend Developer",
-    salary: "Rp.7.000.000,00 - Rp.10.000.000,00",
-    jobDescription: "Minimum experience 2 years",
-    company: "Tokopedia",
-  },
-  {
-    id: 2,
-    name: "Frontend Developer",
-    salary: "Rp.7.000.000,00 - Rp.10.000.000,00",
-    jobDescription: "Minimum experience 2 years",
-    company: "Tokopedia",
-  },
-  {
-    id: 3,
-    name: "DevOps Engineer",
-    salary: "Rp.18.000.000,00 - Rp.25.000.000,00",
-    jobDescription: "Minimum experience 5 years",
-    company: "Traveloka",
-  },
-  {
-    id: 4,
-    name: "HR Recruiter",
-    salary: "Rp.5.000.000,00 - Rp.7.000.000,00",
-    jobDescription: "Minimum experience 1 years",
-    company: "Traveloka",
-  },
-  {
-    id: 5,
-    name: "Social Media Specialist",
-    salary: "Rp.13.000.000,00 - Rp.15.000.000,00",
-    jobDescription: "Minimum experience 3 years",
-    company: "CIMB Niaga",
-  },
-  {
-    id: 6,
-    name: "Senior Backend Developer",
-    salary: "Rp.20.000.000,00 - Rp.25.000.000,00",
-    jobDescription: "Minimum experience 5 years",
-    company: "Bukalapak",
-  },
-  {
-    id: 7,
-    name: "Principal Architect",
-    salary: "Rp.35.000.000,00 - Rp.50.000.000,00",
-    jobDescription: "Minimum experience 7 years",
-    company: "Blibli",
-  },
-  {
-    id: 8,
-    name: "Legal Staff",
-    salary: "Rp.4.000.000,00 - Rp.6.000.000,00",
-    jobDescription: "Minimum experience 2 years",
-    company: "Blibli",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import * as apiClient from "../api-client";
 
 const FindJob = () => {
+  const {
+    data: jobLists,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useQuery({
+    queryKey: ["jobLists?"],
+    queryFn: apiClient.getAllJobPosts,
+  });
+
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
       <div className="flex gap-6 max-md:flex-col">
@@ -96,11 +49,22 @@ const FindJob = () => {
           All job Portals
         </h1>
         <div className="flex w-full py-4 gap-5 flex-wrap justify-center ">
-          {jobLists.map((jobList, index) => (
-            <div className="w-full md:max-w-[300px] shadow-md">
-              <JobCard jobList={jobList} key={index}></JobCard>
+          {isError && (
+            <div className="w-full">
+              <p className="text-red-500 text-md">Error Fetching</p>
             </div>
-          ))}
+          )}
+          {isSuccess && (
+            <>
+              {data.jobLists.map((jobList, index) => (
+                <>
+                  <div className="w-full md:max-w-[300px] shadow-md">
+                    <JobCard jobList={jobList} key={index}></JobCard>
+                  </div>
+                </>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>
