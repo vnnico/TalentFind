@@ -7,11 +7,11 @@ const JobApplication = require("../models/jobApplication");
 const getAllJobPost = async (req, res) => {
   try {
     const listJob = await JobPost.find().populate("companyID", "name");
-    if (!listJob) {
+
+    if (!jobLists) {
       return res.status(404).json({ message: "There is no job " });
     }
 
-    const jobLists = listJob;
     return res.status(200).json({ jobLists });
   } catch (error) {
     return res
@@ -87,22 +87,26 @@ const getJobPostByID = async (req, res) => {
 
 const applyJob = async (req, res) => {
   try {
-    const data = req.body;
+    console.log("applying...");
+    const data = "default";
     const talentID = req.user._id;
     const { jobPostID } = req.params;
     const jobPost = await JobPost.findById(jobPostID);
     if (!jobPost) {
-      return res.status(404).json({ msg: "No such job posted yet." });
+      return res.status(404).json({ message: "No such job posted yet." });
     }
     const applyJobPost = await JobApplication.create({
       jobPostID,
       talentID,
       ...data,
     });
-    return res.status(200).json({ applyJobPost });
+    console.log(applyJobPost);
+    return res.status(200).json({ message: "Apply Success", applyJobPost });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 

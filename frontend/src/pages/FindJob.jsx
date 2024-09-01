@@ -1,14 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UploadFile from "../components/UploadFile";
 import JobCard from "../components/JobCard";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
+import { useAppContext } from "../contexts/AppContext";
 
 const FindJob = () => {
   const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: ["jobLists"],
     queryFn: apiClient.getAllJobPosts,
   });
+  const { showToast } = useAppContext();
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationKey: ["apply"],
+    mutationFn: apiClient.applyJob,
+    onSuccess: async (data) => {
+      showToast({ message: data.message, type: "success" });
+      navigate("/applications");
+    },
+    onError: async (data) => {
+      showToast({ message: data.message, type: "error" });
+    },
+  });
+
+  const applyJob = (jobPostID) => {
+    if (window.confirm("Are you sure applying this job>")) {
+      console.log(jobPostID);
+      mutation.mutate(jobPostID);
+    }
+  };
 
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
@@ -55,7 +77,11 @@ const FindJob = () => {
                 data.jobLists.map((jobList, index) => (
                   <>
                     <div className="w-full md:max-w-[300px] shadow-md">
-                      <JobCard jobList={jobList} key={index}></JobCard>
+                      <JobCard
+                        jobList={jobList}
+                        key={index}
+                        applyJob={applyJob}
+                      ></JobCard>
                     </div>
                   </>
                 ))}

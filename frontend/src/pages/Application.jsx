@@ -27,7 +27,11 @@ const Application = () => {
               <div className="w-full md:max-w-[300px] shadow-md">
                 {data &&
                   data.jobLists.map((jobList, index) => (
-                    <JobCard jobList={jobList} key={index}></JobCard>
+                    <JobCard
+                      jobList={jobList}
+                      key={index}
+                      applied={true}
+                    ></JobCard>
                   ))}
               </div>
             </div>

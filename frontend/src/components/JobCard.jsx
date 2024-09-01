@@ -10,14 +10,14 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function JobCard({ jobList, recruiter }) {
+export default function JobCard({ jobList, recruiter, applyJob, applied }) {
   // sm:max-w-[250px] md:max-w-[300px] shadow-md
   return (
     <Card className="w-full  bg-white">
       <CardHeader className="flex gap-3">
         <div className="flex flex-col gap-1">
           <p className="text-sm">{jobList.name}</p>
-          <p className="text-sm font-semibold">{jobList.companyID.name}</p>
+          <p className="text-sm font-semibold">{jobList.companyName}</p>
           <p className="text-xs text-default-500 t">
             {jobList.salary.toLocaleString("en-US", {
               style: "currency",
@@ -32,20 +32,35 @@ export default function JobCard({ jobList, recruiter }) {
       </CardBody>
       <Divider />
       <CardFooter>
-        {recruiter ? (
-          <>
-            <Button color="warning" className="text-white " size="sm">
-              View
+        <>
+          {recruiter && (
+            <>
+              <Button color="warning" className="text-white " size="sm">
+                View
+              </Button>
+              <p className="ms-auto text-xs text-slate-500">
+                Total Applicants : {jobList.applicants}
+              </p>
+            </>
+          )}
+
+          {!recruiter && !applied && (
+            <Button
+              color="success"
+              className="text-white "
+              size="sm"
+              onClick={() => applyJob(jobList._id)}
+            >
+              Apply
             </Button>
-            <p className="ms-auto text-xs text-slate-500">
-              Total Applicants : {jobList.applicants}
-            </p>
-          </>
-        ) : (
-          <Button color="success" className="text-white " size="sm">
-            Apply
-          </Button>
-        )}
+          )}
+
+          {applied && (
+            <Button color="warning" className="text-white " size="sm">
+              Pending
+            </Button>
+          )}
+        </>
       </CardFooter>
     </Card>
   );

@@ -200,8 +200,26 @@ export const getAllJobApplication = async () => {
 
   const body = await response.json();
   if (!response.ok) {
-    console.log(body.message);
     throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const applyJob = async (jobPostID) => {
+  const response = await fetch(`${API_URL}/job/${jobPostID}/apply`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ nama: "halo" }),
+  });
+
+  const body = await response.json();
+  console.log(body);
+  if (!response.ok) {
+    throw new error(body.message);
   }
 
   return body;

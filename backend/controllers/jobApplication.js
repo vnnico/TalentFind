@@ -13,9 +13,10 @@ const getAllJobApplication = async (req, res) => {
       path: "jobPostID",
       populate: {
         path: "companyID",
+        select: "name",
       },
     });
-    console.log("ini", jobLists);
+
     if (!jobLists) {
       return res.status(404).json({ message: "There is no job " });
     }
