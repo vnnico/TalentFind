@@ -186,8 +186,21 @@ export const getAllJobPosts = async () => {
   });
 
   const body = await response.json();
-  console.log(body);
   if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const getAllJobApplication = async () => {
+  const response = await fetch(`${API_URL}/application`, {
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    console.log(body.message);
     throw new Error(body.message);
   }
 

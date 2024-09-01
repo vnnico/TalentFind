@@ -5,13 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 
 const FindJob = () => {
-  const {
-    data: jobLists,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useQuery({
-    queryKey: ["jobLists?"],
+  const { data, isLoading, isSuccess, isError } = useQuery({
+    queryKey: ["jobLists"],
     queryFn: apiClient.getAllJobPosts,
   });
 
@@ -56,13 +51,14 @@ const FindJob = () => {
           )}
           {isSuccess && (
             <>
-              {data.jobLists.map((jobList, index) => (
-                <>
-                  <div className="w-full md:max-w-[300px] shadow-md">
-                    <JobCard jobList={jobList} key={index}></JobCard>
-                  </div>
-                </>
-              ))}
+              {data &&
+                data.jobLists.map((jobList, index) => (
+                  <>
+                    <div className="w-full md:max-w-[300px] shadow-md">
+                      <JobCard jobList={jobList} key={index}></JobCard>
+                    </div>
+                  </>
+                ))}
             </>
           )}
         </div>
