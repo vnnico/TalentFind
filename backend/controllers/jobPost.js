@@ -6,7 +6,25 @@ const JobApplication = require("../models/jobApplication");
 
 const getAllJobPost = async (req, res) => {
   try {
-    const listJob = await JobPost.find().populate("companyID", "name");
+    // const listJob = await JobPost.find().populate("companyID", "name");
+
+    const jobLists = await JobPost.aggregate([
+      {
+        $lookup: {
+          from: "companies",
+          localField: "companyID",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $project: {
+          companyName: "$company.name",
+          name: 1,
+          salary: 1,
+        },
+      },
+    ]);
 
     if (!jobLists) {
       return res.status(404).json({ message: "There is no job " });

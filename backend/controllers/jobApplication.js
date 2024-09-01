@@ -7,15 +7,57 @@ const { body, validationResult } = require("express-validator");
 
 const getAllJobApplication = async (req, res) => {
   try {
-    const jobLists = await JobApplication.find({
-      talentID: req.user._id,
-    }).populate({
-      path: "jobPostID",
-      populate: {
-        path: "companyID",
-        select: "name",
+    // const jobLists = await JobApplication.find({
+    //   talentID: req.user._id,
+    // }).populate({
+    //   path: "jobPostID",
+    //   populate: {
+    //     path: "companyID",
+    //     select: "name",
+    //   },
+    // });
+
+    const jobLists = await JobApplication.aggregate([
+      {
+        $match: {
+          talentID: req.user._id,
+        },
       },
-    });
+      {
+        $lookup: {
+          from: "jobposts",
+          localField: "jobPostID",
+          foreignField: "_id",
+          as: "jobPostDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$jobPostDetails",
+        },
+      },
+      {
+        $lookup: {
+          from: "companies",
+          localField: "jobPostDetails.companyID",
+          foreignField: "_id",
+          as: "companyDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$companyDetails",
+        },
+      },
+      {
+        $project: {
+          companyName: "$companyDetails.name",
+          name: "$jobPostDetails.name",
+          salary: "$jobPostDetails.salary",
+          applicationDate: 1,
+        },
+      },
+    ]);
 
     if (!jobLists) {
       return res.status(404).json({ message: "There is no job " });
