@@ -179,3 +179,48 @@ export const updateCompany = async (formData) => {
 
   return body;
 };
+
+export const getAllJobPosts = async () => {
+  const response = await fetch(`${API_URL}/job`, {
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const getAllJobApplication = async () => {
+  const response = await fetch(`${API_URL}/application`, {
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const applyJob = async (jobPostID) => {
+  const response = await fetch(`${API_URL}/job/${jobPostID}/apply`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ nama: "halo" }),
+  });
+
+  const body = await response.json();
+  console.log(body);
+  if (!response.ok) {
+    throw new error(body.message);
+  }
+
+  return body;
+};
