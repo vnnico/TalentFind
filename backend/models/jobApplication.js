@@ -11,7 +11,7 @@ const jobApplicationSchema = new mongoose.Schema({
   },
   applicationDate: {
     type: Date,
-    require: true,
+    required: true,
     default: Date.now(),
   },
   applicationAttachment: {

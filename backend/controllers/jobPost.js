@@ -46,22 +46,25 @@ const postJob = async (req, res) => {
     }
     // check if company exist
     const recruiterID = req.user._id;
-    const company = await Company.findOne({ recruiterID });
+    const company = await Company.findOne({ recruiterID: recruiterID });
 
     if (!company) {
-      return res.status(404).json({ msg: "Please create a company first" });
+      return res.status(404).json({ message: "Please create a company first" });
     }
 
     const data = req.body;
+    //
     const newJobPost = await JobPost.create({
       recruiterID,
       companyID: company._id,
-      ...data,
+      name: data.name,
+      salary: data.salary,
+      jobDescription: data.description,
     });
 
-    return res.status(200).json(newJobPost);
+    return res.status(200).json({ newJobPost, message: "Posting Job Success" });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 

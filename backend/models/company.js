@@ -7,25 +7,25 @@ const companySchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   email: {
     type: String,
-    require: true,
+    required: true,
   },
   description: {
     type: String,
-    require: true,
+    required: true,
   },
 
   industry: {
     type: String,
-    require: true,
+    required: true,
     // add industry type
   },
   location: {
     type: String,
-    require: true,
+    required: true,
   },
   website: {
     type: String,

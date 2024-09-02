@@ -11,15 +11,15 @@ const jobPostSchemaa = new mongoose.Schema({
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   jobDescription: {
     type: String,
-    require: true,
+    required: true,
   },
   salary: {
     type: Number,
-    require: true,
+    required: true,
   },
 });
 
