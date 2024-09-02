@@ -50,7 +50,7 @@ export default function JobCard({
                 View
               </Button>
               <p className="ms-auto text-xs text-slate-500">
-                Total Applicants : {jobList.applicants}
+                Total Applicants : {jobList.totalApplicants}
               </p>
             </>
           )}

@@ -74,8 +74,21 @@ const getPostedJob = async (req, res) => {
 
     const jobLists = await JobPost.aggregate([
       {
+        $lookup: {
+          from: "jobapplications",
+          localField: "_id",
+          foreignField: "jobPostID",
+          as: "applications",
+        },
+      },
+      {
+        $addFields: {
+          totalApplicants: { $size: "$applications" },
+        },
+      },
+      {
         $match: {
-          recruiterID: recruiterID,
+          recruiterID: new mongoose.Types.ObjectId(recruiterID),
         },
       },
       {
@@ -87,10 +100,15 @@ const getPostedJob = async (req, res) => {
         },
       },
       {
+        $unwind: "$company",
+      },
+      {
         $project: {
-          name: 1,
-          salary: 1,
+          _id: "$_id",
+          name: "$name",
+          salary: "$salary",
           companyName: "$company.name",
+          totalApplicants: 1,
         },
       },
     ]);
