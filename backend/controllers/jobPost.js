@@ -95,7 +95,6 @@ const getPostedJob = async (req, res) => {
       },
     ]);
 
-    console.log(jobLists);
     if (!jobLists) {
       return res.status(404).json({ message: "No job posted yet." });
     }
@@ -156,8 +155,67 @@ const applyJob = async (req, res) => {
   }
 };
 
+const getApplicants = async (req, res) => {
+  try {
+    const { jobPostID } = req.params;
+    const jobPost = await JobPost.findById(jobPostID);
+    if (!jobPost)
+      return res.status(404).json({ message: "Job Post not found" });
+
+    const applicantLists = await JobApplication.aggregate([
+      {
+        $match: {
+          jobPostID: new mongoose.Types.ObjectId(jobPostID),
+        },
+      },
+      {
+        $lookup: {
+          from: "talents",
+          localField: "talentID",
+          foreignField: "_id",
+          as: "talent",
+        },
+      },
+      {
+        $unwind: "$talent",
+      },
+      {
+        $lookup: {
+          from: "jobposts",
+          localField: "jobPostID",
+          foreignField: "_id",
+          as: "jobPost",
+        },
+      },
+      {
+        $unwind: "$jobPost",
+      },
+      {
+        $project: {
+          _id: 0,
+          name: "$talent.name",
+          email: "$talent.email",
+          gender: "$talent.gender",
+          applicationDate: 1,
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      applicantLists,
+      jobPostName: jobPost.name,
+      totalApplicants: applicantLists.length,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 module.exports = {
   getAllJobPost,
+  getApplicants,
   validatePostJob,
   postJob,
   getPostedJob,

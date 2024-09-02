@@ -13,6 +13,7 @@ import FindJob from "./pages/FindJob";
 import Application from "./pages/Application";
 import JobPost from "./pages/JobPost";
 import FindTalent from "./pages/FindTalent";
+import JobPostApplicant from "./pages/JobPostApplicant";
 
 function App() {
   return (
@@ -74,6 +75,14 @@ function App() {
           element={
             <Layout>
               <JobPost></JobPost>
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path="/job-posts/:jobPostID"
+          element={
+            <Layout>
+              <JobPostApplicant></JobPostApplicant>
             </Layout>
           }
         />

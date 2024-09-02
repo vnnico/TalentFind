@@ -77,22 +77,23 @@ const getListApplicant = async (req, res) => {
     const company = await Company.findOne({ recruiterID });
     if (!company) {
       // bisa lanjut buat redirect ke regist company
-      return res.status(404).json({ msg: "Company doesn't exists" });
+      return res.status(404).json({ message: "Company doesn't exists" });
     }
 
     const jobPost = await JobPost.find({ recruiterID });
     if (!jobPost) {
-      return res.status(404).json({ msg: "No job posted yet." });
+      return res.status(404).json({ message: "No job posted yet." });
     }
 
     const listApplicant = await JobApplication.find(jobPost._id);
+    console.log(listApplicant);
     if (!listApplicant) {
-      return res.status(400).json({ msg: "There is no applicant yet." });
+      return res.status(400).json({ message: "There is no applicant yet." });
     }
 
     return res.status(200).json({ listApplicant });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 

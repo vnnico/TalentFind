@@ -257,7 +257,21 @@ export const getPostedJob = async () => {
 
 export const getAllTalents = async () => {
   const response = await fetch(`${API_URL}/talent`, {
-    method: "GET",
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  console.log(body);
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const getListApplicant = async (params) => {
+  const jobPostID = params.queryKey[1];
+  const response = await fetch(`${API_URL}/job/${jobPostID}/apply`, {
     credentials: "include",
   });
 

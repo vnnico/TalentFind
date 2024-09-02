@@ -10,7 +10,13 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function JobCard({ jobList, recruiter, applyJob, applied }) {
+export default function JobCard({
+  jobList,
+  recruiter,
+  applyJob,
+  applied,
+  viewApplicant,
+}) {
   // sm:max-w-[250px] md:max-w-[300px] shadow-md
   return (
     <Card className="w-full  bg-white">
@@ -35,7 +41,12 @@ export default function JobCard({ jobList, recruiter, applyJob, applied }) {
         <>
           {recruiter && (
             <>
-              <Button color="warning" className="text-white " size="sm">
+              <Button
+                color="warning"
+                className="text-white "
+                size="sm"
+                onClick={() => viewApplicant(jobList._id)}
+              >
                 View
               </Button>
               <p className="ms-auto text-xs text-slate-500">

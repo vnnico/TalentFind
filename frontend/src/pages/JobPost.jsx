@@ -1,14 +1,21 @@
-import UploadFile from "../components/UploadFile";
 import JobCard from "../components/JobCard";
+import TalentCard from "../components/TalentCard";
 import JobPostForm from "../sections/JobPostForm";
 import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const JobPost = () => {
   const { data, isError } = useQuery({
     queryKey: ["companyJobPost"],
     queryFn: apiClient.getPostedJob,
   });
+  const navigate = useNavigate();
+
+  const viewApplicant = (jobPostID) => {
+    navigate(`/job-posts/${jobPostID}`);
+  };
 
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
@@ -34,6 +41,7 @@ const JobPost = () => {
                     jobList={jobList}
                     key={index}
                     recruiter={true}
+                    viewApplicant={viewApplicant}
                   ></JobCard>
                 ))}
             </div>
@@ -43,12 +51,6 @@ const JobPost = () => {
             </p>
           )}
         </div>
-      </div>
-      <div className="flex lg:mt-10 mt-3 flex-col gap-4">
-        {/* Change it into Your Personalized Job Portal after CV Analysis */}
-        <h1 className="lg:text-xl md:text-xl font-bold text-center ">
-          Total Applicants : 14
-        </h1>
       </div>
     </div>
   );
