@@ -46,22 +46,25 @@ const postJob = async (req, res) => {
     }
     // check if company exist
     const recruiterID = req.user._id;
-    const company = await Company.findOne({ recruiterID });
+    const company = await Company.findOne({ recruiterID: recruiterID });
 
     if (!company) {
-      return res.status(404).json({ msg: "Please create a company first" });
+      return res.status(404).json({ message: "Please create a company first" });
     }
 
     const data = req.body;
+    //
     const newJobPost = await JobPost.create({
       recruiterID,
       companyID: company._id,
-      ...data,
+      name: data.name,
+      salary: data.salary,
+      jobDescription: data.description,
     });
 
-    return res.status(200).json(newJobPost);
+    return res.status(200).json({ newJobPost, message: "Posting Job Success" });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -69,14 +72,56 @@ const getPostedJob = async (req, res) => {
   try {
     const recruiterID = req.user._id;
 
-    const jobPost = await JobPost.find({ recruiterID });
-    if (!jobPost) {
-      return res.status(404).json({ msg: "No job posted yet." });
+    const jobLists = await JobPost.aggregate([
+      {
+        $lookup: {
+          from: "jobapplications",
+          localField: "_id",
+          foreignField: "jobPostID",
+          as: "applications",
+        },
+      },
+      {
+        $addFields: {
+          totalApplicants: { $size: "$applications" },
+        },
+      },
+      {
+        $match: {
+          recruiterID: new mongoose.Types.ObjectId(recruiterID),
+        },
+      },
+      {
+        $lookup: {
+          from: "companies",
+          localField: "companyID",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $unwind: "$company",
+      },
+      {
+        $project: {
+          _id: "$_id",
+          name: "$name",
+          salary: "$salary",
+          companyName: "$company.name",
+          totalApplicants: 1,
+        },
+      },
+    ]);
+
+    if (!jobLists) {
+      return res.status(404).json({ message: "No job posted yet." });
     }
 
-    return res.status(200).json(jobPost);
+    return res.status(200).json({ jobLists });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 
@@ -128,8 +173,67 @@ const applyJob = async (req, res) => {
   }
 };
 
+const getApplicants = async (req, res) => {
+  try {
+    const { jobPostID } = req.params;
+    const jobPost = await JobPost.findById(jobPostID);
+    if (!jobPost)
+      return res.status(404).json({ message: "Job Post not found" });
+
+    const applicantLists = await JobApplication.aggregate([
+      {
+        $match: {
+          jobPostID: new mongoose.Types.ObjectId(jobPostID),
+        },
+      },
+      {
+        $lookup: {
+          from: "talents",
+          localField: "talentID",
+          foreignField: "_id",
+          as: "talent",
+        },
+      },
+      {
+        $unwind: "$talent",
+      },
+      {
+        $lookup: {
+          from: "jobposts",
+          localField: "jobPostID",
+          foreignField: "_id",
+          as: "jobPost",
+        },
+      },
+      {
+        $unwind: "$jobPost",
+      },
+      {
+        $project: {
+          _id: 0,
+          name: "$talent.name",
+          email: "$talent.email",
+          gender: "$talent.gender",
+          applicationDate: 1,
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      applicantLists,
+      jobPostName: jobPost.name,
+      totalApplicants: applicantLists.length,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 module.exports = {
   getAllJobPost,
+  getApplicants,
   validatePostJob,
   postJob,
   getPostedJob,
