@@ -22,18 +22,18 @@ const Application = () => {
               List of your Job Applications
             </h1>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex gap-4">
             <div className="flex w-full py-2 gap-5 flex-wrap justify-center ">
-              <div className="w-full md:max-w-[300px] shadow-md">
-                {data &&
-                  data.jobLists.map((jobList, index) => (
+              {data &&
+                data.jobLists.map((jobList, index) => (
+                  <div className="w-full md:max-w-[300px] shadow-md gap-5">
                     <JobCard
                       jobList={jobList}
                       key={index}
                       applied={true}
                     ></JobCard>
-                  ))}
-              </div>
+                  </div>
+                ))}
             </div>
           </div>
         </>

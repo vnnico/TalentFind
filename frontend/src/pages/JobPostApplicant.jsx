@@ -33,15 +33,15 @@ const JobPostApplicant = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex w-full py-2 gap-5 flex-wrap justify-center ">
-              <div className="w-full md:max-w-[300px] shadow-md">
-                {data &&
-                  data.applicantLists.map((talentList, index) => (
+              {data &&
+                data.applicantLists.map((talentList, index) => (
+                  <div className="w-full md:max-w-[300px] shadow-md">
                     <TalentCard
                       talentList={talentList}
                       key={index}
                     ></TalentCard>
-                  ))}
-              </div>
+                  </div>
+                ))}
             </div>
           </div>
         </>
