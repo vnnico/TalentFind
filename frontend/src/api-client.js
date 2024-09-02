@@ -254,3 +254,18 @@ export const getPostedJob = async () => {
 
   return body;
 };
+
+export const getAllTalents = async () => {
+  const response = await fetch(`${API_URL}/talent`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  console.log(body);
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+
+  return body;
+};

@@ -2,6 +2,7 @@ const Talent = require("../models/talent");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
+const CV = require("../models/cv");
 
 const createToken = (_id) => {
   return jwt.sign({ userId: _id }, process.env.HASH, { expiresIn: "2d" });
@@ -245,6 +246,18 @@ const logout = async (req, res) => {
   }
 };
 
+const getAllTalents = async (req, res) => {
+  try {
+    const talentLists = await Talent.find({});
+
+    return res.status(200).json({ talentLists });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch talents", error: error.message });
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -254,4 +267,5 @@ module.exports = {
   updateProfile,
   logout,
   validateToken,
+  getAllTalents,
 };

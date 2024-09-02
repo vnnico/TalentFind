@@ -8,6 +8,7 @@ const {
   updateProfile,
   logout,
   validateToken,
+  getAllTalents,
 } = require("../controllers/talent");
 
 const isAuth = require("../middleware/isAuth");
@@ -18,6 +19,7 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/register", validateRegister, register);
 
+router.get("/", isAuth, getAllTalents);
 router.get("/profile", isAuth, getProfile);
 router.put("/profile", isAuth, validateUpdateProfile, updateProfile);
 
