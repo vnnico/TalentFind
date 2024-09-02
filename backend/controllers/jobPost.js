@@ -72,14 +72,39 @@ const getPostedJob = async (req, res) => {
   try {
     const recruiterID = req.user._id;
 
-    const jobPost = await JobPost.find({ recruiterID });
-    if (!jobPost) {
-      return res.status(404).json({ msg: "No job posted yet." });
+    const jobLists = await JobPost.aggregate([
+      {
+        $match: {
+          recruiterID: recruiterID,
+        },
+      },
+      {
+        $lookup: {
+          from: "companies",
+          localField: "companyID",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          salary: 1,
+          companyName: "$company.name",
+        },
+      },
+    ]);
+
+    console.log(jobLists);
+    if (!jobLists) {
+      return res.status(404).json({ message: "No job posted yet." });
     }
 
-    return res.status(200).json(jobPost);
+    return res.status(200).json({ jobLists });
   } catch (error) {
-    return res.status(500).json({ msg: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 

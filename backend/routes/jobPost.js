@@ -14,7 +14,7 @@ const router = express.Router();
 
 // talent
 router.get("/", isAuth, checkRole("Talent"), getAllJobPost);
-router.get("/:id", isAuth, checkRole("Talent"), getJobPostByID);
+//router.get("/:id", isAuth, checkRole("Talent"), getJobPostByID);
 router.post("/:jobPostID/apply", isAuth, checkRole("Talent"), applyJob);
 
 // recruiter

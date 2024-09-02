@@ -217,7 +217,7 @@ export const applyJob = async (jobPostID) => {
 
   const body = await response.json();
   if (!response.ok) {
-    throw new error(body.message);
+    throw new Error(body.message);
   }
 
   return body;
@@ -234,9 +234,22 @@ export const postJob = async (formData) => {
   });
 
   const body = await response.json();
-  console.log(body);
   if (!response.ok) {
-    throw new error(body.message);
+    throw new Error(body.message);
+  }
+
+  return body;
+};
+
+export const getPostedJob = async () => {
+  const response = await fetch(`${API_URL}/job/company`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
   }
 
   return body;
