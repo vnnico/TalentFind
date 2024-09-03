@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { useEffect } from "react";
+import GlobalSpinner from "../components/GlobalSpinner";
 
 const OnlyTalent = ({ children }) => {
   const { isLoading, isLoggedIn, data } = useAppContext();
@@ -15,7 +16,7 @@ const OnlyTalent = ({ children }) => {
     return null;
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <GlobalSpinner></GlobalSpinner>;
 
   if (data.role === "Talent") {
     return children;

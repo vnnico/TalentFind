@@ -13,6 +13,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
+import Skeletons from "../components/Skeleton";
+import GlobalSpinner from "../components/GlobalSpinner";
 
 const Talent = () => {
   const { showToast, isLoggedIn } = useAppContext();
@@ -94,9 +96,7 @@ const Talent = () => {
     console.log({ ...data, skills });
   };
 
-  if (isLoading) {
-    return <div>Loading....</div>;
-  }
+  if (isLoading) return <GlobalSpinner></GlobalSpinner>;
 
   return (
     <div className="justify-content mx-auto my-5 flex max-md:flex-col w-[90%] md:p-11 p-4 rounded-lg md:gap-10 bg-white gap-4 h-full">
