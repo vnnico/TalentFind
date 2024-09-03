@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as apiClient from "../api-client";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Job Name is required"),
@@ -22,17 +23,20 @@ const JobPostForm = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "all",
     resolver: yupResolver(schema),
   });
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
 
   const mutation = useMutation({
     mutationKey: ["postJob"],
     mutationFn: apiClient.postJob,
     onSuccess: async (data) => {
+      window.location.reload();
       showToast({ message: data.message, type: "success" });
     },
     onError: async (data) => {

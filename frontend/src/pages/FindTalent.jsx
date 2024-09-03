@@ -6,6 +6,8 @@ import SubmitButton from "../components/buttons/SubmitButton";
 import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 import TalentCard from "../components/TalentCard";
+import GlobalSpinner from "../components/GlobalSpinner";
+import RegisterCompany from "../sections/RegisterCompany";
 
 const FindTalent = () => {
   const {
@@ -20,6 +22,13 @@ const FindTalent = () => {
     queryKey: ["talentList"],
     queryFn: apiClient.getAllTalents,
   });
+  const { isError: isErrorCompany, isLoading } = useQuery({
+    queryKey: ["company"],
+    queryFn: apiClient.getCompany,
+  });
+
+  if (isLoading) return <GlobalSpinner />;
+  if (isErrorCompany) return <RegisterCompany />;
 
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">

@@ -5,17 +5,30 @@ import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GlobalSpinner from "../components/GlobalSpinner";
+import RegisterCompany from "../sections/RegisterCompany";
 
 const JobPost = () => {
-  const { data, isError } = useQuery({
+  const { data, isError: isErrorJobPost } = useQuery({
     queryKey: ["companyJobPost"],
     queryFn: apiClient.getPostedJob,
+  });
+  const {
+    isError: isErrorCompany,
+    data: company,
+    isLoading,
+  } = useQuery({
+    queryKey: ["company"],
+    queryFn: apiClient.getCompany,
   });
   const navigate = useNavigate();
 
   const viewApplicant = (jobPostID) => {
     navigate(`/job-posts/${jobPostID}`);
   };
+
+  if (isLoading) return <GlobalSpinner />;
+  if (isErrorCompany) return <RegisterCompany />;
 
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
@@ -25,7 +38,7 @@ const JobPost = () => {
             Post a Job Portal
           </h1>
           <p className="text-sm md:text-left">
-            Your Company : <b>PT. NiagaHoster</b>
+            Your Company : <b>{company?.name}</b>
           </p>
           <JobPostForm></JobPostForm>
         </div>

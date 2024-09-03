@@ -63,6 +63,7 @@ const EditCompany = () => {
     onSuccess: async (data) => {
       await queryClient.refetchQueries();
       showToast({ message: data.message, type: "success" });
+      setIsEdit(false);
       navigate("/company");
     },
     onError: async (data) => {
