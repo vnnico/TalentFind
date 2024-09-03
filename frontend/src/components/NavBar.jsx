@@ -7,10 +7,10 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
   Button,
+  Link,
 } from "@nextui-org/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, NavLink } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
@@ -35,7 +35,7 @@ const NavBar = () => {
 
   const talentItems = [
     { name: "Build CV", link: "/" },
-    { name: "Find Job", link: "/find-job" },
+    { name: "Find Job", link: "/find-jobs" },
     { name: "Applications", link: "/applications" },
   ];
   const recruiterItems = [
@@ -64,23 +64,23 @@ const NavBar = () => {
           <>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
               <NavbarItem isActive={location.pathname === "/"}>
-                <Link href="/" className="text-white">
+                <NavLink to="/" className="text-white">
                   Build CV
-                </Link>
+                </NavLink>
               </NavbarItem>
               <NavbarItem isActive={location.pathname === "/find-jobs"}>
-                <Link
-                  href="/find-jobs"
+                <NavLink
+                  to="/find-jobs"
                   aria-current="page"
                   className="text-white"
                 >
                   Find Job
-                </Link>
+                </NavLink>
               </NavbarItem>
               <NavbarItem isActive={location.pathname === "/applications"}>
-                <Link className="text-white" href="/applications">
+                <NavLink className="text-white" to="/applications">
                   Applications
-                </Link>
+                </NavLink>
               </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
@@ -121,29 +121,29 @@ const NavBar = () => {
           <>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
               <NavbarItem isActive={location.pathname === "/company"}>
-                <Link href="/company" className="text-white">
+                <NavLink to="/company" className="text-white">
                   Company
-                </Link>
+                </NavLink>
               </NavbarItem>
               <NavbarItem isActive={location.pathname === "/job-posts"}>
-                <Link
-                  href="/job-posts"
+                <NavLink
+                  to="/job-posts"
                   aria-current="page"
                   className="text-white"
                 >
                   Job Posts
-                </Link>
+                </NavLink>
               </NavbarItem>
               <NavbarItem isActive={location.pathname === "/find-talent"}>
-                <Link className="text-white" href="/find-talent">
+                <NavLink className="text-white" to="/find-talent">
                   Find the Talent
-                </Link>
+                </NavLink>
               </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
               <NavbarItem>
                 <Button
-                  as={Link}
+                  as={NavLink}
                   className="text-white"
                   variant="flat"
                   onPress={() => mutation.mutate()}
