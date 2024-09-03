@@ -3,8 +3,10 @@ const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
 const Recruiter = require("../models/recruiter");
 
-const createToken = (_id) => {
-  return jwt.sign({ userId: _id }, process.env.HASH, { expiresIn: "2d" });
+const createToken = (_id, role) => {
+  return jwt.sign({ id: _id, role: role }, process.env.HASH, {
+    expiresIn: "2d",
+  });
 };
 
 const validateLogin = async function (email, password) {
@@ -82,7 +84,7 @@ const login = async (req, res) => {
   try {
     const user = await validateLogin(email, password);
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
     res.cookie("auth_token", token, {
       maxAge: 2 * 86400000,
     });
@@ -127,7 +129,7 @@ const register = async (req, res) => {
     phoneNumber,
   });
 
-  const token = createToken(user._id);
+  const token = createToken(user._id, user.role);
 
   res.cookie("auth_token", token, {
     maxAge: 2 * 86400000,

@@ -10,30 +10,39 @@ import {
   Link,
   Button,
 } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 
 const NavBar = () => {
-  const { showToast } = useAppContext();
+  const { showToast, data } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const mutation = useMutation({
     mutationFn: apiClient.logout,
     onSuccess: async (data) => {
       showToast({ message: data.message, type: "success" });
-      navigate("/auth");
+      navigate("/auth", { state: { replace: true } });
     },
     onError: async (data) => {
       showToast({ message: data.message, type: "error" });
     },
   });
 
-  const menuItems = ["Profile", "Build CV", "Find the Jobs", "Applications"];
-
+  const talentItems = [
+    { name: "Build CV", link: "/" },
+    { name: "Find Job", link: "/find-job" },
+    { name: "Applications", link: "/applications" },
+  ];
+  const recruiterItems = [
+    { name: "Company", link: "/company" },
+    { name: "Job Post", link: "/job-posts" },
+    { name: "Find Talent", link: "/find-talent" },
+  ];
   return (
     <>
       <Navbar
@@ -51,122 +60,120 @@ const NavBar = () => {
           </NavbarBrand>
         </NavbarContent>
 
-        <>
-          <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavbarItem isActive>
-              <Link href="/" className="text-white">
-                Build CV
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link
-                href="/find-jobs"
-                aria-current="page"
-                className="text-white"
-              >
-                Find Job
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link className="text-white" href="/applications">
-                Applications
-              </Link>
-            </NavbarItem>
-          </NavbarContent>
-          <NavbarContent justify="end">
-            {/* <NavbarItem className="hidden lg:flex">
-                <Link href="#" className="text-white">
-                  Login
+        {data && data.role === "Talent" && (
+          <>
+            <NavbarContent className="hidden sm:flex gap-4" justify="center">
+              <NavbarItem isActive={location.pathname === "/"}>
+                <Link href="/" className="text-white">
+                  Build CV
                 </Link>
-              </NavbarItem> */}
-            <NavbarItem>
-              <Button
-                className="text-white"
-                variant="flat"
-                onClick={() => mutation.mutate()}
-              >
-                Logout
-              </Button>
-            </NavbarItem>
-          </NavbarContent>
-          <NavbarMenu>
-            {menuItems.map((item, index) => (
-              <NavbarMenuItem key={`${item}-${index}`}>
+              </NavbarItem>
+              <NavbarItem isActive={location.pathname === "/find-jobs"}>
                 <Link
-                  color={
-                    index === 2
-                      ? "primary"
-                      : index === menuItems.length - 1
-                      ? "danger"
-                      : "inherit"
-                  }
-                  className="w-full"
-                  href="#"
-                  size="lg"
+                  href="/find-jobs"
+                  aria-current="page"
+                  className="text-white"
                 >
-                  {item}
+                  Find Job
                 </Link>
-              </NavbarMenuItem>
-            ))}
-          </NavbarMenu>
-        </>
-
-        {/* {localStorage.getItem("userId") &&
-          localStorage.getItem("token") &&
-          localStorage.getItem("role") === "Recruiter" && (
-            <>
-              <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem isActive>
-                  <Link href="/company" className="text-white">
-                    Company
-                  </Link>
-                </NavbarItem>
-                <NavbarItem>
-                  <Link href="#" aria-current="page" className="text-white">
-                    Job Posts
-                  </Link>
-                </NavbarItem>
-                <NavbarItem>
-                  <Link className="text-white" href="#">
-                    Find the Talent
-                  </Link>
-                </NavbarItem>
-              </NavbarContent>
-              <NavbarContent justify="end">
-           
-                <NavbarItem>
-                  <Button
-                    as={Link}
-                    className="text-white"
-                    variant="flat"
-                    onPress={logout}
+              </NavbarItem>
+              <NavbarItem isActive={location.pathname === "/applications"}>
+                <Link className="text-white" href="/applications">
+                  Applications
+                </Link>
+              </NavbarItem>
+            </NavbarContent>
+            <NavbarContent justify="end">
+              <NavbarItem>
+                <Button
+                  className="text-white"
+                  variant="flat"
+                  onClick={() => mutation.mutate()}
+                >
+                  Logout
+                </Button>
+              </NavbarItem>
+            </NavbarContent>
+            <NavbarMenu>
+              {talentItems.map((item, index) => (
+                <NavbarMenuItem key={`${item.name}-${index}`}>
+                  <Link
+                    color={
+                      index === 2
+                        ? "primary"
+                        : index === talentItems.length - 1
+                        ? "danger"
+                        : "inherit"
+                    }
+                    className="w-full"
+                    href={item.link}
+                    size="lg"
                   >
-                    Logout
-                  </Button>
-                </NavbarItem>
-              </NavbarContent>
-              <NavbarMenu>
-                {menuItems.map((item, index) => (
-                  <NavbarMenuItem key={`${item}-${index}`}>
-                    <Link
-                      color={
-                        index === 2
-                          ? "primary"
-                          : index === menuItems.length - 1
-                          ? "danger"
-                          : "inherit"
-                      }
-                      className="w-full"
-                      href="#"
-                      size="lg"
-                    >
-                      {item}
-                    </Link>
-                  </NavbarMenuItem>
-                ))}
-              </NavbarMenu>
-            </>
-          )} */}
+                    {item.name}
+                  </Link>
+                </NavbarMenuItem>
+              ))}
+            </NavbarMenu>
+          </>
+        )}
+
+        {data && data.role === "Recruiter" && (
+          <>
+            <NavbarContent className="hidden sm:flex gap-4" justify="center">
+              <NavbarItem isActive={location.pathname === "/company"}>
+                <Link href="/company" className="text-white">
+                  Company
+                </Link>
+              </NavbarItem>
+              <NavbarItem isActive={location.pathname === "/job-posts"}>
+                <Link
+                  href="/job-posts"
+                  aria-current="page"
+                  className="text-white"
+                >
+                  Job Posts
+                </Link>
+              </NavbarItem>
+              <NavbarItem isActive={location.pathname === "/find-talent"}>
+                <Link className="text-white" href="/find-talent">
+                  Find the Talent
+                </Link>
+              </NavbarItem>
+            </NavbarContent>
+            <NavbarContent justify="end">
+              <NavbarItem>
+                <Button
+                  as={Link}
+                  className="text-white"
+                  variant="flat"
+                  onPress={() => mutation.mutate()}
+                >
+                  Logout
+                </Button>
+              </NavbarItem>
+            </NavbarContent>
+            <NavbarMenu>
+              {recruiterItems.map((item, index) => (
+                <NavbarMenuItem key={`${item.name}-${index}`}>
+                  <Link
+                    color={
+                      index === 2
+                        ? "primary"
+                        : index === recruiterItems.length - 1
+                        ? "danger"
+                        : "inherit"
+                    }
+                    className="w-full"
+                    href={item.link}
+                    size="lg"
+                  >
+                    {item.name}
+                  </Link>
+                </NavbarMenuItem>
+              ))}
+            </NavbarMenu>
+          </>
+        )}
       </Navbar>
     </>
   );

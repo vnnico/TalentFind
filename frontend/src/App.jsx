@@ -14,6 +14,8 @@ import Application from "./pages/Application";
 import JobPost from "./pages/JobPost";
 import FindTalent from "./pages/FindTalent";
 import JobPostApplicant from "./pages/JobPostApplicant";
+import OnlyTalent from "./pages/OnlyTalent";
+import OnlyRecruiter from "./pages/OnlyRecruiter";
 
 function App() {
   return (
@@ -22,9 +24,11 @@ function App() {
         <Route
           path="/"
           element={
-            <Layout>
-              <Talent></Talent>
-            </Layout>
+            <OnlyTalent>
+              <Layout>
+                <Talent></Talent>
+              </Layout>
+            </OnlyTalent>
           }
         />
 
@@ -48,50 +52,62 @@ function App() {
         <Route
           path="/company"
           element={
-            <Layout>
-              <Company></Company>
-            </Layout>
+            <OnlyRecruiter>
+              <Layout>
+                <Company></Company>
+              </Layout>
+            </OnlyRecruiter>
           }
         />
 
         <Route
           path="/find-jobs"
           element={
-            <Layout>
-              <FindJob></FindJob>
-            </Layout>
+            <OnlyTalent>
+              <Layout>
+                <FindJob></FindJob>
+              </Layout>
+            </OnlyTalent>
           }
         />
         <Route
           path="/applications"
           element={
-            <Layout>
-              <Application></Application>
-            </Layout>
+            <OnlyTalent>
+              <Layout>
+                <Application></Application>
+              </Layout>
+            </OnlyTalent>
           }
         />
         <Route
           path="/job-posts"
           element={
-            <Layout>
-              <JobPost></JobPost>
-            </Layout>
+            <OnlyRecruiter>
+              <Layout>
+                <JobPost></JobPost>
+              </Layout>
+            </OnlyRecruiter>
           }
         ></Route>
         <Route
           path="/job-posts/:jobPostID"
           element={
-            <Layout>
-              <JobPostApplicant></JobPostApplicant>
-            </Layout>
+            <OnlyRecruiter>
+              <Layout>
+                <JobPostApplicant></JobPostApplicant>
+              </Layout>
+            </OnlyRecruiter>
           }
         />
         <Route
           path="/find-talent"
           element={
-            <Layout>
-              <FindTalent></FindTalent>
-            </Layout>
+            <OnlyRecruiter>
+              <Layout>
+                <FindTalent></FindTalent>
+              </Layout>
+            </OnlyRecruiter>
           }
         />
       </Routes>
