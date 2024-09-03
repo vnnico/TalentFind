@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "../components/Toast";
 import * as apiClient from "../api-client";
+import { dateRangePicker } from "@nextui-org/react";
 
 const AppContext = createContext();
 
@@ -10,11 +11,7 @@ export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
   const queryClient = useQueryClient();
 
-  const {
-    isError,
-    data: currentUser,
-    isLoading,
-  } = useQuery({
+  const { isError, data, isLoading } = useQuery({
     queryKey: ["authenticated"],
     queryFn: apiClient.validateToken,
     onError: async () => {
@@ -29,6 +26,8 @@ export const AppContextProvider = ({ children }) => {
           setToast(msgDescription);
         },
         isLoggedIn: !isError,
+        isLoading,
+        data,
       }}
     >
       {toast && (

@@ -54,7 +54,7 @@ const RecruiterRegister = () => {
       await queryClient.refetchQueries();
       showToast({ message: data.message, type: "success" });
 
-      navigate("/");
+      navigate("/company");
     },
     onError: async (data) => {
       showToast({ message: data.message, type: "error" });

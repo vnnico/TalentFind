@@ -26,10 +26,7 @@ const FindJob = () => {
   });
 
   const applyJob = (jobPostID) => {
-    if (window.confirm("Are you sure applying this job>")) {
-      console.log(jobPostID);
-      mutation.mutate(jobPostID);
-    }
+    mutation.mutate(jobPostID);
   };
 
   return (
