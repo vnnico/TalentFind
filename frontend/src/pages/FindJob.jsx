@@ -4,11 +4,23 @@ import JobCard from "../components/JobCard";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
+import { Button } from "@nextui-org/react";
+
+import PdfModal from "../components/PdfModal";
 
 const FindJob = () => {
   const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: ["jobLists"],
     queryFn: apiClient.getAllJobPosts,
+  });
+
+  const {
+    data: pdf,
+    isLoading: isLoadingCV,
+    isError: isErrorCV,
+  } = useQuery({
+    queryKey: ["cvLink"],
+    queryFn: apiClient.getCV,
   });
   const { showToast } = useAppContext();
   const navigate = useNavigate();
@@ -40,12 +52,11 @@ const FindJob = () => {
             Leverage the power of AI to analyze your CV and receive personalized
             feedback on your skills and strengths.
           </p>
-          <p className="text-xs md:text-left">
-            Don't have a CV yet? Create your own{" "}
-            <Link to="/" className="text-blue-500">
-              here
-            </Link>
-          </p>
+          {pdf && pdf.cvLink && (
+            <PdfModal
+              fileUrl={`http://localhost:3000/files/${pdf.cvLink}`}
+            ></PdfModal>
+          )}
           <UploadFile></UploadFile>
         </div>
         <div className="flex flex-col basis-1/2 p-10 gap-2 overflow-y-auto shadow-xl overflow-y-auto h-[400px]">

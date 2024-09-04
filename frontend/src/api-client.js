@@ -283,3 +283,31 @@ export const getListApplicant = async (params) => {
 
   return body;
 };
+
+export const analyzeCV = async (fileData) => {
+  const formData = new FormData();
+  formData.append("file", fileData);
+
+  const response = await fetch(`${API_URL}/cv/analyze`, {
+    method: "POST",
+    credentials: "include",
+
+    body: formData,
+  });
+
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.message);
+
+  return body;
+};
+
+export const getCV = async () => {
+  const response = await fetch(`${API_URL}/cv`, {
+    credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.message);
+
+  return body;
+};

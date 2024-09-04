@@ -9,6 +9,7 @@ const Application = () => {
     queryKey: ["jobApplications"],
     queryFn: apiClient.getAllJobApplication,
   });
+
   const navigate = useNavigate();
 
   if (isError) return <div>error fetch</div>;

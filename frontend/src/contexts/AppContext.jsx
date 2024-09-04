@@ -9,6 +9,7 @@ const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
+  // const [applicationList, setApplicationList] = useState([]);
   const queryClient = useQueryClient();
 
   const { isError, data, isLoading } = useQuery({

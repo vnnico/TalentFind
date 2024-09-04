@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const cloudinary = require("cloudinary");
+const path = require("path");
 require("dotenv").config();
 
 // routes
@@ -25,6 +27,13 @@ mongoose
     console.log(err.message);
   });
 
+// Cloudinary
+// cloudinary.v2.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
+
 // Ini biar bisa ngirim API
 app.use(
   cors({
@@ -37,6 +46,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // routes
+app.use(
+  "/files",
+  (req, res, next) => {
+    if (req.url.endsWith(".pdf")) {
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", "inline"); // Set header to display PDF inline
+    }
+    next();
+  },
+  express.static(path.join(__dirname, "../files"))
+);
+
 app.use("/talent", talentRoutes);
 app.use("/recruiter", recruiterRoutes);
 app.use("/company", companyRoutes);
