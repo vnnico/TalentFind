@@ -50,7 +50,12 @@ export default function PdfModal({ fileUrl }) {
       <Button color="primary" className="text-white" size="sm" onPress={onOpen}>
         View CV
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="lg">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="lg"
+        scrollBehavior="outside"
+      >
         <ModalContent>
           {(onClose) => (
             <>
