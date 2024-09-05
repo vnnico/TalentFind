@@ -1,4 +1,3 @@
-
 numpy
 pandas
 nltk
@@ -10,5 +9,8 @@ torch
 transformers
 streamlit
 Flask
-werkzeug    
+werkzeug 
+glob2
+python-docx
+
 
