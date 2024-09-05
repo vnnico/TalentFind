@@ -70,9 +70,16 @@ const FindJob = () => {
       </div>
       <div className="flex lg:mt-10 mt-3 flex-col gap-4">
         {/* Change it into Your Personalized Job Portal after CV Analysis */}
-        <h1 className="lg:text-xl md:text-xl font-bold text-center ">
-          All job Portals
-        </h1>
+
+        {data && data.recommendation === true ? (
+          <h1 className="lg:text-xl md:text-xl font-bold text-center text-violet-700 ">
+            Your Recommendation Job Portals
+          </h1>
+        ) : (
+          <h1 className="lg:text-xl md:text-xl font-bold text-center ">
+            All Job Portals
+          </h1>
+        )}
         <div className="flex w-full py-4 gap-5 flex-wrap justify-center ">
           {isError && (
             <div className="w-full">

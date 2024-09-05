@@ -243,6 +243,32 @@ def test_home():
 @app.route('/file-upload', methods=['POST'])
 def file_upload():
     try:
+        # Check if a file part is in the request
+        if 'file' not in request.files:
+            print("no file part in the req")
+            return jsonify({"error": "No file part in the request"}), 400
+
+        file = request.files['file']
+
+        # Check if a file is selected
+        if file.filename == '':
+            print("no file selected")
+            return jsonify({"error": "No file selected"}), 400
+
+        # Check the file extension
+        extension = os.path.splitext(file.filename)[1].lower()
+        if extension not in app.config['ALLOWED_EXTENSION']:
+            return jsonify({"error": "File type must be PDF."}), 400
+
+        # Secure the filename and save the file
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_DIRECTORY'], filename)
+        file.save(file_path)
+
+        # Return success response
+        print(f"File '{filename}' uploaded successfully to '{file_path}'.")
+        response = {"message": "File uploaded successfully", "file_path": file_path}
+   
 
         # validate start
         # Load and preprocess data
@@ -276,22 +302,7 @@ def file_upload():
             print(f"Error saving model components: {e}")
         # validate end
 
-        if 'file' not in request.files:
-            return "No file part in the request", 400
-                
-        file = request.files['file']
-
-        if file.filename == '':
-            return "No file selected", 400
-        extension = os.path.splitext(file.filename)[1].lower()
-
-        if file:
-            if extension not in app.config['ALLOWED_EXTENSION']:
-                return "File type must be PDF.", 400
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(
-                app.config['UPLOAD_DIRECTORY'], filename)
-            file.save(file_path)
+        
 
         pdf_path = file_path
         if os.path.exists(pdf_path):
@@ -325,9 +336,9 @@ def file_upload():
                         "careers": career_lists 
                           }), 200
     except Exception as e:
-        print(f"Error processing PDF: {e}")
-        print("Exiting the program.")
-        exit(1)
+        print("ini ", e)
+        return jsonify({"error": "Unable to load or preprocess data."}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

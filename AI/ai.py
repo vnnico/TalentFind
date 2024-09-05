@@ -34,10 +34,11 @@ from io import BytesIO
 
 app = Flask(__name__)
 
-# 
+
 app.config['ALLOWED_EXTENSION_FILE_PDF'] = ['.pdf']
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB limit
 app.config['UPLOAD_DIRECTORY'] = os.path.join(os.getcwd(), 'uploads')
+
 
 # Download NLTK data
 nltk.download('punkt', quiet=True)
@@ -114,8 +115,10 @@ def load_and_preprocess_data(cv_path, job_desc_path):
     """
     Load and preprocess the CV and job description data
     """
+
     cv_data = pd.read_csv(cv_path)
     job_data = pd.read_csv(job_desc_path)
+
 
     # Filter CV data to include only Information Technology category
     cv_data = cv_data[cv_data['Category'] == 'INFORMATION-TECHNOLOGY']
@@ -134,6 +137,7 @@ def load_and_preprocess_data(cv_path, job_desc_path):
     job_data['required_skills'] = job_data.apply(lambda row: get_default_skills(row['Job Title']) if not row['required_skills'] else row['required_skills'], axis=1)
 
     return cv_data, job_data
+
 def create_tfidf_vectors(texts):
     """
     Create TF-IDF vectors from the input texts
@@ -167,7 +171,6 @@ def predict_job_titles(model, vectorizer, label_encoder, cv_text, top_n=3):
     return label_encoder.inverse_transform(top_indices)
 
 
-
 def get_default_skills(job_title):
     """
     Return default skills for a job title if no skills were extracted
@@ -190,7 +193,6 @@ def get_default_skills(job_title):
         'Data Engineer': ['sql', 'data analysis', 'statistics', 'machine learning', 'deep learning', 'tensorflow', 'pytorch', 'scikit-learn'],
         'Business Analyst': ['sql', 'data analysis', 'statistics', 'machine learning', 'deep learning', 'tensorflow', 'pytorch', 'scikit-learn'],
         'Data Engineer': ['sql', 'data analysis', 'statistics', 'machine learning', 'deep learning', 'tensorflow', 'pytorch', 'scikit-learn'],
-        
 
     }
     
@@ -231,6 +233,7 @@ def recommend_alternative_careers(cv_text, model, vectorizer, label_encoder, job
         })
     
     return recommendations
+
 # ANALYZE CV SIMILARITY PERCENTAGE WITH COMPANY END
 
 # PROMPT FOR FINDING TALENT BASED ON JOB DESCRIPTION START
@@ -477,10 +480,12 @@ def file_upload():
     try:
 
         # validate start
+
         # Load and preprocess data
         cv_data, job_data = load_and_preprocess_data('resume_data.csv', 'jobdesc2.csv')
 
         if cv_data is None or job_data is None:
+
             print("Error: Unable to load or preprocess data. Exiting.")
             raise ValueError("Error: Unable to load or preprocess data.")
             # exit(1)
@@ -506,6 +511,7 @@ def file_upload():
             print("Model, vectorizer, and label encoder saved successfully.")
         except Exception as e:
             print(f"Error saving model components: {e}")
+
         # validate end
 
         if 'file' not in request.files:
@@ -524,6 +530,7 @@ def file_upload():
             file_path = os.path.join(
                 app.config['UPLOAD_DIRECTORY'], filename)
             file.save(file_path)
+
 
         pdf_path = file_path
         if os.path.exists(pdf_path):
@@ -544,6 +551,7 @@ def file_upload():
             print(f"Job Title: {career['job_title']}")
             print(f"Confidence: {career['confidence'] * 100:.2f}%")
             print(f"Skills to Develop: {', '.join(career['skills_to_develop'])}")
+
             print()
 
             career_lists.append({
@@ -557,6 +565,7 @@ def file_upload():
                         "careers": career_lists 
                           }), 200
     except Exception as e:
+
         print(f"Error processing PDF: {e}")
         print("Exiting the program.")
         exit(1)
@@ -596,3 +605,4 @@ def main():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
+
