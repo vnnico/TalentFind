@@ -3,6 +3,7 @@ const JobPost = require("../models/jobPost");
 const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
 const JobApplication = require("../models/jobApplication");
+const Talent = require("../models/talent");
 
 const getAllJobPost = async (req, res) => {
   try {

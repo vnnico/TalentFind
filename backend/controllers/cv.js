@@ -166,10 +166,81 @@ const analyzeCV = async (req, res) => {
       }
     }
 
+    // responseBody = {
+    //   careers: [
+    //     {
+    //       confidence: "28.00%",
+    //       job_title: "Node js developer",
+    //       skills_to_develop: [
+    //         "jquery",
+    //         "node js",
+    //         "microservices",
+    //         "job description",
+    //         "node/express",
+    //         "angular",
+    //         "nosql",
+    //         "css",
+    //       ],
+    //     },
+    //     {
+    //       confidence: "12.00%",
+    //       job_title: "Full Stack Developer",
+    //       skills_to_develop: [
+    //         "networking",
+    //         "react",
+    //         "web development",
+    //         "angular",
+    //         "agile",
+    //       ],
+    //     },
+    //     {
+    //       confidence: "8.00%",
+    //       job_title: "JavaScript Developer",
+    //       skills_to_develop: [
+    //         "azure",
+    //         "html5/css3/javascript\r\nexcellent",
+    //         "skills required",
+    //         "azure functions",
+    //         "ui",
+    //       ],
+    //     },
+    //     {
+    //       confidence: "8.00%",
+    //       job_title: "Java Developer",
+    //       skills_to_develop: [
+    //         "erp",
+    //         "akron / cleveland area",
+    //         "software developer - integration",
+    //         "microsoft",
+    //         "soap, restful",
+    //         "syspro",
+    //         "mysql",
+    //         "mvc",
+    //         "the integration developer",
+    //       ],
+    //     },
+    //     {
+    //       confidence: "7.00%",
+    //       job_title: "Django Developer",
+    //       skills_to_develop: [
+    //         "api",
+    //         "flask",
+    //         "rpc",
+    //         "django",
+    //         "api frameworks",
+    //         "pyunit",
+    //       ],
+    //     },
+    //   ],
+    //   file_path:
+    //     "C:\\Users\\ASUS\\OneDrive\\Documents\\MERN\\projects\\TalentFind\\AI\\uploads\\CV-NicholasNelson.pdf",
+    //   message: "File uploaded successfully",
+    // };
+
     user.cvFile = fileName;
-    responseBody.careers.map((job) =>
-      user.jobRecommendation.push(job.job_title)
-    );
+    const jobRecommendation = responseBody.careers.map((job) => job.job_title);
+    user.jobRecommendation = jobRecommendation;
+    await user.save();
 
     return res.status(200).json({
       message:
