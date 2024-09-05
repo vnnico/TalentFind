@@ -1,0 +1,12 @@
+numpy
+pandas
+nltk
+scikit-learn
+PyPDF2
+spacy
+docx2txt
+torch
+transformers
+streamlit
+Flask
+werkzeug    
