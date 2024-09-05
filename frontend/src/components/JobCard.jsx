@@ -39,6 +39,7 @@ export default function JobCard({
           {(jobList.jobDescription &&
             jobList.jobDescription.substring(0, 40)) ||
             "No Description"}
+          ...
         </p>
       </CardBody>
       <Divider />

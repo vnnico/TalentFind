@@ -22,7 +22,7 @@ const TalentInfo = ({ talent, clickNext }) => {
         value={talent.email}
         isReadOnly={true}
       />
-      <DateInput label="Birth Date" isReadOnly={true} selected={talent.dob} />
+      {/* <DateInput label="Birth Date" isReadOnly={true} selected={talent.dob} /> */}
       <InputForm
         type="text"
         label="Phone"
