@@ -3,7 +3,7 @@ import SubmitButton from "../components/buttons/SubmitButton";
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,6 +29,7 @@ const JobPostForm = () => {
     mode: "all",
     resolver: yupResolver(schema),
   });
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { showToast } = useAppContext();
 
@@ -37,6 +38,7 @@ const JobPostForm = () => {
     mutationFn: apiClient.postJob,
     onSuccess: async (data) => {
       window.location.reload();
+      //queryClient.invalidateQueries("companyJobPost");
       showToast({ message: data.message, type: "success" });
     },
     onError: async (data) => {
