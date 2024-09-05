@@ -5,7 +5,7 @@ const Talent = require("../models/talent");
 const checkRole = (roles) => {
   return async (req, res, next) => {
     try {
-      const id = req.user;
+      const id = req.user.id;
 
       let user = null;
 

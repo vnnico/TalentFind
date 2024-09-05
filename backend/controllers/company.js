@@ -2,7 +2,7 @@ const Company = require("../models/company");
 const { body, validationResult } = require("express-validator");
 
 const getCompany = async (req, res) => {
-  const recruiterID = req.user;
+  const recruiterID = req.user._id;
 
   const company = await Company.findOne({ recruiterID });
   if (!company) {
@@ -60,7 +60,7 @@ const validateUpdateCompany = [
 ];
 
 const updateCompany = async (req, res) => {
-  const recruiterID = req.user;
+  const recruiterID = req.user._id;
   console.log(recruiterID);
 
   const company = await Company.findOne({ recruiterID: recruiterID });

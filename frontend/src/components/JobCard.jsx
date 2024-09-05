@@ -9,6 +9,7 @@ import {
   Image,
   Button,
 } from "@nextui-org/react";
+import ApplyModal from "./ApplyModal";
 
 export default function JobCard({
   jobList,
@@ -25,16 +26,21 @@ export default function JobCard({
           <p className="text-sm">{jobList.name}</p>
           <p className="text-sm font-semibold">{jobList.companyName}</p>
           <p className="text-xs text-default-500 t">
-            {jobList.salary.toLocaleString("en-US", {
+            {jobList.salary.toLocaleString("id-ID", {
               style: "currency",
-              currency: "USD",
+              currency: "IDR",
             })}
           </p>
         </div>
       </CardHeader>
       <Divider />
       <CardBody>
-        <p className="md:text-md text-sm">Default dulu</p>
+        <p className="md:text-md text-sm">
+          {(jobList.jobDescription &&
+            jobList.jobDescription.substring(0, 40)) ||
+            "No Description"}
+          ...
+        </p>
       </CardBody>
       <Divider />
       <CardFooter>
@@ -56,14 +62,15 @@ export default function JobCard({
           )}
 
           {!recruiter && !applied && (
-            <Button
-              color="success"
-              className="text-white "
-              size="sm"
-              onClick={() => applyJob(jobList._id)}
-            >
-              Apply
-            </Button>
+            // <Button
+            //   color="success"
+            //   className="text-white "
+            //   size="sm"
+            //   onClick={() => applyJob(jobList._id)}
+            // >
+            //   Apply
+            // </Button>
+            <ApplyModal jobList={jobList} applyJob={applyJob}></ApplyModal>
           )}
 
           {applied && (

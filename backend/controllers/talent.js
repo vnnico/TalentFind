@@ -4,8 +4,10 @@ const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
 const CV = require("../models/cv");
 
-const createToken = (_id) => {
-  return jwt.sign({ userId: _id }, process.env.HASH, { expiresIn: "2d" });
+const createToken = (_id, role) => {
+  return jwt.sign({ id: _id, role: role }, process.env.HASH, {
+    expiresIn: "2d",
+  });
 };
 
 const validateLogin = async function (email, password) {
@@ -83,7 +85,7 @@ const login = async (req, res) => {
   try {
     const user = await validateLogin(email, password);
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
     res.cookie("auth_token", token, {
       maxAge: 2 * 86400000,
     });
@@ -131,7 +133,7 @@ const register = async (req, res) => {
       phoneNumber,
     });
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
     // kalo mau tes dipostman, ganti aja object jsonnya
 
     res.cookie("auth_token", token, {
@@ -153,7 +155,8 @@ const register = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const id = req.user;
+    console.log(req.user);
+    const id = req.user.id;
 
     const user = await Talent.findById(id);
     if (user) {
@@ -204,7 +207,7 @@ const validateUpdateProfile = [
 ];
 
 const updateProfile = async (req, res) => {
-  const _id = req.user;
+  const _id = req.user.id;
   const user = await Talent.findById(_id);
   try {
     if (user) {
@@ -232,7 +235,8 @@ const updateProfile = async (req, res) => {
 };
 
 const validateToken = async (req, res) => {
-  return res.status(200).send({ user: req.user });
+  console.log(req.user.id);
+  return res.status(200).send({ user: req.user.id, role: req.user.role });
 };
 
 const logout = async (req, res) => {

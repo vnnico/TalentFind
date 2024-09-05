@@ -3,28 +3,67 @@ const JobPost = require("../models/jobPost");
 const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
 const JobApplication = require("../models/jobApplication");
+const Talent = require("../models/talent");
 
 const getAllJobPost = async (req, res) => {
   try {
-    // const listJob = await JobPost.find().populate("companyID", "name");
+    const userID = req.user.id;
+    const user = await Talent.findById(userID);
+    if (!user) return res.status(500).json({ message: "Something went wrong" });
 
-    const jobLists = await JobPost.aggregate([
-      {
-        $lookup: {
-          from: "companies",
-          localField: "companyID",
-          foreignField: "_id",
-          as: "company",
+    let jobLists;
+    if (!user.cvLink && user.jobRecommendation.length === 0) {
+      jobLists = await JobPost.aggregate([
+        {
+          $lookup: {
+            from: "companies",
+            localField: "companyID",
+            foreignField: "_id",
+            as: "company",
+          },
         },
-      },
-      {
-        $project: {
-          companyName: "$company.name",
-          name: 1,
-          salary: 1,
+        {
+          $project: {
+            jobDescription: 1,
+            companyName: "$company.name",
+            name: 1,
+            salary: 1,
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      // Convert jobRecommendation list to case-insensitive regex patterns
+      const jobRecommendationRegex = user.jobRecommendation.map((job) => {
+        const escapedJob = job.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+        const pattern = `\\b(?:Senior|Junior|Lead|Intern|Entry Level|Mid Level|Advanced)?\\s*${escapedJob}\\s*(?:Developer|Engineer)?\\b`;
+
+        return new RegExp(pattern, "i");
+      });
+
+      jobLists = await JobPost.aggregate([
+        {
+          $lookup: {
+            from: "companies",
+            localField: "companyID",
+            foreignField: "_id",
+            as: "company",
+          },
+        },
+        {
+          $match: {
+            name: { $in: jobRecommendationRegex },
+          },
+        },
+        {
+          $project: {
+            jobDescription: 1,
+            companyName: { $arrayElemAt: ["$company.name", 0] },
+            name: 1,
+            salary: 1,
+          },
+        },
+      ]);
+    }
 
     if (!jobLists) {
       return res.status(404).json({ message: "There is no job " });
@@ -45,7 +84,7 @@ const postJob = async (req, res) => {
       return res.status(404).json({ errors: checkError.array() });
     }
     // check if company exist
-    const recruiterID = req.user._id;
+    const recruiterID = req.user.id;
     const company = await Company.findOne({ recruiterID: recruiterID });
 
     if (!company) {
@@ -107,6 +146,7 @@ const getPostedJob = async (req, res) => {
           _id: "$_id",
           name: "$name",
           salary: "$salary",
+          jobDescription: 1,
           companyName: "$company.name",
           totalApplicants: 1,
         },
@@ -150,7 +190,6 @@ const getJobPostByID = async (req, res) => {
 
 const applyJob = async (req, res) => {
   try {
-    console.log("applying...");
     const data = "default";
     const talentID = req.user._id;
     const { jobPostID } = req.params;

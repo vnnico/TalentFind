@@ -36,6 +36,17 @@ const talentSchema = new mongoose.Schema({
     type: String,
     default: "Talent",
   },
+  cvFile: {
+    type: String,
+  },
+  cvLink: {
+    type: String,
+  },
+  jobRecommendation: [
+    {
+      type: String,
+    },
+  ],
 });
 
 const Talent = mongoose.model("Talent", talentSchema);
