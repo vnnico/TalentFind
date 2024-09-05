@@ -584,16 +584,9 @@ def main():
         results = process_cvs_and_job(temp_dir, job_description, verbose_mode)
         if results is not None:
             # Convert results to CSV in memory
-            output = BytesIO()
-            results.to_csv(output, index=False)
-            output.seek(0)
-
-            return send_file(
-                output,
-                mimetype='text/csv',
-                as_attachment=True,
-                download_name='cv_matching_results.csv'
-            )
+            results_json = results.to_dict(orient='records')  
+            
+            return jsonify(results_json), 200
         else:
             return jsonify({"error": "Processing failed"}), 500
     finally:
