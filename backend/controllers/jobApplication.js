@@ -51,6 +51,7 @@ const getAllJobApplication = async (req, res) => {
       },
       {
         $project: {
+          _id: "$jobPostDetails._id",
           companyName: "$companyDetails.name",
           name: "$jobPostDetails.name",
           salary: "$jobPostDetails.salary",

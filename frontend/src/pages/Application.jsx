@@ -9,12 +9,20 @@ const Application = () => {
     queryKey: ["jobApplications"],
     queryFn: apiClient.getAllJobApplication,
   });
+
   const navigate = useNavigate();
 
   if (isError) return <div>error fetch</div>;
 
   return (
     <div className="justify-content m-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 min-h-screen">
+      <Button
+        color="warning"
+        className="w-[10%] text-white mb-3"
+        onClick={() => navigate(-1)}
+      >
+        Back
+      </Button>
       {data && data.jobLists.length > 0 ? (
         <>
           <div className="mx-auto py-2">

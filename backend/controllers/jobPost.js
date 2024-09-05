@@ -19,6 +19,7 @@ const getAllJobPost = async (req, res) => {
       },
       {
         $project: {
+          jobDescription: 1,
           companyName: "$company.name",
           name: 1,
           salary: 1,
@@ -45,7 +46,7 @@ const postJob = async (req, res) => {
       return res.status(404).json({ errors: checkError.array() });
     }
     // check if company exist
-    const recruiterID = req.user._id;
+    const recruiterID = req.user.id;
     const company = await Company.findOne({ recruiterID: recruiterID });
 
     if (!company) {
@@ -107,6 +108,7 @@ const getPostedJob = async (req, res) => {
           _id: "$_id",
           name: "$name",
           salary: "$salary",
+          jobDescription: 1,
           companyName: "$company.name",
           totalApplicants: 1,
         },
@@ -150,7 +152,6 @@ const getJobPostByID = async (req, res) => {
 
 const applyJob = async (req, res) => {
   try {
-    console.log("applying...");
     const data = "default";
     const talentID = req.user._id;
     const { jobPostID } = req.params;

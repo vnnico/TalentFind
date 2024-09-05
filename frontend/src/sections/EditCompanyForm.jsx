@@ -2,6 +2,7 @@ import { Controller } from "react-hook-form";
 import { Textarea } from "@nextui-org/input";
 import InputForm from "../components/inputs/InputForm";
 import SubmitButton from "../components/buttons/SubmitButton";
+import { Button } from "@nextui-org/react";
 
 const EditCompanyForm = ({
   control,
@@ -155,19 +156,26 @@ const EditCompanyForm = ({
         />
       </div>
 
-      <div className="w-full lg:w-1/2 m-auto py-1">
+      <div className="w-full lg:w-1/2 m-auto  py-1">
         {isEdit && (
-          <>
-            <SubmitButton onSubmit={handleSubmit}></SubmitButton>
-            <button className="text-xl" onClick={() => setIsEdit(false)}>
+          <div className="flex gap-2 justify-center">
+            <Button
+              color="primary"
+              size="sm"
+              type="submit"
+              onSubmit={handleSubmit}
+            >
+              Save
+            </Button>
+            <Button color="danger" size="sm" onClick={() => setIsEdit(false)}>
               Cancel
-            </button>
-          </>
+            </Button>
+          </div>
         )}
         {!isEdit && (
-          <button className="text-xl" onClick={() => setIsEdit(true)}>
+          <Button color="warning" size="sm" onClick={() => setIsEdit(true)}>
             Edit
-          </button>
+          </Button>
         )}
       </div>
     </div>

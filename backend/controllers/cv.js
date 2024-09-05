@@ -5,12 +5,13 @@ const CV = require("../models/cv");
 const Project = require("../models/project");
 const Achievement = require("../models/achievement");
 const mongoose = require("mongoose");
+const cloudinary = require("cloudinary");
 
 const createCV = async (req, res) => {
   const session = await mongoose.startSession();
 
   try {
-    const talentId = req.user;
+    const talentId = req.user.id;
     const {
       description,
       educations,
@@ -100,4 +101,50 @@ const createCV = async (req, res) => {
   }
 };
 
-module.exports = { createCV };
+const analyzeCV = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const file = req.file;
+    const fileName = file.filename;
+
+    const user = await Talent.findById(userId);
+    if (!user) return res.status(404).json({ message: "Talent not found" });
+
+    // let pdfFile;
+    // try {
+    //   const b64 = file.buffer.toString("base64");
+    //   let dataURI = "data:" + file.mimetype + ";base64," + b64;
+    //   pdfFile = await cloudinary.v2.uploader.upload(dataURI);
+    // } catch (error) {
+    //   console.log("sini");
+    //   return res.status(500).json({ message: error.message });
+    // }
+
+    user.cvFile = fileName;
+    // user.cvLink = pdfFile.url;
+    await user.save();
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
+const getCV = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await Talent.findById(userId);
+    if (!user) return res.status(404).json({ message: "Talent not found" });
+
+    return res.status(200).json({ cvLink: user.cvFile });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to get CV", error: error.message });
+  }
+};
+
+module.exports = { createCV, analyzeCV, getCV };
