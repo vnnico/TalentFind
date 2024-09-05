@@ -97,7 +97,9 @@ const login = async (req, res) => {
       message: "Login Success",
     });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 
@@ -112,7 +114,7 @@ const register = async (req, res) => {
   const exist = await Recruiter.findOne({ email });
   if (exist) {
     // kalau exist (email ada), kasi error
-    return res.status(400).json({ errors: "Email already existed" });
+    return res.status(400).json({ message: "Email already existed" });
   }
 
   // hashing
@@ -140,7 +142,9 @@ const register = async (req, res) => {
       .status(200)
       .json({ name, email, token, dob, gender, address, phoneNumber });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 

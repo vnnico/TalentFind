@@ -12,6 +12,7 @@ const getAllJobPost = async (req, res) => {
     if (!user) return res.status(500).json({ message: "Something went wrong" });
 
     let jobLists;
+    let recommendation = false;
     if (!user.cvLink && user.jobRecommendation.length === 0) {
       jobLists = await JobPost.aggregate([
         {
@@ -63,13 +64,14 @@ const getAllJobPost = async (req, res) => {
           },
         },
       ]);
+      recommendation = true;
     }
 
     if (!jobLists) {
       return res.status(404).json({ message: "There is no job " });
     }
 
-    return res.status(200).json({ jobLists });
+    return res.status(200).json({ jobLists, recommendation });
   } catch (error) {
     return res
       .status(500)

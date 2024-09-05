@@ -46,7 +46,7 @@ const JobPost = () => {
           <h1 className="lg:text-xl md:text-xl font-bold text-center">
             Your Job Portals
           </h1>
-          {data && data.jobLists.length > 1 ? (
+          {data && data.jobLists.length > 0 ? (
             <div className="w-full flex flex-col gap-3 py-4">
               {data &&
                 data.jobLists.map((jobList, index) => (
