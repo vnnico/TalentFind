@@ -9,6 +9,7 @@ torch
 transformers
 streamlit
 Flask
+
 werkzeug 
 glob2
 python-docx
