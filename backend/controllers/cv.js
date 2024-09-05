@@ -6,6 +6,21 @@ const Project = require("../models/project");
 const Achievement = require("../models/achievement");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
+const fs = require("fs");
+const FormData = require("form-data");
+const axios = require("axios");
+const JobPost = require("../models/jobPost");
+
+// let pdfFile;
+// try {
+//   const b64 = file.buffer.toString("base64");
+//   let dataURI = "data:" + file.mimetype + ";base64," + b64;
+//   pdfFile = await cloudinary.v2.uploader.upload(dataURI);
+// } catch (error) {
+//   console.log("sini");
+//   return res.status(500).json({ message: error.message });
+// }
+// user.cvLink = pdfFile.url;
 
 const createCV = async (req, res) => {
   const session = await mongoose.startSession();
@@ -111,21 +126,55 @@ const analyzeCV = async (req, res) => {
     const user = await Talent.findById(userId);
     if (!user) return res.status(404).json({ message: "Talent not found" });
 
-    // let pdfFile;
-    // try {
-    //   const b64 = file.buffer.toString("base64");
-    //   let dataURI = "data:" + file.mimetype + ";base64," + b64;
-    //   pdfFile = await cloudinary.v2.uploader.upload(dataURI);
-    // } catch (error) {
-    //   console.log("sini");
-    //   return res.status(500).json({ message: error.message });
-    // }
+    let responseBody;
+    try {
+      const formData = new FormData();
+
+      // Append the file using a read stream from the file system
+      formData.append(
+        "file",
+        fs.createReadStream(file.path),
+        file.originalname
+      );
+
+      // Send POST request to Flask server using axios
+      const response = await axios.post(
+        "http://127.0.0.1:8000/file-upload",
+        formData,
+        {
+          headers: {
+            ...formData.getHeaders(),
+          },
+        }
+      );
+
+      // Successfully uploaded, extract response data
+      responseBody = response.data;
+    } catch (error) {
+      // Handle axios error, which includes non-2xx responses
+      if (error.response) {
+        console.error("Error response from Flask server:", error.response.data);
+        return res
+          .status(error.response.status)
+          .json({ message: error.response.data });
+      } else {
+        console.error("Error sending request:", error.message);
+        // Only return error message, not the whole error object
+        return res
+          .status(500)
+          .json({ message: "Request error", error: error.message });
+      }
+    }
 
     user.cvFile = fileName;
-    // user.cvLink = pdfFile.url;
-    await user.save();
+    responseBody.careers.map((job) =>
+      user.jobRecommendation.push(job.job_title)
+    );
 
-    return res.status(200).json({ user });
+    return res.status(200).json({
+      message:
+        "CV has been analyzed, Please wait for our job post recommendation",
+    });
   } catch (error) {
     return res
       .status(500)
