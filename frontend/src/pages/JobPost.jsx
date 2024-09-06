@@ -33,11 +33,11 @@ const JobPost = () => {
   return (
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
       <div className="flex gap-6 max-md:flex-col">
-        <div className="flex flex-col basis-1/2 text-black gap-4 h-full">
+        <div className="flex flex-col basis-1/2 text-black gap-4 h-full ">
           <h1 className="lg:text-3xl md:text-xl font-bold">
             Post a Job Portal
           </h1>
-          <p className="text-sm md:text-left">
+          <p className="text-sm md:text-left ">
             Your Company : <b>{company?.name}</b>
           </p>
           <JobPostForm></JobPostForm>

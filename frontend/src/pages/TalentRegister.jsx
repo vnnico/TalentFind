@@ -53,7 +53,7 @@ const TalentRegister = () => {
     onSuccess: async (data) => {
       await queryClient.refetchQueries();
       showToast({ message: data.message, type: "success" });
-      navigate("/");
+      navigate("/find-jobs");
     },
     onError: async (data) => {
       showToast({ message: data.message, type: "error" });

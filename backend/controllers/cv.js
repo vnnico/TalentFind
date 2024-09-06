@@ -151,7 +151,6 @@ const analyzeCV = async (req, res) => {
       // Successfully uploaded, extract response data
       responseBody = response.data;
     } catch (error) {
-      // Handle axios error, which includes non-2xx responses
       if (error.response) {
         console.error("Error response from Flask server:", error.response.data);
         return res
@@ -159,7 +158,6 @@ const analyzeCV = async (req, res) => {
           .json({ message: error.response.data });
       } else {
         console.error("Error sending request:", error.message);
-        // Only return error message, not the whole error object
         return res
           .status(500)
           .json({ message: "Request error", error: error.message });

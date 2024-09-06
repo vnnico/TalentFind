@@ -2,6 +2,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
 const Recruiter = require("../models/recruiter");
+const { zipFolder } = require("../utils/zipFile");
+const axios = require("axios");
+const path = require("path");
+const fs = require("fs");
+const FormData = require("form-data");
+const Talent = require("../models/talent");
 
 const createToken = (_id, role) => {
   return jwt.sign({ id: _id, role: role }, process.env.HASH, {
@@ -138,9 +144,7 @@ const register = async (req, res) => {
   });
   try {
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res
-      .status(200)
-      .json({ name, email, token, dob, gender, address, phoneNumber });
+    res.status(200).json({ message: "Register Success" });
   } catch (error) {
     res
       .status(500)
@@ -226,6 +230,102 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const findRecommendedTalent = async (req, res) => {
+  try {
+    const { prompt } = req.body;
+    const recruiterID = req.user.id;
+    const recruiter = await Recruiter.findById(recruiterID);
+    if (!recruiter)
+      return res.status(404).json({ message: "Recruiter not found" });
+
+    let folderPath;
+    let zipFilePath;
+    try {
+      folderPath = path.join(__dirname, "../../files");
+      zipFilePath = path.join(__dirname, "../../files.zip");
+      await zipFolder(folderPath, zipFilePath);
+    } catch (error) {
+      return res.status(500).message({ message: "Failed to convert into zip" });
+    } finally {
+    }
+
+    const formData = new FormData();
+    formData.append("file", fs.createReadStream(zipFilePath));
+    formData.append("job_description", prompt);
+
+    let responseBody;
+    try {
+      console.log("kalau ini");
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/process",
+        formData,
+        {
+          headers: {
+            ...formData.getHeaders(),
+          },
+        }
+      );
+      console.log("dalem fetch");
+      responseBody = response.data;
+      console.log(responseBody);
+    } catch (error) {
+      if (error.response) {
+        console.log("hi");
+        return res
+          .status(error.response.status)
+          .json({ message: error.response.data });
+      } else {
+        return res
+          .status(500)
+          .json({ message: "Request error", error: error.message });
+      }
+    } finally {
+      if (zipFilePath) fs.unlinkSync(zipFilePath);
+    }
+
+    // const example = [
+    //   {
+    //     CV_File: "1725556682968.pdf",
+    //     Similarity_Score: 60.13312339782715,
+    //   },
+    //   {
+    //     CV_File: "1725556974877.pdf",
+    //     Similarity_Score: 59.31735634803772,
+    //   },
+    //   {
+    //     CV_File: "1725553221738.pdf",
+    //     Similarity_Score: 59.17598605155945,
+    //   },
+    // ];
+
+    const allTalents = await Talent.find({});
+
+    const recommendedTalents = responseBody
+      .map((result) => {
+        const matchedTalent = allTalents.find(
+          (talent) => talent.cvFile === result.CV_File
+        );
+
+        if (matchedTalent) {
+          return {
+            talent: matchedTalent,
+            similarityScore: Math.round(result.Similarity_Score * 100) / 100,
+          };
+        }
+      })
+      .filter(Boolean); // Filter out undefined values (if no match is found)
+
+    return res.status(200).json({
+      recommendedTalents,
+      message: "Get Recommendation Talent Success",
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -233,4 +333,5 @@ module.exports = {
   getProfile,
   validateUpdateProfile,
   updateProfile,
+  findRecommendedTalent,
 };
