@@ -9,7 +9,7 @@ torch
 transformers
 streamlit
 Flask
-
+logging
 werkzeug 
 glob2
 python-docx
