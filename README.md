@@ -12,12 +12,14 @@ To make sure the program runs succesfully, please install these:
 * npm (Node Package Manager)
 * Python 3.x
 * pip (Python Package Installer)
+* Visual Studio Code (IDE to run the project)
 
 # How to run the program
 
 1. Install Visual Studios Code
-2. Clone this github url
-3. Setting Project Path <br>
+2. Clone this github url https://github.com/vnnico/TalentFind.git or download the file
+3. Open in Visual Studios Code
+4. Setting Project Path <br>
    In the directory, do the following list:
    1. Backend
       - Open a terminal and change directory to backend folder using "cd backend"
@@ -73,7 +75,7 @@ To make sure the program runs succesfully, please install these:
       ```
          The flask server will run at http://127.0.0.1:8000
 5. How to run the website <br>
-   Make sure all the 3 server is running properly. To try the website, use the HTTPS from the frontend server. <br>
+   Make sure all the 3 server (backend, frontend, and AI) is running properly. To try the website, use the HTTPS from the frontend server. <br>
    ```bash
    http://localhost:5173/ # frontend server
    ```
