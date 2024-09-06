@@ -1,9 +1,9 @@
 # TalentFind
 
 # Teams
-1. @daviezu
-2. @vnnico
-3. Andrew
+1. @daviezu as Backend Engineer
+2. @vnnico as Project Manager and Frontend Engineer
+3. @andrewal16 as AI Engineer
 
 # Requirements
 
@@ -11,24 +11,76 @@
 
 1. Install Visual Studios Code
 2. Clone this github url
-3. In the directory, open the terminal and do the following list:
-   - change directory to backend folder using "cd backend"
-     ```javascript
-     cd backend
+3. Setting Project Path <br>
+   In the directory, do the following list:
+   1. Backend
+      - Open a terminal and change directory to backend folder using "cd backend"
+        ```javascript
+        cd backend
+      - Installing the Required Packages
+        Once the directory is set, install all required packages using npm install
+        ```node
+        npm install
+      - if success, type "nodemon index" to run the backend server
+        ```node
+        nodemon index
+        ```
+        if failed, try using "node index" 
+         ```node
+         node index
+         ```
+      - The result of backend in terminal if run succesfully
+         ```bash
+         App listening on http://localhost:3000
+         Database Connected
+         ```
+   2. Frontend
+      - Open another terminal and change directory to backend folder using "cd backend"
+        ```javascript
+        cd frontend
+        ```
+        - Installing the Required Packages
+          Once the directory is set, install all required packages using npm install 
+        ```node
+        npm install
+        ```
+        - Running the frontend server
+          if success, type "npm run dev" to run the frontend server.
+        ```node
+        npm run dev
+        ```
+           The frontend server will run at http://localhost:5173/
+   3. AI 
+        - Open another terminal and change directory to backend folder using "cd backend"
+       ```python
+       cd AI
+       ```
+       - Installing the Required Packages
+         Once the directory is set, install all required packages using the requirements.txt file.
+      ```bash
+      pip install -r requirements.txt
+      ```
+       - Running the AI server
+         Run the flask server to start the website.
+      ```python
+      python ai.py
+      ```
+         The flask server will run at http://127.0.0.1:8000
+5. How to run the website <br>
+   Make sure all the 3 server is running properly. To try the website, use the HTTPS from the frontend server. <br>
+   ```bash
+   http://localhost:5173/ # frontend server
+   ```
+6. Test account <br>
+   To login use this email and password below.
 
-   - type "npm run" to download all the libraries needed
-    ```node
-        npm run
-  - if success, type "nodemon index" or "node index" to run the backend server.
-    ```node
-       nodemon index
-    ```
-    ```node
-       node index
-   - Open another terminal. change directory to frontend folder using "cd frontend"
-     - type "npm run" to download all the libraries needed
-     - if success, type "npm run dev" to run the frontend server.
-  - Lastly open another terminal, change the directory to AI folder using "cd AI"
-    - firstly type "pip install -r requirements.txt"
-    - if success, type "python ai.py" to run the AI server.
-    - 
+   ### Talent
+      <pre><code>
+         email: xavier@gmail.com
+         password: xavier123
+      </code></pre>
+   ### Recruiter
+      <pre><code>
+         email: caiden@gmail.com
+         password: caiden123
+      </code></pre>
