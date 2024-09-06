@@ -13,9 +13,11 @@
 2. Clone this github url
 3. In the directory, open the terminal and do the following list:
    - change directory to backend folder using "cd backend"
-     ``` cd backend
-     - type "npm run" to download all the libraries needed
-     - if success, type "nodemon index" or "node index" to run the backend server.
+     ```javascript
+     cd backend
+     
+  - type "npm run" to download all the libraries needed
+  - if success, type "nodemon index" or "node index" to run the backend server.
    - Open another terminal. change directory to frontend folder using "cd frontend"
      - type "npm run" to download all the libraries needed
      - if success, type "npm run dev" to run the frontend server.
