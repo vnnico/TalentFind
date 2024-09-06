@@ -2,9 +2,9 @@
 TalentFind is an AI-based talent acquisition platform designed to help companies find the most suitable candidates for available positions. By using TalentFind, companies can increase the competence and expertise of their team. The platform also offers a feature for candidates to analyze their CVs, helping them find jobs and companies that match their profile.
 
 # Teams
-1. @[daviezu](https://github.com/daviezu) as Backend Engineer
-2. @[vnnico](https://github.com/vnnico) as Project Manager and Frontend Engineer
-3. @[andrewal16](https://github.com/andrewal16) as AI Engineer
+1. @[David](https://github.com/daviezu) as Backend Engineer
+2. @[Nicholas Nelson](https://github.com/vnnico) as Project Manager and Frontend Engineer
+3. @[Andrew Alfonso Lie](https://github.com/andrewal16) as AI Engineer
 
 # Requirements
 To make sure the program runs succesfully, please install these:
