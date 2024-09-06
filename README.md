@@ -20,7 +20,7 @@ To make sure the program runs succesfully, please install these:
 2. Clone this github url https://github.com/vnnico/TalentFind.git or download the file
 3. Open in Visual Studios Code
 4. Setting Project Path <br>
-   In the directory, do the following list:
+   Inside Visual Studio Code, do the following list:
    1. Backend
       - Open a terminal and change directory to backend folder using "cd backend"
         ```javascript
