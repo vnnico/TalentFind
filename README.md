@@ -15,8 +15,8 @@
    - change directory to backend folder using "cd backend"
      ```javascript
      cd backend
-     
-  - type "npm run" to download all the libraries needed
+
+   - type "npm run" to download all the libraries needed
     ```node
      npm run
   - if success, type "nodemon index" or "node index" to run the backend server.
