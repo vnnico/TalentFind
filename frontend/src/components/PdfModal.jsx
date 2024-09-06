@@ -36,7 +36,7 @@ const disableScrollPlugin = () => {
   };
 };
 
-export default function PdfModal({ fileUrl }) {
+export default function PdfModal({ fileUrl, recommendation }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const pageNavigationPluginInstance = pageNavigationPlugin();
@@ -47,9 +47,7 @@ export default function PdfModal({ fileUrl }) {
 
   return (
     <>
-      <div className="flex gap-1">
-        <p className="text-md font-bold mt-1">Your CV :</p>
-
+      {recommendation ? (
         <Button
           color="primary"
           className="text-white w-[20%]"
@@ -58,7 +56,20 @@ export default function PdfModal({ fileUrl }) {
         >
           View CV
         </Button>
-      </div>
+      ) : (
+        <div className="flex gap-1">
+          <p className="text-md font-bold mt-1">Your CV :</p>
+
+          <Button
+            color="primary"
+            className="text-white w-[20%]"
+            size="sm"
+            onPress={onOpen}
+          >
+            View CV
+          </Button>
+        </div>
+      )}
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

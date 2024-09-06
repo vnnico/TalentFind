@@ -15,11 +15,17 @@ import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 import Skeletons from "../components/Skeleton";
 import GlobalSpinner from "../components/GlobalSpinner";
+import ComingSoonModal from "../components/ComingSoonModal";
 
 const Talent = () => {
   const { showToast, isLoggedIn } = useAppContext();
+  const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsModal(true);
+  }, []);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -67,7 +73,7 @@ const Talent = () => {
 
   const clickNexts = () => {
     if (index !== cvDetails.length - 1) {
-      setIndex(index + 1);
+      setIndex(index);
     }
   };
 
@@ -100,6 +106,7 @@ const Talent = () => {
 
   return (
     <div className="justify-content mx-auto my-5 flex max-md:flex-col w-[90%] md:p-11 p-4 rounded-lg md:gap-10 bg-white gap-4 h-full">
+      <ComingSoonModal></ComingSoonModal>
       <div className="flex flex-col basis-1/2 text-black gap-4 h-full">
         <h1 className="lg:text-3xl md:text-xl font-bold">
           Craft Your Professional Profile

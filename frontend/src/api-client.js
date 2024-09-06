@@ -261,6 +261,7 @@ export const getAllTalents = async () => {
   });
 
   const body = await response.json();
+  console.log("HAHAHA");
   console.log(body);
   if (!response.ok) {
     throw new Error(body.message);
@@ -304,6 +305,22 @@ export const analyzeCV = async (fileData) => {
 export const getCV = async () => {
   const response = await fetch(`${API_URL}/cv`, {
     credentials: "include",
+  });
+
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.message);
+
+  return body;
+};
+
+export const findRecommendedTalent = async (formData) => {
+  const response = await fetch(`${API_URL}/recruiter/hire`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
   });
 
   const body = await response.json();

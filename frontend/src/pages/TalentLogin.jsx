@@ -35,7 +35,7 @@ const TalentLogin = () => {
     onSuccess: async (data) => {
       await queryClient.refetchQueries();
       showToast({ message: data.message, type: "success" });
-      navigate("/");
+      navigate("/find-jobs");
     },
     onError: async (data) => {
       showToast({ message: "Invalid Credentials", type: "error" });

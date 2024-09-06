@@ -15,7 +15,7 @@ const TimeLine = ({ index, setIndex }) => {
     {
       color: "gray",
       children: (
-        <button onClick={() => setIndex(1)} className="hover:text-slate-700">
+        <button onClick={() => setIndex(0)} className="hover:text-slate-700">
           Description
         </button>
       ),
@@ -23,7 +23,7 @@ const TimeLine = ({ index, setIndex }) => {
     {
       color: "gray",
       children: (
-        <button onClick={() => setIndex(2)} className="hover:text-slate-700">
+        <button onClick={() => setIndex(0)} className="hover:text-slate-700">
           Education
         </button>
       ),
@@ -31,7 +31,7 @@ const TimeLine = ({ index, setIndex }) => {
     {
       color: "gray",
       children: (
-        <button onClick={() => setIndex(3)} className="hover:text-slate-700">
+        <button onClick={() => setIndex(0)} className="hover:text-slate-700">
           Experience
         </button>
       ),
@@ -39,7 +39,7 @@ const TimeLine = ({ index, setIndex }) => {
     {
       color: "gray",
       children: (
-        <button onClick={() => setIndex(4)} className="hover:text-slate-700">
+        <button onClick={() => setIndex(0)} className="hover:text-slate-700">
           Achievement
         </button>
       ),
@@ -47,7 +47,7 @@ const TimeLine = ({ index, setIndex }) => {
     {
       color: "gray",
       children: (
-        <button onClick={() => setIndex(5)} className="hover:text-slate-700">
+        <button onClick={() => setIndex(0)} className="hover:text-slate-700">
           Project
         </button>
       ),
@@ -55,7 +55,7 @@ const TimeLine = ({ index, setIndex }) => {
     {
       color: "gray",
       children: (
-        <button onClick={() => setIndex(6)} className="hover:text-slate-700">
+        <button onClick={() => setIndex(0)} className="hover:text-slate-700">
           Skills
         </button>
       ),

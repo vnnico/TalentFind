@@ -45,12 +45,10 @@ const FindJob = () => {
     <div className="justify-content mx-auto my-5 flex flex-col w-[90%] md:p-11  p-4 rounded-lg md:gap-10 bg-white h-full gap-4 ">
       <div className="flex gap-6 max-md:flex-col">
         <div className="flex flex-col basis-1/2 text-black gap-4 h-full">
-          <h1 className="lg:text-3xl md:text-xl font-bold">
-            Analyze your CV here
-          </h1>
+          <h1 className="lg:text-2xl md:text-xl font-bold">Analyze CV Here</h1>
           <p className="text-sm md:text-left">
             Leverage the power of AI to analyze your CV and receive personalized
-            feedback on your skills and strengths.
+            job portals recommendation.
           </p>
           {pdf && pdf.cvLink && (
             <PdfModal
@@ -63,8 +61,8 @@ const FindJob = () => {
           <h1 className="lg:text-xl md:text-xl font-bold text-center">
             Result Analysis
           </h1>
-          <p className="text-xs md:text-left m-auto text-slate-500">
-            No Result yet
+          <p className="text-md md:text-left m-auto text-slate-500 text-yellow-500">
+            Coming Soon
           </p>
         </div>
       </div>
@@ -73,7 +71,7 @@ const FindJob = () => {
 
         {data && data.recommendation === true ? (
           <h1 className="lg:text-xl md:text-xl font-bold text-center text-violet-700 ">
-            Your Recommendation Job Portals
+            Your Job Portals Recommendation
           </h1>
         ) : (
           <h1 className="lg:text-xl md:text-xl font-bold text-center ">

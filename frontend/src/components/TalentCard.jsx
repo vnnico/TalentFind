@@ -7,8 +7,9 @@ import {
   Divider,
   Button,
 } from "@nextui-org/react";
+import PdfModal from "../components/PdfModal";
 
-export default function TalentCard({ talentList }) {
+export default function TalentCard({ talentList, similarityScore }) {
   // sm:max-w-[250px] md:max-w-[300px] shadow-md
   return (
     <Card className="w-full  bg-white">
@@ -21,11 +22,33 @@ export default function TalentCard({ talentList }) {
       </CardHeader>
       <Divider />
       <CardBody>
-        <p className="md:text-md text-sm">Default dulu</p>
+        <div className="flex gap-1">
+          <p className="md:text-lg font-semibold text-md">Similarity Score: </p>
+          {similarityScore && similarityScore <= 50 && (
+            <p className="md:text-lg text-red-500 font-semibold text-md">
+              {similarityScore}%
+            </p>
+          )}
+          {similarityScore > 50 && similarityScore <= 80 && (
+            <p className="md:text-lg text-yellow-500 font-semibold text-md">
+              {similarityScore}%
+            </p>
+          )}
+          {similarityScore > 80 && (
+            <p className="md:text-lg text-green-500 font-semibold text-md">
+              {similarityScore}%
+            </p>
+          )}
+        </div>
       </CardBody>
       <Divider />
       <CardFooter>
-        <Button color="primary">View CV</Button>
+        {talentList.cvFile && (
+          <PdfModal
+            fileUrl={`http://localhost:3000/files/${talentList.cvFile}`}
+            recommendation={true}
+          ></PdfModal>
+        )}
       </CardFooter>
     </Card>
   );

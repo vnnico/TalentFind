@@ -53,7 +53,7 @@ const JobPostForm = () => {
   return (
     <div className="flex flex-col text-lg py-2 gap-4 justify-start ">
       <form onSubmit={handleSubmit(postData)} className="flex flex-col gap-4">
-        <div className="w-[80%] ">
+        <div className="w-[80%]   ">
           <Controller
             control={control}
             name="name"
