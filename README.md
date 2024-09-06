@@ -1,9 +1,9 @@
 # TalentFind
 
 # Teams
-1. @daviezu as Backend Engineer
-2. @vnnico as Project Manager and Frontend Engineer
-3. @andrewal16 as AI Engineer
+1. @[daviezu](https://github.com/daviezu) as Backend Engineer
+2. @[vnnico](https://github.com/vnnico) as Project Manager and Frontend Engineer
+3. @[andrewal16](https://github.com/andrewal16) as AI Engineer
 
 # Requirements
 
