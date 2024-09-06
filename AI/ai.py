@@ -13,6 +13,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
@@ -24,6 +25,7 @@ import torch
 from torch.utils.data import DataLoader, Dataset, random_split
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import logging
+import streamlit as st
 
 # FLASK LIBRARY
 from flask import Flask, request, jsonify, send_file
@@ -199,6 +201,42 @@ def recommend_alternative_careers(cv_text, model, vectorizer, label_encoder, job
     
     return recommendations
 
+# Text preprocessing function
+def preprocess_text_job_description(text):
+    # Convert to lowercase
+    text = text.lower()
+    # Remove special characters and numbers
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
+    # Tokenize
+    tokens = word_tokenize(text)
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    tokens = [token for token in tokens if token not in stop_words]
+    # Join tokens back into string
+    return ' '.join(tokens)
+
+# Define functions for text extraction
+def extract_text_zip_from_pdf(file_path):
+    try:
+        with open(file_path, 'rb') as file:
+            reader = PyPDF2.PdfReader(file)
+            text = ""
+            for page in reader.pages:
+                text += page.extract_text()
+        return preprocess_text_job_description(text)
+    except Exception as e:
+        return ""
+
+def extract_text_from_docx(file_path):
+    text = docx2txt.process(file_path)
+    return preprocess_text_job_description(text)
+
+def extract_text_from_txt(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        text = file.read()
+    return preprocess_text_job_description(text)
+
+
 def extract_text(file_path):
     file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == '.pdf':
@@ -244,7 +282,6 @@ class CVJobDataset(Dataset):
             padding='max_length',
             truncation=True,
             return_tensors='pt',
-             clean_up_tokenization_spaces=True
         )
         return {
             'input_ids': inputs['input_ids'].flatten(),
@@ -252,8 +289,9 @@ class CVJobDataset(Dataset):
             'labels': torch.tensor(1.0)
         }
 
+@st.cache_resource
 def load_distilbert_model():
-    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased', clean_up_tokenization_spaces=False)
     model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=1)
     return tokenizer, model
 
