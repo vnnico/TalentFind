@@ -144,9 +144,7 @@ const register = async (req, res) => {
   });
   try {
     // kalo mau tes dipostman, ganti aja object jsonnya
-    res
-      .status(200)
-      .json({ name, email, token, dob, gender, address, phoneNumber });
+    res.status(200).json({ message: "Register Success" });
   } catch (error) {
     res
       .status(500)
