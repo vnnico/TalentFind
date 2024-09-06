@@ -1,5 +1,10 @@
 # TalentFind
 
+# Teams
+1. @daviezu
+2. @vnnico
+3. Andrew
+
 # Requirements
 
 # How to run the program
