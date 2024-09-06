@@ -17,6 +17,8 @@
      cd backend
      
   - type "npm run" to download all the libraries needed
+    ```node
+     npm run
   - if success, type "nodemon index" or "node index" to run the backend server.
    - Open another terminal. change directory to frontend folder using "cd frontend"
      - type "npm run" to download all the libraries needed
